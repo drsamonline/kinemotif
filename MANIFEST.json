@@ -39,7 +39,7 @@
       "class": "hand"
     },
     "README.md": {
-      "sha256": "0ed1fd4272be6670930092292982e1d1dfd0bbe016bd77f48b7345cee164746f",
+      "sha256": "96d10d5cc0dae67918d844f0b89e3b3fe54ddd5dcae0dada7b30cf32dc46cea2",
       "class": "hand"
     },
     "SECURITY.md": {
@@ -107,7 +107,7 @@
       "class": "asset"
     },
     "index.html": {
-      "sha256": "fa98f1c12bc4e32bf735cc768b6fc36bcc32358025fd39e923e9fe3112a6c16f",
+      "sha256": "1fcce7a25be7bc300e43fc086d6501f1dbfc1fe5c16b5f2ef0723f66504e7f6c",
       "class": "hand"
     },
     "manifest.webmanifest": {

@@ -9,6 +9,10 @@ and it builds a multi-scene presentation that draws its own artwork, morphs betw
 and synthesises an original soundtrack while it plays. The finished show exports as a single
 `.html` file that runs offline.
 
+**Need a video file instead of a web page?** [Kinemorph](https://github.com/drsamonline/kinemorph)
+is the heavy sibling — a PixiJS + React + TypeScript studio with frame-exact MP4 export. This
+repository stays deliberately dependency-free: one file, no build, no network.
+
 There are no images, fonts, audio files or dependencies in this repository. Every pixel is
 drawn with Canvas 2D and every note is generated with the Web Audio API at runtime.
 
