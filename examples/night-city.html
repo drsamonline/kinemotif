@@ -436,7 +436,7 @@ html.mode-wizard #playlayer { display: none; }
     <div id="stagewrap"><canvas id="stage" width="1920" height="1080"></canvas></div>
     <div id="transport">
       <button id="btnPrev" class="tbtn" title="Previous scene">⏮</button>
-      <button id="btnPlay" class="tbtn play" title="Play / pause">❚❚</button>
+      <button id="btnPlay" class="tbtn play" title="Play / pause">▶</button>
       <button id="btnNext" class="tbtn" title="Next scene">⏭</button>
       <span id="timeLbl">0:00 / 0:32</span>
       <div class="spacer"></div>
@@ -566,6 +566,71 @@ html.mode-wizard #playlayer { display: none; }
     s = String(s || '');
     for (i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
     return h >>> 0;
+  }
+
+  /* ------------------------------------------------------------
+     COLOUR — contrast-safe accents
+     Ported from the fleet's colour core: WCAG relative luminance,
+     HSL round-trip, and a nudge loop that keeps an accent legible
+     against whatever background the style paints.
+     ------------------------------------------------------------ */
+  function hexToRgb(hex) {
+    var h = String(hex || '').replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    if (isNaN(n)) return { r: 255, g: 255, b: 255 };
+    return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+  }
+  function rgbToHex(c) {
+    function f(v) { var s = Math.round(clamp(v, 0, 255)).toString(16); return s.length < 2 ? '0' + s : s; }
+    return '#' + f(c.r) + f(c.g) + f(c.b);
+  }
+  function channelLum(v) {
+    v = clamp(v, 0, 255) / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  }
+  function relLum(c) { return 0.2126 * channelLum(c.r) + 0.7152 * channelLum(c.g) + 0.0722 * channelLum(c.b); }
+  function contrastRatio(a, b) {
+    var la = relLum(hexToRgb(a)), lb = relLum(hexToRgb(b));
+    return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+  }
+  function rgbToHsl(c) {
+    var r = c.r / 255, g = c.g / 255, b = c.b / 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+    var h = 0, s = 0, l = (max + min) / 2;
+    if (d) {
+      s = d / (1 - Math.abs(2 * l - 1) || 1);
+      if (max === r) h = ((g - b) / d) % 6;
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+      if (h < 0) h += 360;
+    }
+    return { h: h, s: s * 100, l: l * 100 };
+  }
+  function hslToRgb(h, s, l) {
+    h = ((h % 360) + 360) % 360; s = clamp(s, 0, 100) / 100; l = clamp(l, 0, 100) / 100;
+    var c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = l - c / 2, p;
+    if (h < 60) p = [c, x, 0];
+    else if (h < 120) p = [x, c, 0];
+    else if (h < 180) p = [0, c, x];
+    else if (h < 240) p = [0, x, c];
+    else if (h < 300) p = [x, 0, c];
+    else p = [c, 0, x];
+    return { r: (p[0] + m) * 255, g: (p[1] + m) * 255, b: (p[2] + m) * 255 };
+  }
+  function ensureContrast(fg, bg, min) {
+    min = min || 3;
+    if (contrastRatio(fg, bg) >= min) return fg;
+    var hsl = rgbToHsl(hexToRgb(fg));
+    var darken = relLum(hexToRgb(bg)) > 0.32;
+    var out = fg;
+    for (var step = 1; step <= 24; step++) {
+      var l = clamp(hsl.l + (darken ? -step * 4 : step * 4), 5, 95);
+      out = rgbToHex(hslToRgb(hsl.h, hsl.s, l));
+      if (contrastRatio(out, bg) >= min) return out;
+    }
+    return out;
   }
 
   /* ------------------------------------------------------------
@@ -1331,6 +1396,7 @@ html.mode-wizard #playlayer { display: none; }
     motifPoints: motifPoints, morphPoints: morphPoints,
     renderScene: renderScene, renderInto: renderInto, drawFrame: drawFrame,
     EASES: EASES, ENTERS: ENTERS, CAMS: CAMS,
+    contrastRatio: contrastRatio, ensureContrast: ensureContrast, rgbToHsl: rgbToHsl, hslToRgb: hslToRgb,
     getBuf: getBuf, clamp: clamp, lerp: lerp, easeOut: easeOut, easeInOut: easeInOut,
     hashStr: hashStr, seeded: seeded, wrapText: wrapText, setFont: setFont
   };
@@ -1704,8 +1770,10 @@ html.mode-wizard #playlayer { display: none; }
     return best;
   }
   function accentFor(i, styleId) {
-    var pal = (STYLES[styleId] || STYLES.neon).pal.a;
-    return pal[i % pal.length];
+    var st = STYLES[styleId] || STYLES.neon;
+    var c = st.pal.a[i % st.pal.a.length];
+    /* keep the accent legible on the style's own background */
+    return (MS.ensureContrast ? MS.ensureContrast(c, st.pal.bg, 3) : c);
   }
 
   function expandShort(topic) {

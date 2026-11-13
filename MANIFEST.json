@@ -1,0 +1,158 @@
+{
+  "schema": 1,
+  "generator": "tools/manifest.mjs",
+  "files": {
+    ".github/workflows/ci.yml": {
+      "sha256": "2a0fb55193034d68b607a17d70d198272d207ec17701dfbd20f0a33eb8a0c327",
+      "class": "tooling"
+    },
+    ".gitignore": {
+      "sha256": "4e737478ce477e618a5d94b7604b3840c07bddce871e8a850db09fa39523b678",
+      "class": "hand"
+    },
+    ".nojekyll": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "class": "hand"
+    },
+    "404.html": {
+      "sha256": "21173ba1c7479e662b20b81bd745b7503afbf4e188def7898b89e1c9ecfdd652",
+      "class": "hand"
+    },
+    "CHANGELOG.md": {
+      "sha256": "1edaba5e028505534c954aba56f781665a667fd06580b979223a5d49b78d6dc1",
+      "class": "hand"
+    },
+    "CONTRIBUTING.md": {
+      "sha256": "e4674c3b2e77d916d3b682c0aea936ae05318052da075380f0962e19f7c27433",
+      "class": "hand"
+    },
+    "LICENSE": {
+      "sha256": "bcb851e67f7759779d6e041d43f039fb1c0e45dd3c12671b0009fde9e0c1a61b",
+      "class": "hand"
+    },
+    "PAGES.json": {
+      "sha256": "aa53af299afc297ac45bb05c95ba6608f3497045ec47ba826a79ba0596cbfad9",
+      "class": "hand"
+    },
+    "PRIVACY.md": {
+      "sha256": "0109b65459ec4d94d5a71cdac2f120968b5f1803e494b621c68d7cc95833382b",
+      "class": "hand"
+    },
+    "README.md": {
+      "sha256": "0ed1fd4272be6670930092292982e1d1dfd0bbe016bd77f48b7345cee164746f",
+      "class": "hand"
+    },
+    "SECURITY.md": {
+      "sha256": "5777308720c246cc59082a64268c5000598832b82c77a044d0d9e61f0b7288ce",
+      "class": "hand"
+    },
+    "assets/night-city.png": {
+      "sha256": "96b586fbf1b2ff99eae414e434718f560ea20c76e0bec46afaf90fd4f7444750",
+      "class": "asset"
+    },
+    "assets/seed-to-tree.png": {
+      "sha256": "eb52783f0f21dff067dbc9dfff98afecec8fdbe80081118deb0bfcfc18f7caab",
+      "class": "asset"
+    },
+    "assets/ship-fast.png": {
+      "sha256": "f284e49bcf42002fcf26a6496092040ae5ab5f2977d437881e8895ad2d098d6f",
+      "class": "asset"
+    },
+    "assets/studio.png": {
+      "sha256": "dc605375947b4a419a6938bd2851297a4eb265a66079e6dcbe183ff665d76974",
+      "class": "asset"
+    },
+    "assets/water-cycle.png": {
+      "sha256": "1f58e90b322be31a53fea2b69109e027fc12b30fcca254ded96eaf7951b6ca2a",
+      "class": "asset"
+    },
+    "assets/wizard.png": {
+      "sha256": "9a757188a606a8903969bfdba5de941d076cc7e75b3a8d4a1b0e2e132013e1ec",
+      "class": "asset"
+    },
+    "build.py": {
+      "sha256": "45bb43bc90e2f4350934e66389bb6d9ed88f2649458526defa94dd3b1d9ef00d",
+      "class": "source"
+    },
+    "docs/guide.md": {
+      "sha256": "0788250eb8c4df8181ae4f2b2b08e74f861643e68a99d45553e6b2d23196ad44",
+      "class": "hand"
+    },
+    "docs/project-format.md": {
+      "sha256": "a1b0afc52c013009508e034da50e6ac866762df899f74326feb069b2f15428a9",
+      "class": "hand"
+    },
+    "docs/reference.md": {
+      "sha256": "dd9922edd0fcbd626cea2edb0868f551f278d80dcb16d84aaa06c1284a610083",
+      "class": "hand"
+    },
+    "examples/night-city.html": {
+      "sha256": "93faee6bbc541ba11f57583a9daf502bfc071eb994edc077561ddcee304d95c0",
+      "class": "generated"
+    },
+    "examples/seed-to-tree.html": {
+      "sha256": "35ee0baf26ca3bac92b687c5ae9932ca30107568e65bb2c1d840609c8ca040fb",
+      "class": "generated"
+    },
+    "examples/ship-fast.html": {
+      "sha256": "3872c5b708f02ab7443e383d647db14713a4f4049c4e17b6f9a728b5654e30f7",
+      "class": "generated"
+    },
+    "examples/water-cycle.html": {
+      "sha256": "7f96db92a4c20e5fa496030c8f51f68c04a3602f60b14bbcb9fba2a00c95fe8a",
+      "class": "generated"
+    },
+    "favicon.svg": {
+      "sha256": "cedd1af741b2bb8efe813e093b988c2ba600a6838ba4d43b2afb24358a1189ce",
+      "class": "asset"
+    },
+    "index.html": {
+      "sha256": "fa98f1c12bc4e32bf735cc768b6fc36bcc32358025fd39e923e9fe3112a6c16f",
+      "class": "hand"
+    },
+    "manifest.webmanifest": {
+      "sha256": "360802765eb5993845cb4f5fa4224c98b87f35a9fb8525401a56349141cef153",
+      "class": "hand"
+    },
+    "robots.txt": {
+      "sha256": "27696f7d030725f271dafff27bd2b8017e098ef22de715591c1afe00c36f9251",
+      "class": "hand"
+    },
+    "sitemap.xml": {
+      "sha256": "45e1d520f0a4fea95a1e7fedc3e892e91db49edadf596fbc6b72e7f13fe93263",
+      "class": "hand"
+    },
+    "src/core.js": {
+      "sha256": "4c59a33199e5c2de4662829b70162f1a7b0a2b79e627619c3b1863307a897016",
+      "class": "source"
+    },
+    "src/music.js": {
+      "sha256": "85deab999e4541202e5aa78c55b282d52618ea771079746b9538616274a2bf52",
+      "class": "source"
+    },
+    "src/style.css": {
+      "sha256": "c29072466a3a01dcd86e49bbe26b399b8254f53fcdeb7d7b45c64ec2f93bae24",
+      "class": "source"
+    },
+    "src/ui.js": {
+      "sha256": "1f8ac277d31cc3917f7a10d3b83888857c58148ea632666ba1c19a59a11a1841",
+      "class": "source"
+    },
+    "studio/kinemotif.html": {
+      "sha256": "d7ee4c0d364694caaff3bd8853e292162b2ece43dba2ca8989b6dab8d5569876",
+      "class": "generated"
+    },
+    "tools/check-links.mjs": {
+      "sha256": "cf0615cc88edb452a2eda4d82b443bc3a4f1cba469553922ee126583d190c8d0",
+      "class": "tooling"
+    },
+    "tools/check-syntax.mjs": {
+      "sha256": "6362abe249242ccc60f6f0070f1e0c3cdb5dab04e1a3a009633bc8bc08d6c226",
+      "class": "tooling"
+    },
+    "tools/manifest.mjs": {
+      "sha256": "f732a81b0886a373c6a8996f631d591fdff4eb8e34211d9a1336ef0f360d8259",
+      "class": "tooling"
+    }
+  }
+}

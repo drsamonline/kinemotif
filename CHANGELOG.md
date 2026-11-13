@@ -3,6 +3,28 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] — 2026-11-13
+
+### Added
+- **Contrast-safe accents** — every generated accent colour is checked against the style's
+  background using WCAG relative luminance and nudged in HSL until it clears 3:1. Ported from
+  the fleet's colour core. Paper Cut and Stick Figure shows are noticeably more legible.
+- **Sources in the repository** — `src/` and `build.py` now ship alongside the build output, so
+  the studio can be edited and rebuilt without reverse-engineering the bundle.
+- **`PAGES.json`** — declares every published page, its path and its title.
+- **`MANIFEST.json`** — inventory of every tracked file with SHA-256 and class.
+- **`tools/check-links.mjs`** — validates local references, the PAGES.json map, that every
+  example carries an embedded project, and that the studio references nothing external.
+- **`tools/check-syntax.mjs`** — parses every inline script in every published page.
+- **`tools/manifest.mjs`** — writes and verifies the manifest.
+- **GitHub Actions CI** — runs the three checks on every push and pull request.
+- **`SECURITY.md`, `PRIVACY.md`, `CONTRIBUTING.md`** — scope, data handling and house rules.
+- **`404.html`, `favicon.svg`, `manifest.webmanifest`, `robots.txt`, `sitemap.xml`** — the
+  site is now installable, indexable and has a real not-found page.
+
+### Changed
+- Landing page head: favicon, web manifest and theme colour.
+
 ## [1.0.0] — 2026-11-13
 
 First public release.
