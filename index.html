@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kinemotif — turn a paragraph into a moving, scored presentation</title>
+<meta name="description" content="Kinemotif is a single-file HTML animation studio. Paste a story, pick a look, and get a morphing, music-scored presentation that exports as one HTML file.">
+<meta property="og:title" content="Kinemotif — the HTML animation studio">
+<meta property="og:description" content="Paste a paragraph. Get a moving, scored presentation. One HTML file, no video, no internet.">
+<meta property="og:image" content="assets/water-cycle.png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --bg: #08090f;
+    --panel: #10131c;
+    --line: #1e2432;
+    --ink: #eef1f8;
+    --muted: #8e99b0;
+    --accent: #7c5cff;
+    --accent2: #22d3ee;
+    --pink: #ff2d95;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased; line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* nav */
+  nav {
+    position: sticky; top: 0; z-index: 30;
+    backdrop-filter: blur(14px);
+    background: rgba(8, 9, 15, .72);
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+  }
+  nav .wrap { display: flex; align-items: center; gap: 26px; height: 62px; }
+  .brand { font-weight: 800; letter-spacing: -.02em; font-size: 19px; }
+  .brand span { color: var(--accent); }
+  nav .links { display: flex; gap: 22px; margin-left: auto; font-size: 14px; color: var(--muted); }
+  nav .links a:hover { color: var(--ink); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: 9px; font-weight: 600; font-size: 14px;
+    border: 1px solid var(--line); background: #141824; color: var(--ink);
+    transition: transform .15s ease, border-color .15s ease, filter .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); border-color: #35405a; }
+  .btn.primary {
+    background: linear-gradient(135deg, var(--accent), #5b7cff);
+    border: 0; color: #fff; box-shadow: 0 12px 30px rgba(124, 92, 255, .3);
+  }
+  .btn.primary:hover { filter: brightness(1.08); }
+
+  /* hero */
+  header.hero { position: relative; padding: 76px 0 40px; overflow: hidden; }
+  header.hero::before {
+    content: ""; position: absolute; inset: -200px -10% auto -10%; height: 700px;
+    background:
+      radial-gradient(600px 400px at 18% 10%, rgba(124, 92, 255, .28), transparent 65%),
+      radial-gradient(600px 400px at 82% 0%, rgba(34, 211, 238, .16), transparent 65%),
+      radial-gradient(400px 300px at 50% 40%, rgba(255, 45, 149, .12), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.02fr .98fr; gap: 48px; align-items: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent2); border: 1px solid rgba(34, 211, 238, .3);
+    padding: 6px 12px; border-radius: 999px; margin-bottom: 22px;
+  }
+  h1 {
+    font-size: clamp(38px, 4.6vw, 60px); line-height: 1.05;
+    letter-spacing: -.035em; margin: 0 0 20px; font-weight: 800;
+  }
+  h1 em { font-style: normal; background: linear-gradient(120deg, var(--accent2), var(--accent) 55%, var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lede { font-size: 17px; color: var(--muted); max-width: 520px; margin: 0 0 30px; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .fineprint { font-size: 12.5px; color: #5f6a82; margin-top: 18px; }
+
+  /* player card */
+  .player {
+    position: relative; border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--line); background: #05060a;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, .65), 0 0 0 1px rgba(255, 255, 255, .03) inset;
+    aspect-ratio: 16 / 9;
+  }
+  .player img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .95; }
+  .player iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .play-overlay {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    background: linear-gradient(180deg, rgba(5, 6, 10, .1), rgba(5, 6, 10, .55));
+    cursor: pointer; border: 0; width: 100%; padding: 0;
+  }
+  .play-overlay .disc {
+    width: 78px; height: 78px; border-radius: 50%;
+    background: rgba(255, 255, 255, .94); color: #0b0d14;
+    display: grid; place-items: center; font-size: 26px; padding-left: 6px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
+    transition: transform .2s ease;
+  }
+  .play-overlay:hover .disc { transform: scale(1.06); }
+  .play-overlay .cap {
+    position: absolute; bottom: 16px; left: 0; right: 0; text-align: center;
+    font-size: 12.5px; color: rgba(255, 255, 255, .78); letter-spacing: .02em;
+  }
+
+  /* sections */
+  section { padding: 76px 0; }
+  .sec-head { max-width: 640px; margin-bottom: 40px; }
+  .sec-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -.025em; margin: 0 0 12px; }
+  .sec-head p { color: var(--muted); margin: 0; font-size: 15.5px; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .step {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px;
+  }
+  .step .n {
+    width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+    background: rgba(124, 92, 255, .16); color: #b9a8ff; font-weight: 700; font-size: 13px; margin-bottom: 14px;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 16px; }
+  .step p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feature {
+    background: linear-gradient(180deg, #12151f, #0d1017);
+    border: 1px solid var(--line); border-radius: 14px; padding: 22px;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .feature:hover { border-color: #333d55; transform: translateY(-2px); }
+  .feature .ic { font-size: 20px; margin-bottom: 12px; }
+  .feature h3 { margin: 0 0 8px; font-size: 15.5px; }
+  .feature p { margin: 0; color: var(--muted); font-size: 13.5px; }
+
+  /* gallery */
+  .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .card {
+    display: block; border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--line); background: var(--panel);
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .card:hover { transform: translateY(-3px); border-color: #38435c; }
+  .card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+  .card .meta { padding: 14px 16px 16px; display: flex; align-items: center; gap: 10px; }
+  .card .meta b { font-size: 14.5px; font-weight: 600; }
+  .card .meta span { margin-left: auto; font-size: 12px; color: var(--muted); }
+  .tag {
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    color: #9fb0cc; background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .07); padding: 3px 8px; border-radius: 999px;
+  }
+
+  /* styles strip */
+  .styles { display: flex; flex-wrap: wrap; gap: 10px; }
+  .style-pill {
+    display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: #c9d2e4;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 999px; padding: 9px 16px;
+  }
+  .style-pill i { width: 11px; height: 11px; border-radius: 4px; display: block; }
+
+  /* docs */
+  .docs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .doc {
+    display: block; padding: 22px; border-radius: 14px;
+    background: var(--panel); border: 1px solid var(--line);
+  }
+  .doc:hover { border-color: #38435c; }
+  .doc h3 { margin: 0 0 6px; font-size: 15.5px; }
+  .doc p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .doc .arrow { color: var(--accent2); font-size: 13px; margin-top: 12px; display: block; }
+
+  /* cta band */
+  .band {
+    border-radius: 18px; padding: 46px 40px; text-align: center;
+    background:
+      radial-gradient(500px 240px at 50% 0%, rgba(124, 92, 255, .3), transparent 70%),
+      linear-gradient(180deg, #131726, #0c0f16);
+    border: 1px solid var(--line);
+  }
+  .band h2 { margin: 0 0 10px; font-size: clamp(24px, 3vw, 32px); letter-spacing: -.02em; }
+  .band p { color: var(--muted); margin: 0 0 24px; }
+
+  footer {
+    border-top: 1px solid rgba(255, 255, 255, .06); padding: 34px 0 54px;
+    color: #5f6a82; font-size: 13px;
+  }
+  footer .wrap { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+  footer a:hover { color: var(--ink); }
+
+  @media (max-width: 900px) {
+    .hero-grid, .steps, .features, .gallery, .docs { grid-template-columns: 1fr; }
+    nav .links { display: none; }
+    .hero-grid { gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Kine<span>motif</span></div>
+    <div class="links">
+      <a href="#how">How it works</a>
+      <a href="#examples">Examples</a>
+      <a href="#features">Features</a>
+      <a href="docs/guide.md">Docs</a>
+      <a href="https://github.com/drsamonline/kinemotif">GitHub</a>
+    </div>
+    <a class="btn primary" href="studio/kinemotif.html">Open the studio</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Single-file HTML animation studio</div>
+      <h1>Write it.<br><em>Watch it move.</em></h1>
+      <p class="lede">
+        Paste a paragraph, pick a look, and Kinemotif turns every sentence into an animated
+        scene — drawing its own artwork, morphing scene to scene, and synthesising a soundtrack
+        as it plays. Everything ships as one HTML file.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="studio/kinemotif.html">Make a show →</a>
+        <a class="btn" href="#examples">See examples</a>
+      </div>
+      <p class="fineprint">No build step. No video export. No network calls. 95 KB, and it runs offline.</p>
+    </div>
+
+    <div class="player" id="player">
+      <img src="assets/water-cycle.png" alt="A Kinemotif scene: The sun warms the sea, neon style">
+      <button class="play-overlay" id="playBtn" aria-label="Play the demo show">
+        <span class="disc">▶</span>
+        <span class="cap">Play “The Water Cycle” — 32 seconds, sound on</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Three steps, no timeline to learn</h2>
+      <p>Most motion tools ask you to place keyframes. Kinemotif asks you to write a sentence and then lets you adjust what it did.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Pick a look</h3>
+        <p>Six complete art styles — pixel arcade, stick figure, neon night, paper cut, cosmic dream, VHS retro. Each one changes the palette, the type, the background and how shapes are painted.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>Give it a story</h3>
+        <p>Paste anything. Sentences become scenes, each with a title pulled from its first clause and a picture matched to its keywords. Or start blank and write the slides yourself.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>Play and export</h3>
+        <p>Scrub the timeline, retime a scene, change its entrance or camera. When it feels right, export a single HTML file that plays full-screen on its own.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="examples" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Made with Kinemotif</h2>
+      <p>Four stories, four styles, four exported shows. Open any of them — each one is a single file with its own soundtrack.</p>
+    </div>
+    <div class="gallery">
+      <a class="card" href="examples/water-cycle.html">
+        <img src="assets/water-cycle.png" alt="The Water Cycle, neon style">
+        <div class="meta"><b>The Water Cycle</b><span class="tag">Neon Night</span><span>6 scenes</span></div>
+      </a>
+      <a class="card" href="examples/seed-to-tree.html">
+        <img src="assets/seed-to-tree.png" alt="A Seed Becomes a Tree, paper cut style">
+        <div class="meta"><b>A Seed Becomes a Tree</b><span class="tag">Paper Cut</span><span>6 scenes</span></div>
+      </a>
+      <a class="card" href="examples/ship-fast.html">
+        <img src="assets/ship-fast.png" alt="Why We Ship Fast, pixel style">
+        <div class="meta"><b>Why We Ship Fast</b><span class="tag">Pixel Arcade</span><span>6 scenes</span></div>
+      </a>
+      <a class="card" href="examples/night-city.html">
+        <img src="assets/night-city.png" alt="A Night in the City, VHS style">
+        <div class="meta"><b>A Night in the City</b><span class="tag">VHS Retro</span><span>6 scenes</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="features" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>What is actually inside</h2>
+      <p>Everything is generated at runtime from about 2,400 lines of JavaScript and Canvas 2D. There are no images, fonts or audio files in the repository.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="ic">◈</div>
+        <h3>Shapes that really morph</h3>
+        <p>Every motif is a closed polygon resampled to the same point count, so a wave flows into a cloud into a rocket. Not a crossfade — actual geometry interpolation.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">♪</div>
+        <h3>A soundtrack, synthesised live</h3>
+        <p>Pad, bass, arpeggio, drums and reverb built from oscillators. Seven moods, each with its own tempo, scale and chord progression. Never the same twice.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">✍</div>
+        <h3>Story to storyboard</h3>
+        <p>Sentence splitting, title extraction and a keyword map of 14 motifs. The result is editable — every field is a normal form input, not a black box.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">⚙</div>
+        <h3>Ten entrances, eight curves</h3>
+        <p>Rise, zoom, slide, drop, flip, blur, pop and more, each paired with an easing curve from linear to elastic and spring, plus a per-scene camera move.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">⤓</div>
+        <h3>Export, reopen, continue</h3>
+        <p>Export a standalone HTML show, save a project as JSON, or reopen an exported show to keep editing it. Undo and redo run across everything.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">◐</div>
+        <h3>Offline and private</h3>
+        <p>No CDN, no fonts, no analytics, no server. Your story never leaves the browser — it lives in localStorage until you export it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Six styles, one click apart</h2>
+      <p>Switch the look at any point — the whole show re-renders in the new style without losing a word.</p>
+    </div>
+    <div class="styles">
+      <div class="style-pill"><i style="background:#ff4d6d"></i>Pixel Arcade</div>
+      <div class="style-pill"><i style="background:#e0512f"></i>Stick Figure</div>
+      <div class="style-pill"><i style="background:#ff2d95"></i>Neon Night</div>
+      <div class="style-pill"><i style="background:#cf5c39"></i>Paper Cut</div>
+      <div class="style-pill"><i style="background:#8b5cf6"></i>Cosmic Dream</div>
+      <div class="style-pill"><i style="background:#00e5ff"></i>VHS Retro</div>
+    </div>
+  </div>
+</section>
+
+<section id="docs" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Documentation</h2>
+      <p>Short, and written for someone who just wants to make the thing.</p>
+    </div>
+    <div class="docs">
+      <a class="doc" href="docs/guide.md">
+        <h3>Guide</h3>
+        <p>The wizard, the editor, every inspector field, export and import.</p>
+        <span class="arrow">Read the guide →</span>
+      </a>
+      <a class="doc" href="docs/reference.md">
+        <h3>Reference</h3>
+        <p>All styles, motifs, transitions, entrances, easings, cameras and moods in tables.</p>
+        <span class="arrow">Open the reference →</span>
+      </a>
+      <a class="doc" href="docs/project-format.md">
+        <h3>Project format</h3>
+        <p>The JSON schema, and how an exported show embeds itself into a copy of the player.</p>
+        <span class="arrow">See the format →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="band">
+      <h2>Your next update could move.</h2>
+      <p>Paste the changelog, the launch note, the lesson plan. It takes about a minute.</p>
+      <a class="btn primary" href="studio/kinemotif.html">Open the studio →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand" style="font-size:16px">Kine<span>motif</span></div>
+    <span>MIT licensed · built with Canvas 2D and the Web Audio API</span>
+    <span style="margin-left:auto">
+      <a href="studio/kinemotif.html">Studio</a> ·
+      <a href="docs/guide.md">Docs</a> ·
+      <a href="https://github.com/drsamonline/kinemotif">GitHub</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.getElementById('playBtn');
+    var player = document.getElementById('player');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = 'examples/water-cycle.html';
+      f.allow = 'autoplay; fullscreen';
+      f.title = 'The Water Cycle — a Kinemotif show';
+      player.innerHTML = '';
+      player.appendChild(f);
+      setTimeout(function () {
+        try { f.contentWindow.postMessage('play', '*'); } catch (e) { }
+      }, 400);
+    });
+  })();
+</script>
+</body>
+</html>
