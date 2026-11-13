@@ -104,3 +104,44 @@ A release is a changelog entry, a tag, and nothing else.
    is written by hand at publish time.
 
 Current version: **1.6.0**.
+
+## Repository layout
+
+```
+src/core.js               render engine — styles, motifs, scenes, transitions, colour
+src/music.js              procedural soundtrack (Web Audio)
+src/ui.js                 wizard, story engine, editor, player, export
+src/style.css             editor chrome
+build.py                  inlines the four files into one HTML document
+studio/kinemotif.html     the build output — never edit this by hand
+examples/*.html           four exported shows, each with its project baked in
+index.html                landing page
+assets/                   screenshots used by the README and the landing page
+docs/                     guide, reference, project format
+tools/                    link checker, syntax checker, manifest writer
+```
+
+`studio/kinemotif.html` is generated from `src/`. Editing it directly works until the next
+build, which will overwrite you.
+
+## Repository conventions
+
+This repository follows the same house rules as the rest of the fleet:
+
+| File | Purpose |
+|---|---|
+| `PAGES.json` | Declares every published page, its path and its title. The link checker validates it. |
+| `MANIFEST.json` | Inventory of every tracked file with a SHA-256 and a class (`source`, `generated`, `asset`, `tooling`, `hand`). |
+| `tools/check-links.mjs` | Fails if a local `href`/`src` is broken, if `PAGES.json` points at nothing, if an example has no embedded project, or if the studio references anything external. |
+| `tools/check-syntax.mjs` | Parses every inline script in every published page. |
+| `tools/manifest.mjs` | Rewrites `MANIFEST.json`; `--check` fails on unlisted or missing files. |
+| `.github/workflows/ci.yml` | Runs all three on every push. |
+
+```bash
+node tools/check-links.mjs
+node tools/check-syntax.mjs
+node tools/manifest.mjs --check
+```
+
+The self-containment check is the important one: it is what stops a CDN link, a web font or an
+`<img src="https://…">` from quietly breaking the offline promise.
