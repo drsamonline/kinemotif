@@ -778,6 +778,25 @@
     return !sc.visual || sc.visual === 'motif';
   }
 
+
+  /* ------------------------------------------------------------
+     BEAT — the score drives the picture, not just the ear.
+     Music.beatPhase() is 0..1 through the current beat (the idea
+     comes from dance-fight's rhythm grid). A decaying spike at each
+     beat makes the artwork breathe in time.
+     ------------------------------------------------------------ */
+  function beatPulse() {
+    var on = window.MS_BEAT_ON !== false;
+    if (!on || !window.Music || !window.Music.beatPhase) return 0;
+    var phase = window.Music.beatPhase();
+    if (!phase) return 0;
+    return Math.pow(1 - phase, 4);
+  }
+  function beatLevel() {
+    if (window.MS_BEAT_ON === false || !window.Music || !window.Music.level) return 0;
+    return window.Music.level() || 0;
+  }
+
   function drawWorld(g, sc, t, st, accent) {
     var p = st.pal, i;
     var center = sc.layout === 'center';
@@ -786,7 +805,8 @@
     var baseR = center ? 400 : 300;
 
     var ent = enterEase(sc, t);
-    var r = baseR * (0.55 + 0.45 * ent);
+    var pulse = sc.react === false ? 0 : beatPulse();
+    var r = baseR * (0.55 + 0.45 * ent) * (1 + 0.045 * pulse);
     var bob = Math.sin(t * 1.1) * (center ? 10 : 14);
     var rot = Math.sin(t * 0.35) * 0.06 + (sc.spin ? t * 0.25 : 0);
 
@@ -812,7 +832,14 @@
     }
 
     if (visualIsMotif(sc)) {
-      paintMotif(g, motifPoints(sc.motif), cx, cy + bob, r, rot, st, accent, { alpha: center ? 0.22 : 1, phase: t });
+      if (pulse > 0.35 && st.id === 'neon') {
+      g.save();
+      g.globalAlpha = 0.12 * pulse * (center ? 0.4 : 1);
+      g.fillStyle = accent;
+      g.beginPath(); g.arc(cx, cy + bob, r * 1.5, 0, TAU); g.fill();
+      g.restore();
+    }
+    paintMotif(g, motifPoints(sc.motif), cx, cy + bob, r, rot, st, accent, { alpha: center ? 0.22 : 1, phase: t });
       if (!center) motifDetail(g, sc.motif, cx, cy + bob, r, st, accent, t);
     } else {
       drawDiagram(g, sc.visual, sc, st, accent, t, cx, cy + bob, r, center ? 0.45 : 1);

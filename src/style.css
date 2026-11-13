@@ -356,3 +356,6 @@ html.mode-wizard #playlayer { display: none; }
 .pick i { width: 8px; height: 8px; border-radius: 3px; display: block; }
 .pick.on { opacity: 1; color: var(--ink); border-color: var(--accent); }
 .music-info { font-size: 11px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+
+.toggle { display: flex; align-items: center; gap: 7px; margin-top: 8px; font-size: 11.5px; color: var(--muted); cursor: pointer; }
+.toggle input { accent-color: #7c5cff; }

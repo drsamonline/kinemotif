@@ -3,6 +3,15 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.4.0] — 2026-11-13
+
+### Added
+- **The artwork reacts to the score.** The motif and the diagrams scale on each beat
+  (`Music.beatPhase()`, a 0–1 ramp through the beat, from dance-fight's rhythm grid), and the neon
+  style blooms briefly on the accent. Toggle it with *Artwork pulses with the beat* in the Sound
+  panel; the choice is saved with the project.
+- `scene.react: false` opts a single scene out.
+
 ## [1.3.0] — 2026-11-13
 
 ### Added

@@ -116,6 +116,7 @@ __CSS__
       <button id="btnMute" class="ghost">Music: on</button>
     </div>
     <div id="musicInfo" class="music-info"></div>
+    <label class="toggle"><input type="checkbox" id="reactBeat" checked> Artwork pulses with the beat</label>
   </aside>
 
   <main id="center">

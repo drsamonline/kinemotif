@@ -19,7 +19,7 @@
       "class": "hand"
     },
     "CHANGELOG.md": {
-      "sha256": "eef8005793ef0ec2e2004bbf9c0342a24d8ba3943ea1eee2808f62713a56b7dc",
+      "sha256": "bea3c0a42249aff36c665e2e03317d3e9526b232153a14f4ba4d81a0980eb6a8",
       "class": "hand"
     },
     "CONTRIBUTING.md": {
@@ -39,7 +39,7 @@
       "class": "hand"
     },
     "README.md": {
-      "sha256": "909c902b4fae75331b43d541d962a526ee3839812e58249c7c4f9814d512cb11",
+      "sha256": "7db216607def81003bcadf342b06d237fc239f26c418f7238f48e6869d04e2c8",
       "class": "hand"
     },
     "SECURITY.md": {
@@ -75,7 +75,7 @@
       "class": "asset"
     },
     "build.py": {
-      "sha256": "c5fa3629fdae6f402817975a2b3b5bbc9fd0d744b0067394870c05ddc46eca85",
+      "sha256": "e79670c71e152ab15ddb56c030a90cc9173b8890a34fbc867af2c758880a0ece",
       "class": "source"
     },
     "docs/guide.md": {
@@ -131,7 +131,7 @@
       "class": "hand"
     },
     "src/core.js": {
-      "sha256": "1bf04d188c050d6b4c4bb6252399923c79f34397698680d6a82e9f5dcacd17d0",
+      "sha256": "211fa1fb1140a7de0e0879d67e46f1bf41152d9cf350977db6aeab932048a075",
       "class": "source"
     },
     "src/music.js": {
@@ -139,15 +139,15 @@
       "class": "source"
     },
     "src/style.css": {
-      "sha256": "625ddf5be76038cf76421ce5ea06f2c6c7bbd3c8fe4b8db86d198b5a5708c402",
+      "sha256": "5cf1a3c40dc762914f8988f5a3ddc1aabf495b2f1a9575ed62815a985e52a042",
       "class": "source"
     },
     "src/ui.js": {
-      "sha256": "404b746fa630012168d7c9d39bc095af54556c5924cc4367630c25b50a5999c5",
+      "sha256": "7eaad32cfe8b2c8cbba4ae8658cd115933a0d15f7f5ec5f644542ac21e58ca79",
       "class": "source"
     },
     "studio/kinemotif.html": {
-      "sha256": "c8ce1930d91cbc262f2889bd4df586439bf2d09d86b9a7f7169d3d03fbd32d77",
+      "sha256": "200ff0922bb175b560ce50f6a43a69904487c732bd95f99b54983a4ac491af46",
       "class": "generated"
     },
     "tools/check-links.mjs": {

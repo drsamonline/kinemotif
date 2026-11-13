@@ -443,6 +443,9 @@
     if (P.musicSeed == null) P.musicSeed = Math.floor(Math.random() * 0xFFFFFFFF);
     window.Music.setSeed(P.musicSeed);
     window.Music.setMood(P.mood || 'uplifting');
+    window.MS_BEAT_ON = P.reactToMusic !== false;
+    var rb = $('reactBeat');
+    if (rb) rb.checked = P.reactToMusic !== false;
     updateMusicLabel();
     sel = 0;
     time = 0; lastTs = 0;
@@ -742,6 +745,12 @@
       window.Music.setMood(P.mood);
       updateMusicLabel();
       if (playing) window.Music.start();
+      save();
+    };
+    $('reactBeat').onchange = function () {
+      P.reactToMusic = $('reactBeat').checked;
+      window.MS_BEAT_ON = P.reactToMusic;
+      dirty = true;
       save();
     };
     $('btnMusic').onclick = function () {
