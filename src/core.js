@@ -553,6 +553,231 @@
   /* ------------------------------------------------------------
      SCENE
      ------------------------------------------------------------ */
+
+  /* ------------------------------------------------------------
+     DIAGRAMS — a second visual vocabulary beside the motifs.
+     Everything is drawn from the style's palette, so a bar chart
+     in Pixel Arcade is not the same object as one in Paper Cut.
+     ------------------------------------------------------------ */
+  var VISUALS = ['motif', 'rings', 'bars', 'flow', 'orbit', 'steps', 'grid', 'timeline'];
+  var TEXT_FX = ['reveal', 'typewriter', 'pop', 'wave', 'glitch', 'highlight', 'split'];
+
+  function inkFor(st) { return st.pal.ink; }
+  function strokeStyleFor(g, st, accent, alpha, width) {
+    g.save();
+    g.globalAlpha = alpha == null ? 1 : alpha;
+    g.lineWidth = width || 6;
+    g.lineJoin = 'round';
+    g.lineCap = 'round';
+    if (st.id === 'neon') {
+      g.strokeStyle = accent;
+      g.shadowColor = accent;
+      g.shadowBlur = 22;
+    } else if (st.id === 'pixel') {
+      g.strokeStyle = accent;
+      g.lineWidth = Math.max(8, (width || 6));
+    } else if (st.id === 'paper') {
+      g.strokeStyle = accent;
+      g.shadowColor = 'rgba(70,45,20,.25)';
+      g.shadowBlur = 14;
+      g.shadowOffsetY = 8;
+    } else if (st.id === 'vhs') {
+      g.strokeStyle = accent;
+      g.shadowColor = 'rgba(0,229,255,.8)';
+      g.shadowBlur = 6;
+    } else {
+      g.strokeStyle = accent;
+    }
+  }
+  function fillStyleFor(g, st, colour, alpha) {
+    g.save();
+    g.globalAlpha = alpha == null ? 1 : alpha;
+    g.fillStyle = colour;
+    if (st.id === 'neon') { g.shadowColor = colour; g.shadowBlur = 26; }
+    if (st.id === 'paper') { g.shadowColor = 'rgba(70,45,20,.22)'; g.shadowBlur = 16; g.shadowOffsetY = 9; }
+    if (st.id === 'vhs') { g.shadowColor = 'rgba(255,46,136,.55)'; g.shadowBlur = 8; }
+  }
+
+  function drawDiagram(g, kind, sc, st, accent, t, cx, cy, r, alpha) {
+    var p = st.pal, i;
+    var ease = EASES[sc.ease || 'back'] || EASES.back;
+    var e = clamp(t / 0.9, 0, 1);
+    var grow = ease(e);
+    var ink = inkFor(st);
+    var alt = p.a[(p.a.indexOf(accent) + 2) % p.a.length] || accent;
+
+    if (kind === 'rings') {
+      for (i = 0; i < 4; i++) {
+        var rr = r * (0.35 + i * 0.22) * grow;
+        var sweep = 0.6 + 0.4 * Math.sin(t * 1.2 + i);
+        g.save();
+        strokeStyleFor(g, st, i % 2 ? alt : accent, alpha * (0.9 - i * 0.12), st.id === 'pixel' ? 12 : 7);
+        g.beginPath();
+        g.arc(cx, cy, rr, t * (0.4 + i * 0.2), t * (0.4 + i * 0.2) + TAU * sweep);
+        g.stroke();
+        g.restore();
+      }
+      g.save();
+      fillStyleFor(g, st, accent, alpha);
+      g.beginPath(); g.arc(cx, cy, r * 0.16 * grow, 0, TAU); g.fill();
+      g.restore();
+      return;
+    }
+
+    if (kind === 'bars') {
+      var seed = seeded(hashStr(sc.title + 'bars'));
+      var n = 5, bw = r * 0.26, gap = r * 0.16;
+      var totalW = n * bw + (n - 1) * gap;
+      for (i = 0; i < n; i++) {
+        var hh = (0.35 + seed() * 0.65) * r * 1.5;
+        var rise = clamp((t - i * 0.12) / 0.7, 0, 1);
+        var eased = ease(rise) * alpha;
+        var x = cx - totalW / 2 + i * (bw + gap);
+        var baseY = cy + r * 0.75;
+        g.save();
+        fillStyleFor(g, st, i === n - 2 ? alt : accent, eased);
+        var h = hh * Math.max(0.001, ease(rise));
+        if (st.id === 'stick') {
+          g.globalAlpha = eased;
+          g.strokeStyle = ink; g.lineWidth = 7;
+          g.strokeRect(x, baseY - h, bw, h);
+        } else {
+          g.fillRect(x, baseY - h, bw, h);
+          if (st.id === 'paper') { g.globalAlpha = eased * 0.18; g.fillStyle = '#fff'; g.fillRect(x, baseY - h, bw, h * 0.4); }
+        }
+        g.restore();
+      }
+      g.save();
+      strokeStyleFor(g, st, ink, alpha * 0.5, 4);
+      g.beginPath(); g.moveTo(cx - totalW / 2 - 12, cy + r * 0.75); g.lineTo(cx + totalW / 2 + 12, cy + r * 0.75); g.stroke();
+      g.restore();
+      return;
+    }
+
+    if (kind === 'flow') {
+      var nodes = 3, nr = r * 0.24, span = r * 1.9;
+      var active = Math.floor(t / 1.2) % nodes;
+      for (i = 0; i < nodes; i++) {
+        var nx = cx - span / 2 + (span / (nodes - 1)) * i;
+        var pulse = i === active ? 1 + 0.12 * Math.sin(t * 6) : 1;
+        g.save();
+        if (i === active) fillStyleFor(g, st, accent, alpha);
+        else strokeStyleFor(g, st, i < active ? alt : ink, alpha * 0.9, st.id === 'pixel' ? 10 : 6);
+        g.beginPath();
+        g.arc(nx, cy, nr * grow * pulse, 0, TAU);
+        if (i === active) g.fill(); else g.stroke();
+        g.restore();
+        if (i < nodes - 1) {
+          var ax0 = nx + nr * 1.25, ax1 = nx + span / (nodes - 1) - nr * 1.25;
+          g.save();
+          strokeStyleFor(g, st, ink, alpha * 0.45, 4);
+          g.beginPath(); g.moveTo(ax0, cy); g.lineTo(ax1, cy); g.stroke();
+          g.beginPath(); g.moveTo(ax1, cy); g.lineTo(ax1 - 14, cy - 10); g.lineTo(ax1 - 14, cy + 10); g.closePath();
+          g.fillStyle = ink; g.globalAlpha = alpha * 0.45; g.fill();
+          g.restore();
+        }
+      }
+      return;
+    }
+
+    if (kind === 'orbit') {
+      g.save();
+      fillStyleFor(g, st, accent, alpha);
+      g.beginPath(); g.arc(cx, cy, r * 0.22 * grow, 0, TAU); g.fill();
+      g.restore();
+      for (i = 0; i < 3; i++) {
+        var rx = r * (0.6 + i * 0.22) * grow, ry = rx * (0.38 + i * 0.06);
+        g.save();
+        strokeStyleFor(g, st, i === 1 ? alt : ink, alpha * 0.35, 3);
+        g.beginPath(); g.ellipse(cx, cy, rx, ry, i * 0.5, 0, TAU); g.stroke();
+        g.restore();
+        var ang = t * (0.9 + i * 0.35) + i * 2.1;
+        var px = cx + Math.cos(ang) * rx, py = cy + Math.sin(ang) * ry;
+        g.save();
+        fillStyleFor(g, st, i === 1 ? alt : accent, alpha);
+        g.beginPath(); g.arc(px, py, r * 0.055, 0, TAU); g.fill();
+        g.restore();
+      }
+      return;
+    }
+
+    if (kind === 'steps') {
+      var count = 4, sw = r * 0.42, sh = r * 0.3;
+      for (i = 0; i < count; i++) {
+        var sx = cx - (count * sw) / 2 + i * sw;
+        var sy = cy + r * 0.7 - i * sh;
+        var lit = i <= Math.floor(t * 1.4);
+        g.save();
+        if (lit) fillStyleFor(g, st, i % 2 ? alt : accent, alpha);
+        else strokeStyleFor(g, st, ink, alpha * 0.5, 4);
+        if (st.id === 'stick') {
+          g.strokeRect(sx, sy - sh, sw, sh);
+        } else if (lit) {
+          g.fillRect(sx, sy - sh, sw, sh);
+        } else {
+          g.strokeRect(sx, sy - sh, sw, sh);
+        }
+        g.restore();
+      }
+      return;
+    }
+
+    if (kind === 'grid') {
+      var cols = 8, rows = 5, gx = (r * 1.8) / cols, gy = (r * 1.2) / rows;
+      var sweepPos = (t * 0.55) % 1.6 - 0.3;
+      for (var row = 0; row < rows; row++) {
+        for (var col = 0; col < cols; col++) {
+          var dgx = cx - r * 0.9 + col * gx + gx / 2;
+          var dgy = cy - r * 0.6 + row * gy + gy / 2;
+          var dist = Math.abs(col / cols - sweepPos);
+          var near = clamp(1 - dist * 3.2, 0, 1);
+          g.save();
+          g.globalAlpha = alpha * (0.45 + 0.55 * near) * grow;
+          g.fillStyle = near > 0.3 ? accent : ink;
+          var rad = (st.id === 'pixel' ? 8 : 6) + near * 8;
+          if (st.id === 'neon' && near > 0.3) { g.shadowColor = accent; g.shadowBlur = 18; }
+          g.beginPath(); g.arc(dgx, dgy, rad, 0, TAU); g.fill();
+          g.restore();
+        }
+      }
+      return;
+    }
+
+    if (kind === 'timeline') {
+      var ly = cy, x0 = cx - r * 0.95, x1 = cx + r * 0.95;
+      var nodesN = 5;
+      var head = clamp(t / 4, 0, 1);
+      g.save();
+      strokeStyleFor(g, st, ink, alpha * 0.35, 4);
+      g.beginPath(); g.moveTo(x0, ly); g.lineTo(x1, ly); g.stroke();
+      g.restore();
+      g.save();
+      strokeStyleFor(g, st, accent, alpha, 6);
+      g.beginPath(); g.moveTo(x0, ly); g.lineTo(lerp(x0, x1, head * grow), ly); g.stroke();
+      g.restore();
+      for (i = 0; i < nodesN; i++) {
+        var nx2 = lerp(x0, x1, i / (nodesN - 1));
+        var passed = head >= i / (nodesN - 1);
+        g.save();
+        if (passed) fillStyleFor(g, st, i === nodesN - 1 ? alt : accent, alpha);
+        else strokeStyleFor(g, st, ink, alpha * 0.6, 4);
+        g.beginPath(); g.arc(nx2, ly, r * 0.055 * grow, 0, TAU);
+        if (passed) g.fill(); else g.stroke();
+        g.restore();
+      }
+      var hx = lerp(x0, x1, head * grow);
+      g.save();
+      fillStyleFor(g, st, ink, alpha);
+      g.beginPath(); g.arc(hx, ly, r * 0.035, 0, TAU); g.fill();
+      g.restore();
+      return;
+    }
+  }
+
+  function visualIsMotif(sc) {
+    return !sc.visual || sc.visual === 'motif';
+  }
+
   function drawWorld(g, sc, t, st, accent) {
     var p = st.pal, i;
     var center = sc.layout === 'center';
@@ -568,8 +793,17 @@
     // ambient small shapes
     var seed = hashStr(sc.title + sc.motif);
     var rr = seeded(seed);
-    for (i = 0; i < 4; i++) {
-      var ax = 120 + rr() * (W - 240), ay = 120 + rr() * (H - 300);
+    var ambientCount = visualIsMotif(sc) ? 4 : 2;
+    for (i = 0; i < ambientCount; i++) {
+      /* keep decoration out of the type column */
+      var ax, ay;
+      if (center) {
+        ax = 120 + rr() * (W - 240);
+        ay = rr() < 0.5 ? 70 + rr() * 150 : H - 250 + rr() * 150;
+      } else {
+        ax = 1000 + rr() * (W - 1120);
+        ay = 120 + rr() * (H - 300);
+      }
       var ar = 22 + rr() * 34, asp = 0.3 + rr() * 0.7;
       var drift = Math.sin(t * asp + i * 2) * 46;
       g.save(); g.globalAlpha = center ? 0.16 : 0.28;
@@ -577,8 +811,12 @@
       g.restore();
     }
 
-    paintMotif(g, motifPoints(sc.motif), cx, cy + bob, r, rot, st, accent, { alpha: center ? 0.22 : 1, phase: t });
-    if (!center) motifDetail(g, sc.motif, cx, cy + bob, r, st, accent, t);
+    if (visualIsMotif(sc)) {
+      paintMotif(g, motifPoints(sc.motif), cx, cy + bob, r, rot, st, accent, { alpha: center ? 0.22 : 1, phase: t });
+      if (!center) motifDetail(g, sc.motif, cx, cy + bob, r, st, accent, t);
+    } else {
+      drawDiagram(g, sc.visual, sc, st, accent, t, cx, cy + bob, r, center ? 0.45 : 1);
+    }
 
     // stick-style actor walking
     if (st.id === 'stick') drawStickActor(g, t, sc, st);
@@ -618,6 +856,167 @@
     g.font = (kind === 'd' ? f.dw : f.bw) + ' ' + Math.round(size) + 'px ' + (kind === 'd' ? f.d : f.b);
     if ('letterSpacing' in g) g.letterSpacing = ((kind === 'd' ? f.sp : Math.max(0, f.sp - 1)) || 0) + 'px';
   }
+
+
+  /* ------------------------------------------------------------
+     TEXT EFFECTS — the body copy is no longer one trick.
+     ------------------------------------------------------------ */
+  function layoutLine(g, line, x, y, align) {
+    var words = line.split(' ').filter(Boolean);
+    var space = g.measureText(' ').width;
+    var widths = words.map(function (w) { return g.measureText(w).width; });
+    var total = 0, i;
+    for (i = 0; i < widths.length; i++) total += widths[i];
+    total += space * Math.max(0, words.length - 1);
+    var cursor = align === 'center' ? x - total / 2 : x;
+    var out = [];
+    for (i = 0; i < words.length; i++) {
+      out.push({ w: words[i], x: cursor, y: y, width: widths[i] });
+      cursor += widths[i] + space;
+    }
+    return out;
+  }
+
+  function bodyColour(st) {
+    if (st.id === 'neon' || st.id === 'cosmic' || st.id === 'vhs') return 'rgba(240,244,255,.86)';
+    if (st.id === 'pixel') return st.pal.ink;
+    return 'rgba(30,30,40,.86)';
+  }
+
+  function drawBodyText(g, sc, st, body, o) {
+    var bsize = o.center ? 40 : 38;
+    setFont(g, st, 'b', bsize);
+    var blines = wrapText(g, body, o.center ? 1180 : 780);
+    if (blines.length > 5) blines = blines.slice(0, 5);
+    var by = (o.center ? o.ty + (o.lines.length - 1) * o.lh + 128 : o.ty + (o.lines.length - 1) * o.lh + 142);
+    var blh = bsize * 1.55;
+    var fx = sc.textFx || 'reveal';
+    var start = o.center ? 0.55 : 0.62;
+    var colour = bodyColour(st);
+    var i, li;
+
+    g.save();
+    g.textAlign = 'left';
+    g.fillStyle = colour;
+
+    if (fx === 'typewriter') {
+      var all = blines.join(' ');
+      var shown = Math.floor(clamp((t0(t, start)) / 0.035, 0, all.length));
+      var idx = 0;
+      for (li = 0; li < blines.length; li++) {
+        var take = Math.max(0, Math.min(blines[li].length, shown - idx));
+        idx += blines[li].length + 1;
+        if (take > 0) g.fillText(blines[li].slice(0, take), o.tx, by + li * blh);
+      }
+      if (shown < all.length) {
+        var lastLine = Math.min(blines.length - 1, Math.floor(shown / 60));
+        var caretX = o.tx + (shown > 0 ? g.measureText(blines[lastLine].slice(0, shown)).width : 0) + 6;
+        g.globalAlpha = o.alpha * (0.4 + 0.6 * Math.abs(Math.sin(o.t * 6)));
+        g.fillStyle = o.accent;
+        g.fillRect(caretX, by + lastLine * blh - bsize * 0.8, bsize * 0.5, bsize);
+      }
+      g.restore();
+      return;
+    }
+
+    if (fx === 'pop' || fx === 'wave') {
+      var counter = 0;
+      for (li = 0; li < blines.length; li++) {
+        var words = layoutLine(g, blines[li], o.tx, by + li * blh, o.center ? 'center' : 'left');
+        for (i = 0; i < words.length; i++) {
+          var at = start + counter * 0.07;
+          var k = clamp((o.t - at) / 0.42, 0, 1);
+          counter++;
+          if (k <= 0) continue;
+          g.save();
+          if (fx === 'pop') {
+            var sc2 = 0.6 + 0.4 * (EASES.back || EASES.out)(k);
+            g.translate(words[i].x + words[i].width / 2, words[i].y);
+            g.scale(sc2, sc2);
+            g.translate(-(words[i].x + words[i].width / 2), -words[i].y);
+            g.globalAlpha = o.alpha * k;
+          } else {
+            g.globalAlpha = o.alpha * clamp(k * 2, 0, 1);
+            g.translate(0, Math.sin(o.t * 2.6 + counter * 0.55) * 9);
+          }
+          g.fillText(words[i].w, words[i].x, words[i].y);
+          g.restore();
+        }
+      }
+      g.restore();
+      return;
+    }
+
+    if (fx === 'glitch') {
+      var jitter = Math.sin(o.t * 17) * 2 + Math.sin(o.t * 5.3) * 2;
+      for (li = 0; li < blines.length; li++) {
+        var y = by + li * blh;
+        var reveal = clamp((o.t - start - li * 0.12) / 0.35, 0, 1);
+        if (reveal <= 0) continue;
+        g.globalAlpha = o.alpha * reveal * 0.75;
+        g.fillStyle = 'rgba(0,229,255,.7)'; g.fillText(blines[li], o.tx - 4 + jitter, y);
+        g.fillStyle = 'rgba(255,46,136,.7)'; g.fillText(blines[li], o.tx + 4 - jitter, y);
+        g.globalAlpha = o.alpha * reveal;
+        g.fillStyle = colour;
+        g.fillText(blines[li], o.tx, y);
+      }
+      g.restore();
+      return;
+    }
+
+    if (fx === 'highlight') {
+      for (li = 0; li < blines.length; li++) {
+        var hw = g.measureText(blines[li]).width;
+        var hx = o.center ? o.tx - hw / 2 : o.tx;
+        var prog = clamp((o.t - start - li * 0.18) / 0.55, 0, 1);
+        if (prog <= 0) continue;
+        g.save();
+        g.globalAlpha = o.alpha * 0.22;
+        g.fillStyle = o.accent;
+        g.fillRect(hx - 10, by + li * blh - bsize * 0.92, (hw + 20) * prog, bsize * 1.34);
+        g.restore();
+        g.globalAlpha = o.alpha * clamp(prog * 1.6, 0, 1);
+        g.fillStyle = colour;
+        g.fillText(blines[li], o.tx, by + li * blh);
+        g.globalAlpha = o.alpha;
+      }
+      g.restore();
+      return;
+    }
+
+    if (fx === 'split') {
+      for (li = 0; li < blines.length; li++) {
+        var dir = li % 2 === 0 ? 1 : -1;
+        var p2 = clamp((o.t - start - li * 0.14) / 0.5, 0, 1);
+        if (p2 <= 0) continue;
+        var e2 = EASES.out(p2);
+        g.globalAlpha = o.alpha * p2;
+        g.fillText(blines[li], o.tx + (1 - e2) * 120 * dir, by + li * blh);
+      }
+      g.restore();
+      return;
+    }
+
+    /* default: word-by-word reveal */
+    var shownWords = Math.floor(clamp((o.t - start) / 0.09, 0, 999));
+    var wi = 0;
+    for (li = 0; li < blines.length; li++) {
+      var parts = blines[li].split(' ');
+      var acc = '';
+      for (var k2 = 0; k2 < parts.length; k2++) {
+        if (wi < shownWords) acc += (k2 ? ' ' : '') + parts[k2];
+        wi++;
+      }
+      if (acc) {
+        g.globalAlpha = o.alpha * 0.92;
+        g.fillStyle = colour;
+        g.fillText(acc, o.tx, by + li * blh);
+      }
+    }
+    g.restore();
+  }
+
+  function t0(t, start) { return Math.max(0, t - start); }
 
   function drawSceneText(g, sc, t, st, accent, alpha) {
     var p = st.pal, i;
@@ -668,8 +1067,24 @@
     var ty = center ? 470 : 330;
     if (center) ty -= (lines.length - 1) * lh / 2;
 
+    var titleFx = sc.textFx === 'glitch' ? 'glitch' : (sc.textFx === 'pop' ? 'pop' : 'plain');
     for (i = 0; i < lines.length; i++) {
       var y = ty + i * lh + dy;
+      if (titleFx === 'glitch') {
+        var jit = Math.sin(t * 19 + i) * 2.5;
+        g.fillStyle = 'rgba(0,229,255,.55)'; g.fillText(lines[i], tx - 5 + jit, y);
+        g.fillStyle = 'rgba(255,46,136,.55)'; g.fillText(lines[i], tx + 5 - jit, y);
+        g.fillStyle = p.ink; g.fillText(lines[i], tx, y);
+        continue;
+      }
+      if (titleFx === 'pop') {
+        var lp = EASES.back(clamp((t - 0.1 - i * 0.12) / 0.6, 0, 1));
+        g.save();
+        g.translate(tx, y); g.scale(lp, lp); g.translate(-tx, -y);
+        g.fillStyle = p.ink; g.fillText(lines[i], tx, y);
+        g.restore();
+        continue;
+      }
       if (st.id === 'neon') {
         g.shadowColor = accent; g.shadowBlur = 26;
         g.fillStyle = p.ink; g.fillText(lines[i], tx, y);
@@ -693,35 +1108,12 @@
       }
     }
 
-    // ---- body: word-by-word reveal
+    // ---- body: the effect decides how it arrives
     if (body) {
-      var bsize = center ? 40 : 38;
-      setFont(g, st, 'b', bsize);
-      var blines = wrapText(g, body, center ? 1180 : 780);
-      if (blines.length > 5) blines = blines.slice(0, 5);
-      var words = [];
-      blines.forEach(function (ln, li) {
-        ln.split(' ').forEach(function (wd) { words.push({ w: wd, line: li }); });
+      drawBodyText(g, sc, st, body, {
+        center: center, tx: tx, ty: ty, lh: lh, lines: lines,
+        t: t, alpha: alpha, accent: accent
       });
-      var start = center ? 0.55 : 0.62;
-      var shown = Math.floor(clamp((t - start) / 0.09, 0, 999));
-      var by = (center ? ty + (lines.length - 1) * lh + 128 : ty + (lines.length - 1) * lh + 142);
-      var blh = bsize * 1.55;
-      var wi = 0;
-      for (var li2 = 0; li2 < blines.length; li2++) {
-        var text = blines[li2].split(' ');
-        var acc = '';
-        for (var k = 0; k < text.length; k++) {
-          if (wi < shown) { acc += (k ? ' ' : '') + text[k]; wi++; }
-          else { wi++; }
-        }
-        if (acc) {
-          g.globalAlpha = alpha * 0.92;
-          g.fillStyle = st.id === 'neon' ? 'rgba(234,246,255,.88)' : (st.id === 'pixel' ? p.ink : 'rgba(30,30,40,.86)');
-          if (st.id === 'neon' || st.id === 'cosmic' || st.id === 'vhs') g.fillStyle = 'rgba(240,244,255,.86)';
-          g.fillText(acc, tx, by + li2 * blh);
-        }
-      }
     }
     g.restore();
     if ('letterSpacing' in g) g.letterSpacing = '0px';
@@ -809,13 +1201,16 @@
   }
 
   /* draw a frame of the show onto the visible canvas */
+  /* A scene may carry its own style, so one show can walk through all six. */
+  function styleOf(sc, proj) {
+    return STYLES[(sc && sc.style) || proj.style] || STYLES.neon;
+  }
+
   function drawFrame(vis, proj, time) {
-    var st = STYLES[proj.style] || STYLES.neon;
     var scenes = proj.scenes || [];
     var g = vis.getContext('2d');
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, vis.width, vis.height);
-    g.imageSmoothingEnabled = !!st.smooth;
 
     if (!scenes.length) return;
 
@@ -827,30 +1222,40 @@
       acc += d;
     }
     var sc = scenes[idx], next = scenes[idx + 1];
+    var stA = styleOf(sc, proj);
+    var stB = next ? styleOf(next, proj) : stA;
+    var sameStyle = stA.id === stB.id;
+    g.imageSmoothingEnabled = !!stA.smooth;
+
     var mode = sc.transition || proj.transition || 'morph';
     var trDur = Math.min(0.9, (sc.dur || 5) * 0.45);
     var inTrans = next && mode !== 'none' && local > (sc.dur || 5) - trDur;
 
     if (inTrans) {
       var p = clamp((local - ((sc.dur || 5) - trDur)) / trDur, 0, 1);
-      if (mode === 'morph') {
-        var b = getBuf(st, 'A');
+      /* a morph across two styles has no single native resolution, so it
+         degrades to a dissolve between two independently rendered buffers */
+      if (mode === 'morph' && sameStyle) {
+        var b = getBuf(stA, 'A');
         var gg = b.getContext('2d'), s = b.width / W;
         gg.setTransform(s, 0, 0, s, 0, 0);
         gg.clearRect(0, 0, W, H);
-        gg.save(); morphScene(gg, sc, next, p, st); gg.restore();
+        gg.save(); morphScene(gg, sc, next, p, stA); gg.restore();
         g.drawImage(b, 0, 0, vis.width, vis.height);
         return;
       }
-      var bA = getBuf(st, 'A'), bB = getBuf(st, 'B');
-      renderInto(bA, sc, local, st);
-      renderInto(bB, next, Math.max(0, local - ((sc.dur || 5) - trDur)), st);
-      present(g, bA, bB, mode, p, vis);
+      var bA = getBuf(stA, 'A'), bB = getBuf(stB, 'B');
+      renderInto(bA, sc, local, stA);
+      renderInto(bB, next, Math.max(0, local - ((sc.dur || 5) - trDur)), stB);
+      /* a dissolve between two styles puts both texts on screen at once, so a
+         style change wipes instead — the edge keeps the two frames apart */
+      var crossMode = sameStyle ? mode : ((mode === 'morph' || mode === 'fade') ? 'wipe' : mode);
+      present(g, bA, bB, crossMode, p, vis);
       return;
     }
 
-    var buf = getBuf(st, 'A');
-    renderInto(buf, sc, local, st);
+    var buf = getBuf(stA, 'A');
+    renderInto(buf, sc, local, stA);
     g.drawImage(buf, 0, 0, vis.width, vis.height);
   }
 
@@ -898,7 +1303,8 @@
     MOTIFS: MOTIFS, MOTIF_LIST: MOTIF_LIST,
     motifPoints: motifPoints, morphPoints: morphPoints,
     renderScene: renderScene, renderInto: renderInto, drawFrame: drawFrame,
-    EASES: EASES, ENTERS: ENTERS, CAMS: CAMS,
+    EASES: EASES, ENTERS: ENTERS, CAMS: CAMS, VISUALS: VISUALS, TEXT_FX: TEXT_FX,
+    styleOf: styleOf,
     contrastRatio: contrastRatio, ensureContrast: ensureContrast, rgbToHsl: rgbToHsl, hslToRgb: hslToRgb,
     getBuf: getBuf, clamp: clamp, lerp: lerp, easeOut: easeOut, easeInOut: easeInOut,
     hashStr: hashStr, seeded: seeded, wrapText: wrapText, setFont: setFont

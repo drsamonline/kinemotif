@@ -3,14 +3,51 @@
   "source": "main",
   "root": "/",
   "pages": [
-    { "path": "/", "file": "index.html", "title": "Kinemotif — turn a paragraph into a moving, scored presentation" },
-    { "path": "/studio/kinemotif.html", "file": "studio/kinemotif.html", "title": "Kinemotif Studio" },
-    { "path": "/examples/water-cycle.html", "file": "examples/water-cycle.html", "title": "The Water Cycle" },
-    { "path": "/examples/seed-to-tree.html", "file": "examples/seed-to-tree.html", "title": "A Seed Becomes a Tree" },
-    { "path": "/examples/ship-fast.html", "file": "examples/ship-fast.html", "title": "Why We Ship Fast" },
-    { "path": "/examples/night-city.html", "file": "examples/night-city.html", "title": "A Night in the City" },
-    { "path": "/404.html", "file": "404.html", "title": "Kinemotif — not found" }
+    {
+      "path": "/",
+      "file": "index.html",
+      "title": "Kinemotif — turn a paragraph into a moving, scored presentation"
+    },
+    {
+      "path": "/studio/kinemotif.html",
+      "file": "studio/kinemotif.html",
+      "title": "Kinemotif Studio"
+    },
+    {
+      "path": "/examples/water-cycle.html",
+      "file": "examples/water-cycle.html",
+      "title": "The Water Cycle"
+    },
+    {
+      "path": "/examples/six-styles.html",
+      "file": "examples/six-styles.html",
+      "title": "Live Life Happy — six styles"
+    },
+    {
+      "path": "/examples/seed-to-tree.html",
+      "file": "examples/seed-to-tree.html",
+      "title": "A Seed Becomes a Tree"
+    },
+    {
+      "path": "/examples/ship-fast.html",
+      "file": "examples/ship-fast.html",
+      "title": "Why We Ship Fast"
+    },
+    {
+      "path": "/examples/night-city.html",
+      "file": "examples/night-city.html",
+      "title": "A Night in the City"
+    },
+    {
+      "path": "/404.html",
+      "file": "404.html",
+      "title": "Kinemotif — not found"
+    }
   ],
-  "assets": ["assets/", "favicon.svg", "manifest.webmanifest"],
+  "assets": [
+    "assets/",
+    "favicon.svg",
+    "manifest.webmanifest"
+  ],
   "note": "Landing and studio are static files served straight from the branch root. Every page is self-contained; the studio and the four examples work offline once loaded."
 }

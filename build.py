@@ -56,12 +56,16 @@ __CSS__
 
     <section>
       <h2><i>3</i> Set the mood</h2>
-      <div class="row3">
+      <div class="row4">
         <label>Music<select id="wizMood"></select></label>
         <label>Pace<select id="wizPace">
           <option value="0.85">Brisk</option>
           <option value="1" selected>Normal</option>
           <option value="1.3">Slow</option>
+        </select></label>
+        <label>Styles<select id="wizMix">
+          <option value="one" selected>One style throughout</option>
+          <option value="mix">Mix all six, scene by scene</option>
         </select></label>
         <label>Scene transition<select id="wizTrans">
           <option value="morph" selected>Morph</option>
@@ -132,7 +136,11 @@ __CSS__
     <div class="pane-head">Scene <span id="sceneNum" class="muted"></span></div>
     <label class="fld">Title<input id="fTitle" type="text"></label>
     <label class="fld">Text<textarea id="fBody" rows="4"></textarea></label>
-    <label class="fld">Visual<select id="fMotif"></select></label>
+    <div class="fldrow">
+      <label class="fld">Style<select id="fStyle"></select></label>
+      <label class="fld">Visual<select id="fVisual"></select></label>
+    </div>
+    <label class="fld">Motif<select id="fMotif"></select></label>
     <div class="fldrow">
       <label class="fld">Entrance<select id="fEnter"></select></label>
       <label class="fld">Easing<select id="fEase"></select></label>
@@ -145,7 +153,10 @@ __CSS__
       <label class="fld">Camera<select id="fCam"></select></label>
     </div>
     <label class="fld">Duration <span id="fDurLbl" class="muted"></span><input id="fDur" type="range" min="2" max="15" step="0.5" value="5"></label>
-    <label class="fld">Transition<select id="fTrans"></select></label>
+    <div class="fldrow">
+      <label class="fld">Text effect<select id="fTextFx"></select></label>
+      <label class="fld">Transition<select id="fTrans"></select></label>
+    </div>
     <label class="fld">Accent<input id="fAccent" type="color" value="#ff2d95"></label>
     <p class="hint">Space plays and pauses. Left and right arrows jump between scenes. Everything you edit is saved in this browser; Export writes a single HTML file that plays on its own.</p>
   </aside>

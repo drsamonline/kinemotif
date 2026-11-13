@@ -42,6 +42,40 @@ Fourteen closed polygons. Any motif can morph into any other.
 
 ---
 
+## Visuals
+
+A scene draws either a motif or a diagram. Diagrams are built from the style's own palette, so
+a bar chart in Pixel Arcade is not the same object as one in Paper Cut.
+
+| id | What it draws |
+|---|---|
+| `motif` | One of the fourteen motifs above (default) |
+| `bars` | Five bars rising in sequence, one of them accented |
+| `flow` | Three nodes joined by arrows; the active node pulses in turn |
+| `rings` | Four concentric arcs rotating at different speeds around a core |
+| `orbit` | A core with three elliptical orbits and travelling dots |
+| `steps` | A four-step staircase that lights up as the scene plays |
+| `grid` | An 8×5 dot field with a highlight sweeping across it |
+| `timeline` | A track with five nodes and a progress dot that advances |
+
+---
+
+## Text effects
+
+How the body copy arrives. Independent of the entrance preset, which moves the whole block.
+
+| id | Behaviour |
+|---|---|
+| `reveal` | Word by word (default) |
+| `typewriter` | Character by character with a blinking caret |
+| `pop` | Each word scales in on its own beat |
+| `wave` | Words settle, then bob gently out of phase |
+| `glitch` | Chromatic split with a jitter on the title |
+| `highlight` | A coloured bar sweeps behind each line as it appears |
+| `split` | Lines slide in from alternating sides |
+
+---
+
 ## Transitions
 
 Set per scene; it plays in the last part of that scene, handing over to the next.
@@ -55,6 +89,10 @@ Set per scene; it plays in the last part of that scene, handing over to the next
 | `iris` | A circular reveal from the centre. |
 | `glitch` | Horizontal slices tear between the two scenes. |
 | `none` | Hard cut. |
+
+A transition between two scenes that use **different styles** wipes rather than dissolves: a
+cross-fade would put both texts on screen at once. Morph also falls back to a wipe across styles,
+because a morph has no single native resolution to interpolate in.
 
 ---
 
@@ -137,3 +175,6 @@ The complete shape of a scene object. See [project-format.md](project-format.md)
 | `ease` | string | One of the eight easing ids |
 | `cam` | string | One of the four camera ids |
 | `accent` | string | Hex colour, `#rrggbb` |
+| `style` | string | Optional per-scene style override. Omit to inherit the show's style |
+| `visual` | string | One of the eight visual ids. Defaults to `motif` |
+| `textFx` | string | One of the seven text-effect ids. Defaults to `reveal` |

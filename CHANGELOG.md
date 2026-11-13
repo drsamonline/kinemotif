@@ -3,6 +3,27 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] — 2026-11-13
+
+### Added
+- **Per-scene styles.** `scene.style` overrides the show's style, so one show can walk through all
+  six. The wizard gains a *Styles: one / mix all six* choice. Transitions between two different
+  styles wipe instead of dissolving — a cross-fade put both texts on screen at once, which read as
+  a double exposure.
+- **Seven diagrams** beside the fourteen motifs: `bars`, `flow`, `rings`, `orbit`, `steps`, `grid`,
+  `timeline`. Each is drawn from the style's palette, so the same diagram looks like a different
+  object in every style.
+- **Seven text effects**: `reveal`, `typewriter`, `pop`, `wave`, `glitch`, `highlight`, `split`.
+  Independent of the entrance preset, which still moves the whole block.
+- **`examples/six-styles.html`** — a twelve-scene show that uses all six styles twice, every
+  diagram, and most of the text effects.
+
+### Changed
+- Scene cap raised from 9 to 12 so a twelve-sentence paragraph keeps one sentence per scene.
+- Ambient decoration no longer lands in the type column on split layouts.
+- The grid diagram was nearly invisible on light styles; dots are larger and the sweep uses the
+  accent.
+
 ## [1.1.0] — 2026-11-13
 
 ### Added

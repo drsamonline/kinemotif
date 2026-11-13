@@ -116,7 +116,7 @@
     var sentences = s.split(/(?<=[.!?])\s+/).filter(function (x) { return x.trim().length > 1; });
     if (sentences.length < 3) sentences = expandShort(s || 'this idea');
 
-    var maxScenes = opts.maxScenes || 9;
+    var maxScenes = opts.maxScenes || 12;
     var n = sentences.length <= maxScenes ? sentences.length : maxScenes;
     n = Math.max(3, n);
 
@@ -143,18 +143,24 @@
           .trim();
         bdy = rest.length > 24 ? rest.charAt(0).toUpperCase() + rest.slice(1) : '';
       }
-      scenes.push({
+      var visualCycle = ['motif', 'motif', 'bars', 'flow', 'motif', 'rings', 'timeline', 'orbit', 'steps', 'grid'];
+      var fxCycle = ['reveal', 'pop', 'typewriter', 'highlight', 'wave', 'split', 'glitch'];
+      var scene = {
         title: ttl,
         body: bdy,
         motif: m,
+        visual: visualCycle[k % visualCycle.length],
+        textFx: fxCycle[k % fxCycle.length],
         dur: (k === 0 ? 4.5 : 5.5) * pace,
         layout: (k === 0 || (last && chunks.length > 2)) ? 'center' : 'split',
         transition: opts.transition || 'morph',
-        accent: accentFor(k, style),
+        accent: accentFor(k, opts.mixStyles ? MS.STYLE_LIST[k % 6].id : style),
         enter: k === 0 ? 'zoom' : 'rise',
         ease: 'back',
         cam: k % 3 === 2 ? 'pan' : 'in'
-      });
+      };
+      if (opts.mixStyles) scene.style = MS.STYLE_LIST[k % 6].id;
+      scenes.push(scene);
     });
 
     return {
@@ -391,7 +397,8 @@
     var mood = $('wizMood').value;
     var pace = parseFloat($('wizPace').value) || 1;
     var trans = $('wizTrans').value;
-    P = generateProject(text, { style: wizardStyle, mood: mood, pace: pace, transition: trans });
+    var mix = ($('wizMix') && $('wizMix').value === 'mix');
+    P = generateProject(text, { style: wizardStyle, mood: mood, pace: pace, transition: trans, mixStyles: mix });
     enterStudio(true);
   }
 
@@ -461,6 +468,22 @@
         var o = document.createElement('option'); o.value = m; o.textContent = MS.MOTIFS[m].label; fm.appendChild(o);
       });
 
+      var fs = $('fStyle');
+      var o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'Inherit show style'; fs.appendChild(o0);
+      MS.STYLE_LIST.forEach(function (st) {
+        var o = document.createElement('option'); o.value = st.id; o.textContent = st.name; fs.appendChild(o);
+      });
+
+      var fv = $('fVisual');
+      MS.VISUALS.forEach(function (v) {
+        var o = document.createElement('option'); o.value = v; o.textContent = v; fv.appendChild(o);
+      });
+
+      var ffx = $('fTextFx');
+      MS.TEXT_FX.forEach(function (v) {
+        var o = document.createElement('option'); o.value = v; o.textContent = v; ffx.appendChild(o);
+      });
+
       var fe = $('fEnter');
       ['rise', 'fade', 'zoom', 'slide', 'slideR', 'drop', 'flip', 'blur', 'pop', 'none'].forEach(function (v) {
         var o = document.createElement('option'); o.value = v; o.textContent = v; fe.appendChild(o);
@@ -500,7 +523,8 @@
       t.className = 'si-title'; t.textContent = sc.title || 'Untitled';
       var s = document.createElement('div');
       s.className = 'si-sub';
-      s.textContent = sc.motif + ' · ' + (Math.round((sc.dur || 5) * 10) / 10) + 's · ' + (sc.enter || 'rise') + ' · ' + (sc.transition || 'morph');
+      var look = (sc.style ? sc.style + ' · ' : '') + (sc.visual && sc.visual !== 'motif' ? sc.visual : sc.motif);
+      s.textContent = look + ' · ' + (Math.round((sc.dur || 5) * 10) / 10) + 's · ' + (sc.textFx || 'reveal');
       main.appendChild(t); main.appendChild(s);
       var num = document.createElement('div');
       num.className = 'si-num'; num.textContent = i + 1;
@@ -546,6 +570,9 @@
     $('sceneNum').textContent = '#' + (sel + 1);
     $('fTitle').value = sc.title || '';
     $('fBody').value = sc.body || '';
+    $('fStyle').value = sc.style || '';
+    $('fVisual').value = sc.visual || 'motif';
+    $('fTextFx').value = sc.textFx || 'reveal';
     $('fMotif').value = sc.motif || 'sun';
     $('fLayout').value = sc.layout || 'split';
     $('fDur').value = sc.dur || 5;
@@ -575,6 +602,13 @@
     $('fTitle').oninput = upd(function (sc) { sc.title = $('fTitle').value; });
     $('fBody').oninput = upd(function (sc) { sc.body = $('fBody').value; });
     $('fMotif').onchange = upd(function (sc) { sc.motif = $('fMotif').value; });
+    $('fStyle').onchange = upd(function (sc) {
+      var v = $('fStyle').value;
+      if (v) { sc.style = v; sc.accent = accentFor(0, v); }
+      else { delete sc.style; }
+    });
+    $('fVisual').onchange = upd(function (sc) { sc.visual = $('fVisual').value; });
+    $('fTextFx').onchange = upd(function (sc) { sc.textFx = $('fTextFx').value; });
     $('fLayout').onchange = upd(function (sc) { sc.layout = $('fLayout').value; });
     $('fDur').oninput = upd(function (sc) { sc.dur = parseFloat($('fDur').value); }, renderTimeline);
     $('fTrans').onchange = upd(function (sc) { sc.transition = $('fTrans').value; });
@@ -642,7 +676,7 @@
       P.scenes.push({
         title: 'New scene', body: 'Write something here.', motif: MS.MOTIF_LIST[i % MS.MOTIF_LIST.length],
         dur: 5, layout: 'split', transition: 'morph', accent: accentFor(i, P.style),
-        enter: 'rise', ease: 'back', cam: 'in'
+        visual: 'motif', textFx: 'reveal', enter: 'rise', ease: 'back', cam: 'in'
       });
       select(i); renderTimeline(); save();
     };
