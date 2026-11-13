@@ -351,6 +351,19 @@ html.mode-wizard #playlayer { display: none; }
   border-radius: 5px; padding: 2px 7px; font-family: inherit; font-size: 12px; color: var(--ink);
 }
 
+/* style picker */
+.pick-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+.pick-row > span { font-size: 12px; color: var(--muted); }
+.style-picks { display: flex; gap: 6px; flex-wrap: wrap; }
+.pick {
+  display: flex; align-items: center; gap: 6px; font-size: 11.5px;
+  background: var(--panel2); border: 1px solid var(--line); color: var(--muted);
+  border-radius: 999px; padding: 5px 11px; opacity: .45;
+}
+.pick i { width: 8px; height: 8px; border-radius: 3px; display: block; }
+.pick.on { opacity: 1; color: var(--ink); border-color: var(--accent); }
+.music-info { font-size: 11px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+
 </style>
 </head>
 <body>
@@ -367,6 +380,7 @@ html.mode-wizard #playlayer { display: none; }
     <section>
       <h2><i>1</i> Pick a look</h2>
       <div id="styleCards" class="style-cards"><button class="style-card" type="button"><canvas class="sw" width="480" height="270"></canvas><div class="sc-name">Pixel Arcade</div><div class="sc-blurb">8-bit blocks, arcade type</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Stick Figure</div><div class="sc-blurb">ink on paper, hand-drawn</div></button><button class="style-card on" type="button"><canvas class="sw" width="1280" height="720"></canvas><div class="sc-name">Neon Night</div><div class="sc-blurb">glowing strokes on black</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Paper Cut</div><div class="sc-blurb">layered cut-outs, warm serif</div></button><button class="style-card" type="button"><canvas class="sw" width="1280" height="720"></canvas><div class="sc-name">Cosmic Dream</div><div class="sc-blurb">deep space gradients, thin type</div></button><button class="style-card" type="button"><canvas class="sw" width="960" height="540"></canvas><div class="sc-name">VHS Retro</div><div class="sc-blurb">80s sunset, chromatic fuzz</div></button></div>
+      <div class="pick-row"><span>Styles to mix</span><div id="wizStyles" class="style-picks"><button type="button" class="pick on" data-style="pixel"><i style="background:#ff4d6d"></i>Pixel</button><button type="button" class="pick on" data-style="stick"><i style="background:#e0512f"></i>Stick</button><button type="button" class="pick on" data-style="neon"><i style="background:#ff2d95"></i>Neon</button><button type="button" class="pick on" data-style="paper"><i style="background:#cf5c39"></i>Paper</button><button type="button" class="pick on" data-style="cosmic"><i style="background:#8b5cf6"></i>Cosmic</button><button type="button" class="pick on" data-style="vhs"><i style="background:#ff2e88"></i>VHS</button></div></div>
     </section>
 
     <section>
@@ -377,16 +391,12 @@ html.mode-wizard #playlayer { display: none; }
 
     <section>
       <h2><i>3</i> Set the mood</h2>
-      <div class="row4">
+      <div class="row3">
         <label>Music<select id="wizMood"><option value="uplifting">Uplifting</option><option value="calm">Calm</option><option value="epic">Epic</option><option value="playful">Playful</option><option value="tense">Tense</option><option value="lofi">Lo-fi</option><option value="none">Silent</option></select></label>
         <label>Pace<select id="wizPace">
           <option value="0.85">Brisk</option>
           <option value="1" selected="">Normal</option>
           <option value="1.3">Slow</option>
-        </select></label>
-        <label>Styles<select id="wizMix">
-          <option value="one" selected="">One style throughout</option>
-          <option value="mix">Mix all six, scene by scene</option>
         </select></label>
         <label>Scene transition<select id="wizTrans">
           <option value="morph" selected="">Morph</option>
@@ -432,10 +442,14 @@ html.mode-wizard #playlayer { display: none; }
     <div class="pane-head">Scenes <button id="btnAdd" title="Add a scene">+</button></div>
     <div id="sceneList" class="scene-list"><div class="scene-item"><div class="si-num">1</div><div class="si-main"><div class="si-title">Happiness is a place you build</div><div class="si-sub">pixel · city · 4.5s · reveal</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">2</div><div class="si-main"><div class="si-title">Start with one honest morning</div><div class="si-sub">stick · sun · 5.5s · pop</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">3</div><div class="si-main"><div class="si-title">Let the light in early</div><div class="si-sub">neon · bars · 5.5s · typewriter</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">4</div><div class="si-main"><div class="si-title">Move your body before the day begins</div><div class="si-sub">paper · flow · 5.5s · highlight</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">5</div><div class="si-main"><div class="si-title">Notice what is already working</div><div class="si-sub">cosmic · city · 5.5s · wave</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">6</div><div class="si-main"><div class="si-title">Say thank you out loud</div><div class="si-sub">vhs · rings · 5.5s · split</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">7</div><div class="si-main"><div class="si-title">Read something that stretches you</div><div class="si-sub">pixel · timeline · 5.5s · glitch</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">8</div><div class="si-main"><div class="si-title">Take the walk you almost skipped</div><div class="si-sub">stick · orbit · 5.5s · reveal</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">9</div><div class="si-main"><div class="si-title">Call the friend you keep meaning to</div><div class="si-sub">neon · steps · 5.5s · pop</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">10</div><div class="si-main"><div class="si-title">Make something with your hands</div><div class="si-sub">paper · grid · 5.5s · typewriter</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">11</div><div class="si-main"><div class="si-title">Give an hour away</div><div class="si-sub">cosmic · city · 5.5s · highlight</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item sel"><div class="si-num">12</div><div class="si-main"><div class="si-title">And when night comes</div><div class="si-sub">vhs · moon · 5.5s · wave</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div></div>
     <div class="pane-head">Look</div>
-    <div id="styleRow" class="style-row" data-built="1"><button type="button" class="swatch" data-style="pixel"><i style="background:#ff4d6d"></i>Pixel</button><button type="button" class="swatch" data-style="stick"><i style="background:#e0512f"></i>Stick</button><button type="button" class="swatch on" data-style="neon"><i style="background:#ff2d95"></i>Neon</button><button type="button" class="swatch" data-style="paper"><i style="background:#cf5c39"></i>Paper</button><button type="button" class="swatch" data-style="cosmic"><i style="background:#8b5cf6"></i>Cosmic</button><button type="button" class="swatch" data-style="vhs"><i style="background:#ff2e88"></i>VHS</button></div>
+    <div id="styleRow" class="style-row" data-built="1"><button type="button" class="swatch on" data-style="pixel"><i style="background:#ff4d6d"></i>Pixel</button><button type="button" class="swatch" data-style="stick"><i style="background:#e0512f"></i>Stick</button><button type="button" class="swatch" data-style="neon"><i style="background:#ff2d95"></i>Neon</button><button type="button" class="swatch" data-style="paper"><i style="background:#cf5c39"></i>Paper</button><button type="button" class="swatch" data-style="cosmic"><i style="background:#8b5cf6"></i>Cosmic</button><button type="button" class="swatch" data-style="vhs"><i style="background:#ff2e88"></i>VHS</button></div>
     <div class="pane-head">Sound</div>
     <select id="moodSel"><option value="uplifting">Uplifting</option><option value="calm">Calm</option><option value="epic">Epic</option><option value="playful">Playful</option><option value="tense">Tense</option><option value="lofi">Lo-fi</option><option value="none">Silent</option></select>
-    <button id="btnMute" class="ghost full">Music: on</button>
+    <div class="fldrow">
+      <button id="btnMusic" class="ghost" title="Compose a different soundtrack for this show">New music</button>
+      <button id="btnMute" class="ghost">Music: on</button>
+    </div>
+    <div id="musicInfo" class="music-info">F# · 111 BPM · seed 7258</div>
   </aside>
 
   <main id="center">
@@ -505,7 +519,7 @@ html.mode-wizard #playlayer { display: none; }
   </div>
 </div>
 
-<script>window.__SHOW__={"title":"Live Life Happy — six styles","style":"neon","mood":"uplifting","pace":1,"transition":"morph","scenes":[{"title":"Happiness is a place you build","body":"","motif":"city","visual":"motif","textFx":"reveal","dur":4.5,"layout":"center","transition":"morph","accent":"#ff4d6d","enter":"zoom","ease":"back","cam":"in","style":"pixel"},{"title":"Start with one honest morning","body":"","motif":"sun","visual":"motif","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#2b6cb0","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Let the light in early","body":"","motif":"sun","visual":"bars","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#a78bfa","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Move your body before the day begins","body":"","motif":"spiral","visual":"flow","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#7a8450","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Notice what is already working","body":"","motif":"city","visual":"motif","textFx":"wave","dur":5.5,"layout":"split","transition":"morph","accent":"#8b5cf6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"Say thank you out loud","body":"","motif":"tree","visual":"rings","textFx":"split","dur":5.5,"layout":"split","transition":"morph","accent":"#00e5ff","enter":"rise","ease":"back","cam":"pan","style":"vhs"},{"title":"Read something that stretches you","body":"","motif":"book","visual":"timeline","textFx":"glitch","dur":5.5,"layout":"split","transition":"morph","accent":"#3ddc97","enter":"rise","ease":"back","cam":"in","style":"pixel"},{"title":"Take the walk you almost skipped","body":"","motif":"bulb","visual":"orbit","textFx":"reveal","dur":5.5,"layout":"split","transition":"morph","accent":"#2f8f6f","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Call the friend you keep meaning to","body":"","motif":"heart","visual":"steps","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#ff2d95","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Make something with your hands","body":"","motif":"moon","visual":"grid","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#3f6f7a","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Give an hour away","body":"","motif":"city","visual":"motif","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#f472b6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"And when night comes","body":"","motif":"moon","visual":"motif","textFx":"wave","dur":5.5,"layout":"center","transition":"morph","accent":"#7cff5a","enter":"rise","ease":"back","cam":"pan","style":"vhs"}]};window.__PLAY__=1;</script>
+<script>window.__SHOW__={"title":"Live Life Happy — six styles","style":"pixel","musicSeed":3122214476,"mood":"uplifting","pace":1,"transition":"morph","scenes":[{"title":"Happiness is a place you build","body":"","motif":"city","visual":"motif","textFx":"reveal","dur":4.5,"layout":"center","transition":"morph","accent":"#ff4d6d","enter":"zoom","ease":"back","cam":"in","style":"pixel"},{"title":"Start with one honest morning","body":"","motif":"sun","visual":"motif","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#2b6cb0","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Let the light in early","body":"","motif":"sun","visual":"bars","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#a78bfa","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Move your body before the day begins","body":"","motif":"spiral","visual":"flow","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#7a8450","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Notice what is already working","body":"","motif":"city","visual":"motif","textFx":"wave","dur":5.5,"layout":"split","transition":"morph","accent":"#8b5cf6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"Say thank you out loud","body":"","motif":"tree","visual":"rings","textFx":"split","dur":5.5,"layout":"split","transition":"morph","accent":"#00e5ff","enter":"rise","ease":"back","cam":"pan","style":"vhs"},{"title":"Read something that stretches you","body":"","motif":"book","visual":"timeline","textFx":"glitch","dur":5.5,"layout":"split","transition":"morph","accent":"#3ddc97","enter":"rise","ease":"back","cam":"in","style":"pixel"},{"title":"Take the walk you almost skipped","body":"","motif":"bulb","visual":"orbit","textFx":"reveal","dur":5.5,"layout":"split","transition":"morph","accent":"#2f8f6f","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Call the friend you keep meaning to","body":"","motif":"heart","visual":"steps","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#ff2d95","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Make something with your hands","body":"","motif":"moon","visual":"grid","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#3f6f7a","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Give an hour away","body":"","motif":"city","visual":"motif","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#f472b6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"And when night comes","body":"","motif":"moon","visual":"motif","textFx":"wave","dur":5.5,"layout":"center","transition":"morph","accent":"#7cff5a","enter":"rise","ease":"back","cam":"pan","style":"vhs"}]};window.__PLAY__=1;</script>
 
 <script>
 /* ============================================================
@@ -1825,39 +1839,154 @@ html.mode-wizard #playlayer { display: none; }
 <script>
 /* ============================================================
    Motion Studio — procedural music engine (Web Audio)
-   Generates an original soundtrack per mood. No files, no samples.
+   Every show carries a seed. The seed decides the key, the tempo,
+   the progression, the patterns, the instruments and the melody,
+   so two shows never share a soundtrack — and the same show always
+   sounds the same, which matters once it is exported.
+
+   Pattern-array approach borrowed from retro-strike's chiptune loop;
+   the continuous beat phase is borrowed from dance-fight.
    ============================================================ */
 (function () {
   'use strict';
 
   var MOODS = {
-    uplifting: { label: 'Uplifting', bpm: 116, root: 57, scale: [0, 2, 4, 7, 9], prog: [[0, 2, 4], [3, 5, 7], [4, 6, 1], [3, 5, 0]], drums: 'four', arp: 1, pad: 0.55, swing: 0 },
-    calm: { label: 'Calm', bpm: 74, root: 53, scale: [0, 2, 4, 7, 9], prog: [[0, 2, 4], [3, 5, 0], [1, 3, 5], [3, 5, 0]], drums: 'none', arp: 0.7, pad: 0.75, swing: 0 },
-    epic: { label: 'Epic', bpm: 96, root: 50, scale: [0, 2, 3, 5, 7, 8, 10], prog: [[0, 2, 4], [5, 0, 2], [3, 5, 0], [4, 6, 1]], drums: 'big', arp: 1, pad: 0.6, swing: 0 },
-    playful: { label: 'Playful', bpm: 132, root: 60, scale: [0, 2, 4, 7, 9], prog: [[0, 2, 4], [4, 6, 1], [3, 5, 0], [4, 6, 3]], drums: 'four', arp: 1.2, pad: 0.4, swing: 0.1 },
-    tense: { label: 'Tense', bpm: 104, root: 45, scale: [0, 1, 4, 5, 7, 8], prog: [[0, 2, 4], [0, 3, 5], [1, 3, 5], [0, 2, 4]], drums: 'sparse', arp: 0.6, pad: 0.7, swing: 0 },
-    lofi: { label: 'Lo-fi', bpm: 84, root: 55, scale: [0, 2, 3, 5, 7, 9, 10], prog: [[0, 2, 4], [3, 5, 0], [5, 0, 2], [3, 5, 0]], drums: 'soft', arp: 0.9, pad: 0.6, swing: 0.16 },
-    none: { label: 'Silent', bpm: 0, root: 57, scale: [0, 2, 4, 7, 9], prog: [[0, 2, 4]], drums: 'none', arp: 0, pad: 0, swing: 0 }
+    uplifting: {
+      label: 'Uplifting', bpm: 116, root: 57, scale: [0, 2, 4, 7, 9], pad: 0.55, arp: 1, swing: 0,
+      progs: [[0, 2, 4], [3, 5, 7], [4, 6, 1], [3, 5, 0], [0, 2, 5], [2, 4, 6], [5, 0, 2], [1, 3, 5]],
+      drums: ['four', 'four', 'big']
+    },
+    calm: {
+      label: 'Calm', bpm: 74, root: 53, scale: [0, 2, 4, 7, 9], pad: 0.75, arp: 0.7, swing: 0,
+      progs: [[0, 2, 4], [3, 5, 0], [1, 3, 5], [4, 6, 1], [0, 4, 2], [2, 5, 0]],
+      drums: ['none', 'soft']
+    },
+    epic: {
+      label: 'Epic', bpm: 96, root: 50, scale: [0, 2, 3, 5, 7, 8, 10], pad: 0.6, arp: 1, swing: 0,
+      progs: [[0, 2, 4], [5, 0, 2], [3, 5, 0], [4, 6, 1], [0, 3, 5], [2, 4, 6], [4, 0, 2]],
+      drums: ['big', 'big', 'four']
+    },
+    playful: {
+      label: 'Playful', bpm: 132, root: 60, scale: [0, 2, 4, 7, 9], pad: 0.4, arp: 1.2, swing: 0.1,
+      progs: [[0, 2, 4], [4, 6, 1], [3, 5, 0], [4, 6, 3], [5, 0, 2], [2, 4, 0], [1, 3, 5]],
+      drums: ['four', 'four', 'soft']
+    },
+    tense: {
+      label: 'Tense', bpm: 104, root: 45, scale: [0, 1, 4, 5, 7, 8], pad: 0.7, arp: 0.6, swing: 0,
+      progs: [[0, 2, 4], [0, 3, 5], [1, 3, 5], [0, 2, 4], [2, 4, 0], [3, 5, 1]],
+      drums: ['sparse', 'big']
+    },
+    lofi: {
+      label: 'Lo-fi', bpm: 84, root: 55, scale: [0, 2, 3, 5, 7, 9, 10], pad: 0.6, arp: 0.9, swing: 0.16,
+      progs: [[0, 2, 4], [3, 5, 0], [5, 0, 2], [3, 5, 0], [1, 4, 6], [4, 6, 1], [2, 4, 0]],
+      drums: ['soft', 'soft', 'sparse']
+    },
+    none: { label: 'Silent', bpm: 0, root: 57, scale: [0, 2, 4, 7, 9], pad: 0, arp: 0, swing: 0, progs: [[0, 2, 4]], drums: ['none'] }
   };
   var MOOD_LIST = ['uplifting', 'calm', 'epic', 'playful', 'tense', 'lofi', 'none'];
 
   var A = {
     ctx: null, master: null, rev: null, revGain: null, ana: null, noise: null,
     mood: 'uplifting', muted: false, volume: 0.55,
-    playing: false, step: 0, nextTime: 0, timer: null, seed: 1
+    playing: false, step: 0, nextTime: 0, timer: null,
+    seed: 1, plan: null, startedAt: 0
   };
 
-  function rnd() {
-    A.seed = (A.seed * 1664525 + 1013904223) % 4294967296;
-    return A.seed / 4294967296;
+  /* ---- deterministic RNG ---------------------------------------------- */
+  function mulberry(seed) {
+    var a = (seed >>> 0) || 1;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
   }
-  function midi(n) { return 440 * Math.pow(2, (n - 69) / 12); }
-  function deg(root, scale, d) {
+  function hashString(str) {
+    var h = 2166136261, i;
+    str = String(str || '');
+    for (i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h >>> 0;
+  }
+  function pick(rng, list) { return list[Math.floor(rng() * list.length) % list.length]; }
+  function pickInt(rng, lo, hi) { return lo + Math.floor(rng() * (hi - lo + 1)); }
+
+  /* ---- the plan: everything the seed decides --------------------------- */
+  function buildPlan(seed, moodId) {
+    var mood = MOODS[moodId] || MOODS.uplifting;
+    var rng = mulberry(seed ^ hashString(moodId));
+
+    /* the pool holds chords; a progression is four of them, walked so the
+       changes feel related instead of random */
+    function makeProgression(r) {
+      var prog = [], idx = pickInt(r, 0, mood.progs.length - 1);
+      for (var i = 0; i < 4; i++) {
+        prog.push(mood.progs[idx]);
+        idx = (idx + pickInt(r, 1, 2)) % mood.progs.length;
+      }
+      return prog;
+    }
+    var progression = makeProgression(rng);
+    var progressionB = makeProgression(rng);
+
+    var drumStyle = pick(rng, mood.drums);
+    var arpShapes = [
+      [0, 1, 2, 1, 2, 0, 1, 2],
+      [0, 2, 1, 2, 0, 1, 2, 1],
+      [2, 1, 0, 1, 2, 0, 1, 0],
+      [0, 1, 2, 0, 2, 1, 0, 2],
+      [1, 2, 0, 2, 1, 0, 2, 1]
+    ];
+    var arpShape = pick(rng, arpShapes);
+    var arpShapeB = pick(rng, arpShapes);
+
+    /* a melody: scale degrees walked with a bias toward small steps */
+    var melody = [];
+    var deg = pickInt(rng, 2, 5);
+    for (var bar = 0; bar < 8; bar++) {
+      var notes = pickInt(rng, 2, 4);
+      for (var n = 0; n < notes; n++) {
+        deg += pick(rng, [-2, -1, -1, 1, 1, 2, 0]);
+        deg = Math.max(0, Math.min(9, deg));
+        melody.push({ bar: bar, step: pickInt(rng, 0, 15), deg: deg, len: pick(rng, [2, 3, 4]) });
+      }
+    }
+
+    return {
+      mood: moodId,
+      seed: seed,
+      root: mood.root + pick(rng, [0, 0, 0, 2, -3, 5]),
+      bpm: Math.round(mood.bpm * (0.94 + rng() * 0.12)),
+      swing: mood.swing * (0.6 + rng() * 0.8),
+      scale: mood.scale,
+      padLevel: mood.pad,
+      arpLevel: mood.arp * (0.7 + rng() * 0.6),
+      drums: drumStyle,
+      progression: progression,
+      progressionB: progressionB,
+      arpShape: arpShape,
+      arpShapeB: arpShapeB,
+      bassShape: pick(rng, [[0, 6, 8, 14], [0, 4, 8, 12], [0, 7, 10, 14], [0, 6, 10, 12]]),
+      melody: melody,
+      voices: {
+        pad: true,
+        bass: true,
+        arp: true,
+        melody: rng() > 0.25,
+        drums: drumStyle !== 'none'
+      },
+      /* one of the two progressions per section, so the middle of a show moves */
+      sectionBars: 8
+    };
+  }
+
+  function midiOf(root, scale, degree) {
     var len = scale.length;
-    var oct = Math.floor(d / len);
-    var i = ((d % len) + len) % len;
+    var oct = Math.floor(degree / len);
+    var i = ((degree % len) + len) % len;
     return root + 12 * oct + scale[i];
   }
+  function midi(n) { return 440 * Math.pow(2, (n - 69) / 12); }
 
   function makeImpulse(sec, decay) {
     var rate = A.ctx.sampleRate, len = Math.floor(rate * sec);
@@ -1906,8 +2035,7 @@ html.mode-wizard #playlayer { display: none; }
     node.connect(g); g.connect(A.rev);
   }
 
-  function pad(t, freqs, dur) {
-    var m = MOODS[A.mood];
+  function pad(t, freqs, dur, level) {
     freqs.forEach(function (f, idx) {
       [0, 1].forEach(function (k) {
         var o = A.ctx.createOscillator();
@@ -1917,7 +2045,7 @@ html.mode-wizard #playlayer { display: none; }
         var f1 = A.ctx.createBiquadFilter();
         f1.type = 'lowpass'; f1.frequency.value = 900 + idx * 120; f1.Q.value = 0.7;
         var g = A.ctx.createGain();
-        var peak = 0.034 * (m.pad || 0.5);
+        var peak = 0.034 * (level || 0.5);
         g.gain.setValueAtTime(0.0001, t);
         g.gain.exponentialRampToValueAtTime(peak, t + 0.9);
         g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
@@ -1941,6 +2069,25 @@ html.mode-wizard #playlayer { display: none; }
     o.connect(f1); f1.connect(g); g.connect(A.master);
     send(g, 0.5);
     o.start(t); o.stop(t + dur + 0.05);
+  }
+
+  function lead(t, freq, dur, gain) {
+    var o = A.ctx.createOscillator();
+    o.type = 'sine';
+    o.frequency.value = midi(freq);
+    var vib = A.ctx.createOscillator();
+    vib.frequency.value = 5.2;
+    var vibGain = A.ctx.createGain();
+    vibGain.gain.value = 3.5;
+    vib.connect(vibGain); vibGain.connect(o.frequency);
+    var g = A.ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(gain, t + 0.06);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(A.master);
+    send(g, 0.7);
+    o.start(t); o.stop(t + dur + 0.05);
+    vib.start(t); vib.stop(t + dur + 0.05);
   }
 
   function bass(t, freq, dur) {
@@ -1980,13 +2127,13 @@ html.mode-wizard #playlayer { display: none; }
     s.start(t); s.stop(t + 0.08);
   }
 
-  function snare(t) {
+  function snare(t, lvl) {
     var s = A.ctx.createBufferSource();
     s.buffer = A.noise;
     var f = A.ctx.createBiquadFilter();
     f.type = 'bandpass'; f.frequency.value = 1900; f.Q.value = 0.8;
     var g = A.ctx.createGain();
-    g.gain.setValueAtTime(0.10, t);
+    g.gain.setValueAtTime(lvl || 0.10, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
     s.connect(f); f.connect(g); g.connect(A.master);
     send(g, 0.4);
@@ -1994,54 +2141,70 @@ html.mode-wizard #playlayer { display: none; }
   }
 
   function scheduleStep(step, when) {
-    var m = MOODS[A.mood];
-    if (!m || m.bpm === 0) return;
+    var plan = A.plan;
+    if (!plan) return;
     var bar = Math.floor(step / 16);
     var s = step % 16;
-    var chordIdx = Math.floor(bar / 2) % m.prog.length;
-    var chordDeg = m.prog[chordIdx];
-    var chord = chordDeg.map(function (d) { return deg(m.root, m.scale, d); });
-    var beat = 60 / m.bpm;
+    var section = Math.floor(bar / plan.sectionBars);
+    var prog = section % 2 === 0 ? plan.progression : plan.progressionB;
+    var chordDeg = prog[Math.floor(bar / 2) % prog.length];
+    var chord = chordDeg.map(function (d) { return midiOf(plan.root, plan.scale, d); });
+    var beat = 60 / plan.bpm;
+    var shape = section % 2 === 0 ? plan.arpShape : plan.arpShapeB;
 
-    if (s === 0) pad(when, chord, beat * 8);
+    if (s === 0) pad(when, chord, beat * 8, plan.padLevel);
 
-    if (s === 0 || s === 6 || s === 8 || s === 14) bass(when, chord[0], beat * 0.7);
-
-    // arpeggio / melody
-    if (m.arp > 0 && s % 2 === 0) {
-      var seq = [0, 1, 2, 1, 2, 0, 1, 2];
-      var idx = seq[(step / 2) % seq.length];
-      var note = chord[idx % chord.length] + (s % 8 === 0 ? 12 : 12);
-      pluck(when, note, beat * 0.9, 0.045 * m.arp);
-      if (s % 4 === 0 && rnd() > 0.55) pluck(when, chord[0] + 24, beat * 0.6, 0.022);
+    if (plan.voices.bass) {
+      for (var bi = 0; bi < plan.bassShape.length; bi++) {
+        if (plan.bassShape[bi] === s) {
+          bass(when, chord[0] + (bi === 3 ? 12 : 0), beat * 0.7);
+          break;
+        }
+      }
     }
 
-    // drums
-    if (m.drums === 'four') {
-      if (s % 4 === 0) kick(when);
-      if (s % 4 === 2) hat(when, 0.045);
-      if (s === 4 || s === 12) snare(when);
-    } else if (m.drums === 'big') {
-      if (s === 0 || s === 8 || s === 11) kick(when);
-      if (s === 4 || s === 12) snare(when);
-      if (s % 4 === 2) hat(when, 0.05);
-    } else if (m.drums === 'soft') {
-      if (s === 0 || s === 10) kick(when);
-      if (s === 8) snare(when);
-      if (s % 4 === 2) hat(when, 0.03);
-    } else if (m.drums === 'sparse') {
-      if (s === 0) kick(when);
-      if (s === 12) hat(when, 0.035);
+    if (plan.voices.arp && s % 2 === 0) {
+      var idx = shape[(step / 2) % shape.length];
+      pluck(when, chord[idx % chord.length] + 12, beat * 0.9, 0.045 * plan.arpLevel);
+    }
+
+    if (plan.voices.melody) {
+      for (var m = 0; m < plan.melody.length; m++) {
+        var ev = plan.melody[m];
+        if (ev.bar % 8 === bar % 8 && ev.step === s) {
+          lead(when, midiOf(plan.root, plan.scale, ev.deg) + 12, beat * ev.len * 0.5, 0.05);
+        }
+      }
+    }
+
+    if (plan.voices.drums) {
+      var drums = plan.drums;
+      if (drums === 'four') {
+        if (s % 4 === 0) kick(when);
+        if (s % 4 === 2) hat(when, 0.045);
+        if (s === 4 || s === 12) snare(when);
+        if (bar % 4 === 3 && s > 12) snare(when, 0.06);
+      } else if (drums === 'big') {
+        if (s === 0 || s === 8 || s === 11) kick(when);
+        if (s === 4 || s === 12) snare(when, 0.12);
+        if (s % 4 === 2) hat(when, 0.05);
+        if (bar % 8 === 7 && s >= 12) snare(when, 0.09);
+      } else if (drums === 'soft') {
+        if (s === 0 || s === 10) kick(when);
+        if (s === 8) snare(when, 0.09);
+        if (s % 4 === 2) hat(when, 0.03);
+      } else if (drums === 'sparse') {
+        if (s === 0) kick(when);
+        if (s === 12) hat(when, 0.035);
+      }
     }
   }
 
   function scheduler() {
-    if (!A.playing || !A.ctx) return;
-    var m = MOODS[A.mood];
-    if (!m || m.bpm === 0) return;
-    var stepDur = 60 / m.bpm / 4;
+    if (!A.playing || !A.ctx || !A.plan) return;
+    var stepDur = 60 / A.plan.bpm / 4;
     while (A.nextTime < A.ctx.currentTime + 0.15) {
-      var swing = (A.step % 2 === 1) ? stepDur * (m.swing || 0) : 0;
+      var swing = (A.step % 2 === 1) ? stepDur * A.plan.swing : 0;
       scheduleStep(A.step, A.nextTime + swing);
       A.nextTime += stepDur;
       A.step++;
@@ -2053,8 +2216,10 @@ html.mode-wizard #playlayer { display: none; }
     if (A.ctx.state === 'suspended') A.ctx.resume();
     if (A.mood === 'none' || A.muted) return;
     if (A.playing) return;
+    if (!A.plan) A.plan = buildPlan(A.seed, A.mood);
     A.playing = true;
     A.step = 0;
+    A.startedAt = A.ctx.currentTime;
     A.nextTime = A.ctx.currentTime + 0.08;
     if (A.timer) clearInterval(A.timer);
     A.timer = setInterval(scheduler, 25);
@@ -2068,8 +2233,21 @@ html.mode-wizard #playlayer { display: none; }
 
   function restart() { stop(); start(); }
 
+  /** Give the show a new soundtrack. Same seed always sounds the same. */
+  function setSeed(seed) {
+    A.seed = (seed >>> 0) || 1;
+    A.plan = buildPlan(A.seed, A.mood);
+    if (A.playing) restart();
+    return A.plan;
+  }
+  function newSeed() {
+    var next = Math.floor(Math.random() * 0xFFFFFFFF);
+    setSeed(next);
+    return next;
+  }
   function setMood(m) {
     A.mood = m || 'uplifting';
+    A.plan = buildPlan(A.seed, A.mood);
     if (A.playing) restart();
   }
   function setMuted(v) {
@@ -2086,10 +2264,18 @@ html.mode-wizard #playlayer { display: none; }
     for (i = 0; i < arr.length; i++) { var v = (arr[i] - 128) / 128; sum += v * v; }
     return Math.sqrt(sum / arr.length);
   }
+  /** 0..1 through the current beat — for visuals that want to breathe. */
+  function beatPhase() {
+    if (!A.plan || !A.playing || !A.ctx) return 0;
+    var beat = 60 / A.plan.bpm;
+    return ((A.ctx.currentTime - A.startedAt) % beat) / beat;
+  }
 
   window.Music = {
     MOODS: MOODS, MOOD_LIST: MOOD_LIST, init: init, start: start, stop: stop,
     restart: restart, setMood: setMood, setMuted: setMuted, level: level,
+    setSeed: setSeed, newSeed: newSeed, beatPhase: beatPhase,
+    plan: function () { return A.plan; },
     state: A
   };
 })();
@@ -2226,6 +2412,7 @@ html.mode-wizard #playlayer { display: none; }
     }
     if (!chunks.length) chunks = [s];
 
+    var styleSet = (opts.styles && opts.styles.length) ? opts.styles.slice() : [style];
     var scenes = [], prev = null;
     chunks.forEach(function (txt, k) {
       var m = pickMotif(txt, k, prev);
@@ -2252,18 +2439,19 @@ html.mode-wizard #playlayer { display: none; }
         dur: (k === 0 ? 4.5 : 5.5) * pace,
         layout: (k === 0 || (last && chunks.length > 2)) ? 'center' : 'split',
         transition: opts.transition || 'morph',
-        accent: accentFor(k, opts.mixStyles ? MS.STYLE_LIST[k % 6].id : style),
+        accent: accentFor(k, styleSet[k % styleSet.length]),
         enter: k === 0 ? 'zoom' : 'rise',
         ease: 'back',
         cam: k % 3 === 2 ? 'pan' : 'in'
       };
-      if (opts.mixStyles) scene.style = MS.STYLE_LIST[k % 6].id;
+      if (styleSet.length > 1) scene.style = styleSet[k % styleSet.length];
       scenes.push(scene);
     });
 
     return {
       title: opts.title || titleFrom(s) || 'My show',
-      style: style,
+      style: styleSet[0],
+      musicSeed: Math.floor(Math.random() * 0xFFFFFFFF),
       mood: opts.mood || 'uplifting',
       pace: pace,
       transition: opts.transition || 'morph',
@@ -2465,6 +2653,20 @@ html.mode-wizard #playlayer { display: none; }
       };
     });
 
+    var picks = $('wizStyles');
+    if (picks) {
+      picks.innerHTML = '';
+      MS.STYLE_LIST.forEach(function (st) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'pick on';
+        b.dataset.style = st.id;
+        b.innerHTML = '<i style="background:' + st.pal.a[0] + '"></i>' + st.name.split(' ')[0];
+        b.onclick = function () { b.classList.toggle('on'); };
+        picks.appendChild(b);
+      });
+    }
+
     var chips = $('demoChips');
     chips.innerHTML = '';
     DEMOS.forEach(function (d) {
@@ -2495,8 +2697,15 @@ html.mode-wizard #playlayer { display: none; }
     var mood = $('wizMood').value;
     var pace = parseFloat($('wizPace').value) || 1;
     var trans = $('wizTrans').value;
-    var mix = ($('wizMix') && $('wizMix').value === 'mix');
-    P = generateProject(text, { style: wizardStyle, mood: mood, pace: pace, transition: trans, mixStyles: mix });
+    var picks = [];
+    var host = $('wizStyles');
+    if (host) {
+      Array.prototype.forEach.call(host.children, function (b) {
+        if (b.classList.contains('on')) picks.push(b.dataset.style);
+      });
+    }
+    if (!picks.length) picks = [wizardStyle];
+    P = generateProject(text, { style: picks[0], styles: picks, mood: mood, pace: pace, transition: trans });
     enterStudio(true);
   }
 
@@ -2515,6 +2724,10 @@ html.mode-wizard #playlayer { display: none; }
 
   function enterStudio(fresh) {
     document.documentElement.className = 'mode-studio';
+    if (P.musicSeed == null) P.musicSeed = Math.floor(Math.random() * 0xFFFFFFFF);
+    window.Music.setSeed(P.musicSeed);
+    window.Music.setMood(P.mood || 'uplifting');
+    updateMusicLabel();
     sel = 0;
     time = 0; lastTs = 0;
     buildEditor();
@@ -2599,6 +2812,15 @@ html.mode-wizard #playlayer { display: none; }
     }
     $('stagewrap').style.display = '';
     stage = $('stage');
+  }
+
+  function updateMusicLabel() {
+    var el = $('musicInfo');
+    if (!el) return;
+    var plan = window.Music.plan();
+    if (!plan) { el.textContent = ''; return; }
+    var names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    el.textContent = names[((plan.root % 12) + 12) % 12] + ' · ' + plan.bpm + ' BPM · seed ' + (plan.seed % 9973);
   }
 
   function syncControls() {
@@ -2800,8 +3022,16 @@ html.mode-wizard #playlayer { display: none; }
     $('projTitle').oninput = function () { P.title = $('projTitle').value || 'My show'; save(); };
     $('moodSel').onchange = function () {
       P.mood = $('moodSel').value;
+      window.Music.setSeed(P.musicSeed || 1);
       window.Music.setMood(P.mood);
+      updateMusicLabel();
       if (playing) window.Music.start();
+      save();
+    };
+    $('btnMusic').onclick = function () {
+      P.musicSeed = window.Music.newSeed();
+      updateMusicLabel();
+      if (playing) window.Music.start(); else window.Music.stop();
       save();
     };
     $('btnMute').onclick = function () {

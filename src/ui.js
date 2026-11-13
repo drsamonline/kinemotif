@@ -128,6 +128,7 @@
     }
     if (!chunks.length) chunks = [s];
 
+    var styleSet = (opts.styles && opts.styles.length) ? opts.styles.slice() : [style];
     var scenes = [], prev = null;
     chunks.forEach(function (txt, k) {
       var m = pickMotif(txt, k, prev);
@@ -154,18 +155,19 @@
         dur: (k === 0 ? 4.5 : 5.5) * pace,
         layout: (k === 0 || (last && chunks.length > 2)) ? 'center' : 'split',
         transition: opts.transition || 'morph',
-        accent: accentFor(k, opts.mixStyles ? MS.STYLE_LIST[k % 6].id : style),
+        accent: accentFor(k, styleSet[k % styleSet.length]),
         enter: k === 0 ? 'zoom' : 'rise',
         ease: 'back',
         cam: k % 3 === 2 ? 'pan' : 'in'
       };
-      if (opts.mixStyles) scene.style = MS.STYLE_LIST[k % 6].id;
+      if (styleSet.length > 1) scene.style = styleSet[k % styleSet.length];
       scenes.push(scene);
     });
 
     return {
       title: opts.title || titleFrom(s) || 'My show',
-      style: style,
+      style: styleSet[0],
+      musicSeed: Math.floor(Math.random() * 0xFFFFFFFF),
       mood: opts.mood || 'uplifting',
       pace: pace,
       transition: opts.transition || 'morph',
@@ -367,6 +369,20 @@
       };
     });
 
+    var picks = $('wizStyles');
+    if (picks) {
+      picks.innerHTML = '';
+      MS.STYLE_LIST.forEach(function (st) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'pick on';
+        b.dataset.style = st.id;
+        b.innerHTML = '<i style="background:' + st.pal.a[0] + '"></i>' + st.name.split(' ')[0];
+        b.onclick = function () { b.classList.toggle('on'); };
+        picks.appendChild(b);
+      });
+    }
+
     var chips = $('demoChips');
     chips.innerHTML = '';
     DEMOS.forEach(function (d) {
@@ -397,8 +413,15 @@
     var mood = $('wizMood').value;
     var pace = parseFloat($('wizPace').value) || 1;
     var trans = $('wizTrans').value;
-    var mix = ($('wizMix') && $('wizMix').value === 'mix');
-    P = generateProject(text, { style: wizardStyle, mood: mood, pace: pace, transition: trans, mixStyles: mix });
+    var picks = [];
+    var host = $('wizStyles');
+    if (host) {
+      Array.prototype.forEach.call(host.children, function (b) {
+        if (b.classList.contains('on')) picks.push(b.dataset.style);
+      });
+    }
+    if (!picks.length) picks = [wizardStyle];
+    P = generateProject(text, { style: picks[0], styles: picks, mood: mood, pace: pace, transition: trans });
     enterStudio(true);
   }
 
@@ -417,6 +440,10 @@
 
   function enterStudio(fresh) {
     document.documentElement.className = 'mode-studio';
+    if (P.musicSeed == null) P.musicSeed = Math.floor(Math.random() * 0xFFFFFFFF);
+    window.Music.setSeed(P.musicSeed);
+    window.Music.setMood(P.mood || 'uplifting');
+    updateMusicLabel();
     sel = 0;
     time = 0; lastTs = 0;
     buildEditor();
@@ -501,6 +528,15 @@
     }
     $('stagewrap').style.display = '';
     stage = $('stage');
+  }
+
+  function updateMusicLabel() {
+    var el = $('musicInfo');
+    if (!el) return;
+    var plan = window.Music.plan();
+    if (!plan) { el.textContent = ''; return; }
+    var names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    el.textContent = names[((plan.root % 12) + 12) % 12] + ' · ' + plan.bpm + ' BPM · seed ' + (plan.seed % 9973);
   }
 
   function syncControls() {
@@ -702,8 +738,16 @@
     $('projTitle').oninput = function () { P.title = $('projTitle').value || 'My show'; save(); };
     $('moodSel').onchange = function () {
       P.mood = $('moodSel').value;
+      window.Music.setSeed(P.musicSeed || 1);
       window.Music.setMood(P.mood);
+      updateMusicLabel();
       if (playing) window.Music.start();
+      save();
+    };
+    $('btnMusic').onclick = function () {
+      P.musicSeed = window.Music.newSeed();
+      updateMusicLabel();
+      if (playing) window.Music.start(); else window.Music.stop();
       save();
     };
     $('btnMute').onclick = function () {

@@ -3,6 +3,29 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] — 2026-11-13
+
+### Added
+- **Seeded score generation.** Every show carries a `musicSeed`. It decides the key, tempo,
+  chord progression, bass shape, arpeggio pattern, drum style and a generated melody line, and it
+  alternates two sections every eight bars so a long show changes instead of looping. Two shows
+  never share a soundtrack; the same show always sounds the same, including after export.
+- **New music** button in the studio re-rolls the seed, with a live readout of key, tempo and seed.
+- **Style picker** in the wizard: choose any two to six styles and the show cycles through them.
+  The per-scene Style override in the inspector still wins.
+
+### Changed
+- The score is no longer one fixed progression per mood. Pools of 6–8 chords, five arpeggio shapes,
+  four bass patterns and three drum styles per mood, all selected by the seed.
+- Pattern-array sequencing follows retro-strike's chiptune loop; the beat-phase readout follows
+  dance-fight's rhythm grid (`Music.beatPhase()` returns 0–1 through the current beat).
+- Dropped the redundant "one style / mix all six" select; the chips replace it.
+
+### Fixed
+- `Music.newSeed()` returned the whole plan instead of the seed.
+- A progression was being built from single chords, so the scheduler received a chord where it
+  expected a list of chords.
+
 ## [1.2.0] — 2026-11-13
 
 ### Added

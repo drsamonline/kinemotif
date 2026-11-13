@@ -145,7 +145,10 @@ A slow move across the whole scene, applied to background, motif and text togeth
 
 ## Moods
 
-The soundtrack generator. Each mood has its own tempo, root note, scale and chord progression.
+The soundtrack generator. A mood supplies the character — scale, tempo range, chord pool, drum
+palette — and the show's `musicSeed` decides everything else: the key, the exact tempo, which four
+chords make the progression, the bass shape, the arpeggio pattern, the drum style, and a melody
+line walked through the scale. Change the seed and the same mood sounds like a different piece.
 
 | id | Label | Tempo | Character |
 |---|---|---|---|
@@ -156,6 +159,21 @@ The soundtrack generator. Each mood has its own tempo, root note, scale and chor
 | `tense` | Tense | 104 BPM | Minor second in the scale, sparse drums |
 | `lofi` | Lo-fi | 84 BPM | Dorian, soft drums, swung 16ths |
 | `none` | Silent | — | No music at all |
+
+### What the seed decides
+
+| Parameter | Range |
+|---|---|
+| Key | Mood root transposed by 0, +2, −3 or +5 semitones |
+| Tempo | Mood tempo ±6% |
+| Progression | Four chords walked through a pool of 6–8, plus a second progression for the middle section |
+| Bass shape | One of four 16th-note patterns |
+| Arpeggio | One of five 8-step shapes, alternating between sections |
+| Drums | One of the mood's three styles |
+| Melody | 2–4 notes per bar over 8 bars, degree walk biased to small steps |
+| Swing | Mood swing × 0.6–1.4 |
+
+Two sections alternate every 8 bars, so a long show changes rather than looping.
 
 ---
 

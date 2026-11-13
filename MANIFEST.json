@@ -19,7 +19,7 @@
       "class": "hand"
     },
     "CHANGELOG.md": {
-      "sha256": "a7e7687d267c2f67d10150e0f243479e5f0e3096c0899b197f893faf86f0c7b9",
+      "sha256": "eef8005793ef0ec2e2004bbf9c0342a24d8ba3943ea1eee2808f62713a56b7dc",
       "class": "hand"
     },
     "CONTRIBUTING.md": {
@@ -39,7 +39,7 @@
       "class": "hand"
     },
     "README.md": {
-      "sha256": "bc4ae9f2ca8223a1b707bafd59d9c1d7ebf9422a76d9ffdf16f237124153084f",
+      "sha256": "909c902b4fae75331b43d541d962a526ee3839812e58249c7c4f9814d512cb11",
       "class": "hand"
     },
     "SECURITY.md": {
@@ -75,11 +75,11 @@
       "class": "asset"
     },
     "build.py": {
-      "sha256": "41579711ca20aad48fb15d67cbdaf936ec1c49507e15ace2f9500f9f37f2b49d",
+      "sha256": "c5fa3629fdae6f402817975a2b3b5bbc9fd0d744b0067394870c05ddc46eca85",
       "class": "source"
     },
     "docs/guide.md": {
-      "sha256": "0788250eb8c4df8181ae4f2b2b08e74f861643e68a99d45553e6b2d23196ad44",
+      "sha256": "2368191c36829f7d413daccba781922de23a115e34f87ba97f9d0200809f3b26",
       "class": "hand"
     },
     "docs/project-format.md": {
@@ -87,7 +87,7 @@
       "class": "hand"
     },
     "docs/reference.md": {
-      "sha256": "7499789f5b734ca13c9c44db605048763614c8b73a8b3daab0edac7001d049d0",
+      "sha256": "ebe8726d2e5f08afe6a4da8d9845d3ae115b7f09524fbaa7acbdbfa78c49559f",
       "class": "hand"
     },
     "examples/night-city.html": {
@@ -103,7 +103,7 @@
       "class": "generated"
     },
     "examples/six-styles.html": {
-      "sha256": "14be5f4ee9d9c25313fa89ddc154cace44b59a8881b5442451c1bf24b0bed31c",
+      "sha256": "881cec9d9a013fe7a3ff6bba3602a2b9163831fb73085f3082ae0969c59a949b",
       "class": "generated"
     },
     "examples/water-cycle.html": {
@@ -135,19 +135,19 @@
       "class": "source"
     },
     "src/music.js": {
-      "sha256": "85deab999e4541202e5aa78c55b282d52618ea771079746b9538616274a2bf52",
+      "sha256": "3f33d229367788c1d184d183a0fe29a91332f4b1bd99736665252da841cd3563",
       "class": "source"
     },
     "src/style.css": {
-      "sha256": "cd092edef74e67b99c287ff6a0b6c39128db977a63d19062bd31638aae051748",
+      "sha256": "625ddf5be76038cf76421ce5ea06f2c6c7bbd3c8fe4b8db86d198b5a5708c402",
       "class": "source"
     },
     "src/ui.js": {
-      "sha256": "9cb9e1a20dce626f159cc8b71073a9a21ed66ad45f6951a46accd5e436f41398",
+      "sha256": "404b746fa630012168d7c9d39bc095af54556c5924cc4367630c25b50a5999c5",
       "class": "source"
     },
     "studio/kinemotif.html": {
-      "sha256": "c13476df48a044facbbfb68a1a507fce367ea7f34fb36591709690c7ffbbd896",
+      "sha256": "c8ce1930d91cbc262f2889bd4df586439bf2d09d86b9a7f7169d3d03fbd32d77",
       "class": "generated"
     },
     "tools/check-links.mjs": {

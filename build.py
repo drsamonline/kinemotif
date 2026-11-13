@@ -46,6 +46,7 @@ __CSS__
     <section>
       <h2><i>1</i> Pick a look</h2>
       <div id="styleCards" class="style-cards"></div>
+      <div class="pick-row"><span>Styles to mix</span><div id="wizStyles" class="style-picks"></div></div>
     </section>
 
     <section>
@@ -56,16 +57,12 @@ __CSS__
 
     <section>
       <h2><i>3</i> Set the mood</h2>
-      <div class="row4">
+      <div class="row3">
         <label>Music<select id="wizMood"></select></label>
         <label>Pace<select id="wizPace">
           <option value="0.85">Brisk</option>
           <option value="1" selected>Normal</option>
           <option value="1.3">Slow</option>
-        </select></label>
-        <label>Styles<select id="wizMix">
-          <option value="one" selected>One style throughout</option>
-          <option value="mix">Mix all six, scene by scene</option>
         </select></label>
         <label>Scene transition<select id="wizTrans">
           <option value="morph" selected>Morph</option>
@@ -114,7 +111,11 @@ __CSS__
     <div id="styleRow" class="style-row"></div>
     <div class="pane-head">Sound</div>
     <select id="moodSel"></select>
-    <button id="btnMute" class="ghost full">Music: on</button>
+    <div class="fldrow">
+      <button id="btnMusic" class="ghost" title="Compose a different soundtrack for this show">New music</button>
+      <button id="btnMute" class="ghost">Music: on</button>
+    </div>
+    <div id="musicInfo" class="music-info"></div>
   </aside>
 
   <main id="center">

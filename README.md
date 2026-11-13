@@ -48,12 +48,13 @@ Then edit anything you like, and press **Export HTML show** to get a standalone 
 
 | | |
 |---|---|
-| **Styles per scene** | A show can inherit one style, or walk through all six scene by scene — with a wipe at the seam instead of a double-exposed dissolve. |
+| **Styles per scene** | A show can inherit one style, or cycle through whichever styles you pick — with a wipe at the seam instead of a double-exposed dissolve. |
 | **Seven diagrams** | Bars, flow, rings, orbit, steps, grid and timeline, drawn from the style's palette. Not everything is a shape. |
 | **Seven text effects** | Reveal, typewriter, pop, wave, glitch, highlight and split — independent of the entrance preset that moves the block. |
 | **Six art styles** | Pixel Arcade, Stick Figure, Neon Night, Paper Cut, Cosmic Dream, VHS Retro. Each style carries its own palette, typography, background art, shape painting and post-processing. |
 | **Real morphing** | Every motif is a closed polygon resampled to a common point count, so transitions interpolate actual geometry — a wave flows into a cloud into a rocket. |
-| **Procedural score** | Seven moods (Uplifting, Calm, Epic, Playful, Tense, Lo-fi, Silent). Each has its own tempo, scale, chord progression, drum pattern and reverb tail, synthesised live. |
+| **Procedural score, seeded per show** | Seven moods. Each show carries a `musicSeed` that decides the key, tempo, chord progression, bass shape, arpeggio pattern, drum style and a generated melody line — so two shows never share a soundtrack, and the same show always sounds the same. **New music** re-rolls it. |
+| **Styles you choose** | Pick any two to six styles before generating; scenes cycle through them. Every scene also has its own style override. |
 | **Story → storyboard** | Sentences become scenes; titles come from the first clause; pictures come from a keyword map over 14 motifs. Everything it produces is an editable form field. |
 | **Motion controls** | Ten entrance presets, eight easing curves (including elastic, bounce and spring), three camera moves, seven transition types, per-scene duration. |
 | **Legible by construction** | Accent colours are checked against the style's own background with a WCAG contrast pass, and nudged in HSL until they clear 3:1 — so a generated show never puts a pale shape on a pale page. |

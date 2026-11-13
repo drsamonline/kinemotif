@@ -81,6 +81,13 @@ Everything about the selected scene.
 | **Transition** | How this scene hands over to the next one. |
 | **Accent** | The colour used for the motif, the title underline and the glow. |
 
+### Sound
+
+**New music** gives the show a different soundtrack — a new seed means a new key, tempo, chord
+progression, bass line, arpeggio, drum style and melody. The line underneath reads the result:
+`A · 118 BPM · seed 3417`. The seed is saved with the project, so a show keeps its music and an
+exported show always sounds the same.
+
 ### Look and sound (left, below scenes)
 
 Six style swatches — clicking one restyles the entire show and reassigns accent colours from
