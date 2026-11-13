@@ -81,6 +81,12 @@ soundtrack:
 
 ---
 
+## Quotations
+
+One example quotes a real person. [`docs/quotations.md`](docs/quotations.md) records exactly what
+is quoted, why, how it is attributed, and how to have it removed. The MIT licence covers the code,
+not those words.
+
 ## Documentation
 
 - **[Guide](docs/guide.md)** — the wizard, the editor, every field, export and import.
