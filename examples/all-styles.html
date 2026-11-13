@@ -367,6 +367,10 @@ html.mode-wizard #playlayer { display: none; }
 .toggle { display: flex; align-items: center; gap: 7px; margin-top: 8px; font-size: 11.5px; color: var(--muted); cursor: pointer; }
 .toggle input { accent-color: #7c5cff; }
 
+.mix-order { font-size: 11.5px; color: var(--muted); margin-top: 8px; line-height: 1.7; }
+.mix-order b { color: var(--ink); font-weight: 600; }
+#mixStyles { margin-bottom: 6px; }
+
 </style>
 </head>
 <body>
@@ -382,8 +386,9 @@ html.mode-wizard #playlayer { display: none; }
 
     <section>
       <h2><i>1</i> Pick a look</h2>
-      <div id="styleCards" class="style-cards"><button class="style-card" type="button"><canvas class="sw" width="480" height="270"></canvas><div class="sc-name">Pixel Arcade</div><div class="sc-blurb">8-bit blocks, arcade type</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Stick Figure</div><div class="sc-blurb">ink on paper, hand-drawn</div></button><button class="style-card on" type="button"><canvas class="sw" width="1280" height="720"></canvas><div class="sc-name">Neon Night</div><div class="sc-blurb">glowing strokes on black</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Paper Cut</div><div class="sc-blurb">layered cut-outs, warm serif</div></button><button class="style-card" type="button"><canvas class="sw" width="1280" height="720"></canvas><div class="sc-name">Cosmic Dream</div><div class="sc-blurb">deep space gradients, thin type</div></button><button class="style-card" type="button"><canvas class="sw" width="960" height="540"></canvas><div class="sc-name">VHS Retro</div><div class="sc-blurb">80s sunset, chromatic fuzz</div></button></div>
-      <div class="pick-row"><span>Styles to mix</span><div id="wizStyles" class="style-picks"><button type="button" class="pick on" data-style="pixel"><i style="background:#ff4d6d"></i>Pixel</button><button type="button" class="pick on" data-style="stick"><i style="background:#e0512f"></i>Stick</button><button type="button" class="pick on" data-style="neon"><i style="background:#ff2d95"></i>Neon</button><button type="button" class="pick on" data-style="paper"><i style="background:#cf5c39"></i>Paper</button><button type="button" class="pick on" data-style="cosmic"><i style="background:#8b5cf6"></i>Cosmic</button><button type="button" class="pick on" data-style="vhs"><i style="background:#ff2e88"></i>VHS</button></div></div>
+      <div id="styleCards" class="style-cards"><button class="style-card" type="button"><canvas class="sw" width="480" height="270"></canvas><div class="sc-name">Pixel Arcade</div><div class="sc-blurb">8-bit blocks, arcade type</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Stick Figure</div><div class="sc-blurb">ink on paper, hand-drawn</div></button><button class="style-card on" type="button"><canvas class="sw" width="1280" height="720"></canvas><div class="sc-name">Neon Night</div><div class="sc-blurb">glowing strokes on black</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Paper Cut</div><div class="sc-blurb">layered cut-outs, warm serif</div></button><button class="style-card" type="button"><canvas class="sw" width="1280" height="720"></canvas><div class="sc-name">Cosmic Dream</div><div class="sc-blurb">deep space gradients, thin type</div></button><button class="style-card" type="button"><canvas class="sw" width="960" height="540"></canvas><div class="sc-name">VHS Retro</div><div class="sc-blurb">80s sunset, chromatic fuzz</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Blueprint</div><div class="sc-blurb">technical drawing, cyan grid</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Riso Print</div><div class="sc-blurb">two-ink overprint, paper grain</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Chalkboard</div><div class="sc-blurb">chalk on a dark board</div></button><button class="style-card" type="button"><canvas class="sw" width="1920" height="1080"></canvas><div class="sc-name">Swiss Grid</div><div class="sc-blurb">white space, hard rules, one red</div></button></div>
+      <div class="pick-row"><span>Styles to mix</span><div id="wizStyles" class="style-picks"><button type="button" class="pick on" data-style="pixel"><i style="background:#ff4d6d"></i>Pixel</button><button type="button" class="pick on" data-style="stick"><i style="background:#e0512f"></i>Stick</button><button type="button" class="pick on" data-style="neon"><i style="background:#ff2d95"></i>Neon</button><button type="button" class="pick on" data-style="paper"><i style="background:#cf5c39"></i>Paper</button><button type="button" class="pick on" data-style="cosmic"><i style="background:#8b5cf6"></i>Cosmic</button><button type="button" class="pick on" data-style="vhs"><i style="background:#ff2e88"></i>VHS</button><button type="button" class="pick on" data-style="blueprint"><i style="background:#7fb3ff"></i>Blueprint</button><button type="button" class="pick on" data-style="riso"><i style="background:#ff4f4f"></i>Riso</button><button type="button" class="pick on" data-style="chalk"><i style="background:#f6e58d"></i>Chalkboard</button><button type="button" class="pick on" data-style="swiss"><i style="background:#e8342a"></i>Swiss</button></div></div>
+      <div id="wizOrder" class="mix-order"></div>
     </section>
 
     <section>
@@ -395,7 +400,7 @@ html.mode-wizard #playlayer { display: none; }
     <section>
       <h2><i>3</i> Set the mood</h2>
       <div class="row3">
-        <label>Music<select id="wizMood"><option value="uplifting">Uplifting</option><option value="calm">Calm</option><option value="epic">Epic</option><option value="playful">Playful</option><option value="tense">Tense</option><option value="lofi">Lo-fi</option><option value="none">Silent</option></select></label>
+        <label>Music<select id="wizMood"><option value="uplifting">Uplifting</option><option value="calm">Calm</option><option value="epic">Epic</option><option value="playful">Playful</option><option value="tense">Tense</option><option value="lofi">Lo-fi</option><option value="cinematic">Cinematic</option><option value="dreamy">Dreamy</option><option value="groove">Groove</option><option value="none">Silent</option></select></label>
         <label>Pace<select id="wizPace">
           <option value="0.85">Brisk</option>
           <option value="1" selected="">Normal</option>
@@ -443,16 +448,19 @@ html.mode-wizard #playlayer { display: none; }
 
   <aside id="left">
     <div class="pane-head">Scenes <button id="btnAdd" title="Add a scene">+</button></div>
-    <div id="sceneList" class="scene-list"><div class="scene-item"><div class="si-num">1</div><div class="si-main"><div class="si-title">Happiness is a place you build</div><div class="si-sub">pixel · city · 4.5s · reveal</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">2</div><div class="si-main"><div class="si-title">Start with one honest morning</div><div class="si-sub">stick · sun · 5.5s · pop</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">3</div><div class="si-main"><div class="si-title">Let the light in early</div><div class="si-sub">neon · bars · 5.5s · typewriter</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">4</div><div class="si-main"><div class="si-title">Move your body before the day begins</div><div class="si-sub">paper · flow · 5.5s · highlight</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">5</div><div class="si-main"><div class="si-title">Notice what is already working</div><div class="si-sub">cosmic · city · 5.5s · wave</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">6</div><div class="si-main"><div class="si-title">Say thank you out loud</div><div class="si-sub">vhs · rings · 5.5s · split</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">7</div><div class="si-main"><div class="si-title">Read something that stretches you</div><div class="si-sub">pixel · timeline · 5.5s · glitch</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">8</div><div class="si-main"><div class="si-title">Take the walk you almost skipped</div><div class="si-sub">stick · orbit · 5.5s · reveal</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">9</div><div class="si-main"><div class="si-title">Call the friend you keep meaning to</div><div class="si-sub">neon · steps · 5.5s · pop</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">10</div><div class="si-main"><div class="si-title">Make something with your hands</div><div class="si-sub">paper · grid · 5.5s · typewriter</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">11</div><div class="si-main"><div class="si-title">Give an hour away</div><div class="si-sub">cosmic · city · 5.5s · highlight</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item sel"><div class="si-num">12</div><div class="si-main"><div class="si-title">And when night comes</div><div class="si-sub">vhs · moon · 5.5s · wave</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div></div>
+    <div id="sceneList" class="scene-list"><div class="scene-item"><div class="si-num">1</div><div class="si-main"><div class="si-title">Happiness is a place you build</div><div class="si-sub">pixel · city · 4.5s · reveal</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">2</div><div class="si-main"><div class="si-title">Start with one honest morning</div><div class="si-sub">stick · sun · 5.5s · pop</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">3</div><div class="si-main"><div class="si-title">Let the light in early</div><div class="si-sub">neon · bars · 5.5s · typewriter</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">4</div><div class="si-main"><div class="si-title">Move your body before the day begins</div><div class="si-sub">paper · flow · 5.5s · highlight</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">5</div><div class="si-main"><div class="si-title">Notice what is already working</div><div class="si-sub">cosmic · city · 5.5s · wave</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">6</div><div class="si-main"><div class="si-title">Say thank you out loud</div><div class="si-sub">vhs · rings · 5.5s · split</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">7</div><div class="si-main"><div class="si-title">Read something that stretches you</div><div class="si-sub">blueprint · timeline · 5.5s · glitch</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">8</div><div class="si-main"><div class="si-title">Take the walk you almost skipped</div><div class="si-sub">riso · orbit · 5.5s · kinetic</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">9</div><div class="si-main"><div class="si-title">Call the friend you keep meaning to</div><div class="si-sub">chalk · steps · 5.5s · shutter</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">10</div><div class="si-main"><div class="si-title">Make something with your hands</div><div class="si-sub">swiss · grid · 5.5s · reveal</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item"><div class="si-num">11</div><div class="si-main"><div class="si-title">Give an hour away</div><div class="si-sub">pixel · arrow · 5.5s · pop</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div><div class="scene-item sel"><div class="si-num">12</div><div class="si-main"><div class="si-title">And when night comes</div><div class="si-sub">stick · moon · 5.5s · typewriter</div></div><div class="si-tools"><button type="button" data-a="up">↑</button><button type="button" data-a="down">↓</button><button type="button" data-a="del">✕</button></div></div></div>
     <div class="pane-head">Look</div>
-    <div id="styleRow" class="style-row" data-built="1"><button type="button" class="swatch on" data-style="pixel"><i style="background:#ff4d6d"></i>Pixel</button><button type="button" class="swatch" data-style="stick"><i style="background:#e0512f"></i>Stick</button><button type="button" class="swatch" data-style="neon"><i style="background:#ff2d95"></i>Neon</button><button type="button" class="swatch" data-style="paper"><i style="background:#cf5c39"></i>Paper</button><button type="button" class="swatch" data-style="cosmic"><i style="background:#8b5cf6"></i>Cosmic</button><button type="button" class="swatch" data-style="vhs"><i style="background:#ff2e88"></i>VHS</button></div>
+    <div id="styleRow" class="style-row" data-built="1"><button type="button" class="swatch on" data-style="pixel"><i style="background:#ff4d6d"></i>Pixel</button><button type="button" class="swatch" data-style="stick"><i style="background:#e0512f"></i>Stick</button><button type="button" class="swatch" data-style="neon"><i style="background:#ff2d95"></i>Neon</button><button type="button" class="swatch" data-style="paper"><i style="background:#cf5c39"></i>Paper</button><button type="button" class="swatch" data-style="cosmic"><i style="background:#8b5cf6"></i>Cosmic</button><button type="button" class="swatch" data-style="vhs"><i style="background:#ff2e88"></i>VHS</button><button type="button" class="swatch" data-style="blueprint"><i style="background:#7fb3ff"></i>Blueprint</button><button type="button" class="swatch" data-style="riso"><i style="background:#ff4f4f"></i>Riso</button><button type="button" class="swatch" data-style="chalk"><i style="background:#f6e58d"></i>Chalkboard</button><button type="button" class="swatch" data-style="swiss"><i style="background:#e8342a"></i>Swiss</button></div>
+    <div class="pane-head">Mix styles</div>
+    <div id="mixStyles" class="style-picks" data-built="1"><button type="button" class="pick on" data-style="pixel"><i style="background:#ff4d6d"></i>Pixel</button><button type="button" class="pick on" data-style="stick"><i style="background:#e0512f"></i>Stick</button><button type="button" class="pick on" data-style="neon"><i style="background:#ff2d95"></i>Neon</button><button type="button" class="pick on" data-style="paper"><i style="background:#cf5c39"></i>Paper</button><button type="button" class="pick on" data-style="cosmic"><i style="background:#8b5cf6"></i>Cosmic</button><button type="button" class="pick on" data-style="vhs"><i style="background:#ff2e88"></i>VHS</button><button type="button" class="pick on" data-style="blueprint"><i style="background:#7fb3ff"></i>Blueprint</button><button type="button" class="pick on" data-style="riso"><i style="background:#ff4f4f"></i>Riso</button><button type="button" class="pick on" data-style="chalk"><i style="background:#f6e58d"></i>Chalkboard</button><button type="button" class="pick on" data-style="swiss"><i style="background:#e8342a"></i>Swiss</button></div>
+    <button id="btnMix" class="ghost full">Apply mix to scenes</button>
     <div class="pane-head">Sound</div>
-    <select id="moodSel"><option value="uplifting">Uplifting</option><option value="calm">Calm</option><option value="epic">Epic</option><option value="playful">Playful</option><option value="tense">Tense</option><option value="lofi">Lo-fi</option><option value="none">Silent</option></select>
+    <select id="moodSel"><option value="uplifting">Uplifting</option><option value="calm">Calm</option><option value="epic">Epic</option><option value="playful">Playful</option><option value="tense">Tense</option><option value="lofi">Lo-fi</option><option value="cinematic">Cinematic</option><option value="dreamy">Dreamy</option><option value="groove">Groove</option><option value="none">Silent</option></select>
     <div class="fldrow">
       <button id="btnMusic" class="ghost" title="Compose a different soundtrack for this show">New music</button>
       <button id="btnMute" class="ghost">Music: on</button>
     </div>
-    <div id="musicInfo" class="music-info">D · 112 BPM · seed 594</div>
+    <div id="musicInfo" class="music-info">F# · 109 BPM · seed 9716</div>
     <label class="toggle"><input type="checkbox" id="reactBeat" checked=""> Artwork pulses with the beat</label>
   </aside>
 
@@ -476,10 +484,10 @@ html.mode-wizard #playlayer { display: none; }
     <label class="fld">Title<input id="fTitle" type="text"></label>
     <label class="fld">Text<textarea id="fBody" rows="4"></textarea></label>
     <div class="fldrow">
-      <label class="fld">Style<select id="fStyle"><option value="">Inherit show style</option><option value="pixel">Pixel Arcade</option><option value="stick">Stick Figure</option><option value="neon">Neon Night</option><option value="paper">Paper Cut</option><option value="cosmic">Cosmic Dream</option><option value="vhs">VHS Retro</option></select></label>
+      <label class="fld">Style<select id="fStyle"><option value="">Inherit show style</option><option value="pixel">Pixel Arcade</option><option value="stick">Stick Figure</option><option value="neon">Neon Night</option><option value="paper">Paper Cut</option><option value="cosmic">Cosmic Dream</option><option value="vhs">VHS Retro</option><option value="blueprint">Blueprint</option><option value="riso">Riso Print</option><option value="chalk">Chalkboard</option><option value="swiss">Swiss Grid</option></select></label>
       <label class="fld">Visual<select id="fVisual"><option value="motif">motif</option><option value="rings">rings</option><option value="bars">bars</option><option value="flow">flow</option><option value="orbit">orbit</option><option value="steps">steps</option><option value="grid">grid</option><option value="timeline">timeline</option></select></label>
     </div>
-    <label class="fld">Motif<select id="fMotif"><option value="sun">Sun</option><option value="moon">Moon</option><option value="mountain">Mountain</option><option value="tree">Tree</option><option value="city">City</option><option value="wave">Waves</option><option value="cloud">Cloud</option><option value="star">Star</option><option value="rocket">Rocket</option><option value="bulb">Idea</option><option value="heart">Heart</option><option value="book">Book</option><option value="planet">Planet</option><option value="spiral">Spiral</option></select></label>
+    <label class="fld">Motif<select id="fMotif"><option value="sun">Sun</option><option value="moon">Moon</option><option value="mountain">Mountain</option><option value="tree">Tree</option><option value="city">City</option><option value="wave">Waves</option><option value="cloud">Cloud</option><option value="star">Star</option><option value="rocket">Rocket</option><option value="bulb">Idea</option><option value="heart">Heart</option><option value="book">Book</option><option value="planet">Planet</option><option value="eye">Eye</option><option value="arrow">Arrow</option><option value="bolt">Bolt</option><option value="flower">Flower</option><option value="spiral">Spiral</option></select></label>
     <div class="fldrow">
       <label class="fld">Entrance<select id="fEnter"><option value="rise">rise</option><option value="fade">fade</option><option value="zoom">zoom</option><option value="slide">slide</option><option value="slideR">slideR</option><option value="drop">drop</option><option value="flip">flip</option><option value="blur">blur</option><option value="pop">pop</option><option value="none">none</option></select></label>
       <label class="fld">Easing<select id="fEase"><option value="linear">linear</option><option value="out">out</option><option value="inOut">inOut</option><option value="back">back</option><option value="expo">expo</option><option value="elastic">elastic</option><option value="bounce">bounce</option><option value="spring">spring</option></select></label>
@@ -493,8 +501,8 @@ html.mode-wizard #playlayer { display: none; }
     </div>
     <label class="fld">Duration <span id="fDurLbl" class="muted">5.5s</span><input id="fDur" type="range" min="2" max="15" step="0.5" value="5"></label>
     <div class="fldrow">
-      <label class="fld">Text effect<select id="fTextFx"><option value="reveal">reveal</option><option value="typewriter">typewriter</option><option value="pop">pop</option><option value="wave">wave</option><option value="glitch">glitch</option><option value="highlight">highlight</option><option value="split">split</option></select></label>
-      <label class="fld">Transition<select id="fTrans"><option value="morph">morph</option><option value="fade">fade</option><option value="slide">slide</option><option value="wipe">wipe</option><option value="iris">iris</option><option value="glitch">glitch</option><option value="none">none</option></select></label>
+      <label class="fld">Text effect<select id="fTextFx"><option value="reveal">reveal</option><option value="typewriter">typewriter</option><option value="pop">pop</option><option value="wave">wave</option><option value="glitch">glitch</option><option value="highlight">highlight</option><option value="split">split</option><option value="kinetic">kinetic</option><option value="shutter">shutter</option></select></label>
+      <label class="fld">Transition<select id="fTrans"><option value="morph">morph</option><option value="fade">fade</option><option value="slide">slide</option><option value="wipe">wipe</option><option value="iris">iris</option><option value="zoom">zoom</option><option value="blinds">blinds</option><option value="glitch">glitch</option><option value="none">none</option></select></label>
     </div>
     <label class="fld">Accent<input id="fAccent" type="color" value="#ff2d95"></label>
     <p class="hint">Space plays and pauses. Left and right arrows jump between scenes. Everything you edit is saved in this browser; Export writes a single HTML file that plays on its own.</p>
@@ -523,7 +531,7 @@ html.mode-wizard #playlayer { display: none; }
   </div>
 </div>
 
-<script>window.__SHOW__={"title":"Live Life Happy — six styles","style":"pixel","musicSeed":3951263302,"mood":"uplifting","pace":1,"transition":"morph","scenes":[{"title":"Happiness is a place you build","body":"","motif":"city","visual":"motif","textFx":"reveal","dur":4.5,"layout":"center","transition":"morph","accent":"#ff4d6d","enter":"zoom","ease":"back","cam":"in","style":"pixel"},{"title":"Start with one honest morning","body":"","motif":"sun","visual":"motif","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#2b6cb0","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Let the light in early","body":"","motif":"sun","visual":"bars","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#a78bfa","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Move your body before the day begins","body":"","motif":"spiral","visual":"flow","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#7a8450","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Notice what is already working","body":"","motif":"city","visual":"motif","textFx":"wave","dur":5.5,"layout":"split","transition":"morph","accent":"#8b5cf6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"Say thank you out loud","body":"","motif":"tree","visual":"rings","textFx":"split","dur":5.5,"layout":"split","transition":"morph","accent":"#00e5ff","enter":"rise","ease":"back","cam":"pan","style":"vhs"},{"title":"Read something that stretches you","body":"","motif":"book","visual":"timeline","textFx":"glitch","dur":5.5,"layout":"split","transition":"morph","accent":"#3ddc97","enter":"rise","ease":"back","cam":"in","style":"pixel"},{"title":"Take the walk you almost skipped","body":"","motif":"bulb","visual":"orbit","textFx":"reveal","dur":5.5,"layout":"split","transition":"morph","accent":"#2f8f6f","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Call the friend you keep meaning to","body":"","motif":"heart","visual":"steps","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#ff2d95","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Make something with your hands","body":"","motif":"moon","visual":"grid","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#3f6f7a","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Give an hour away","body":"","motif":"city","visual":"motif","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#f472b6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"And when night comes","body":"","motif":"moon","visual":"motif","textFx":"wave","dur":5.5,"layout":"center","transition":"morph","accent":"#7cff5a","enter":"rise","ease":"back","cam":"pan","style":"vhs"}]};window.__PLAY__=1;</script>
+<script>window.__SHOW__={"title":"Live Life Happy — six styles","style":"pixel","musicSeed":2986454485,"mood":"uplifting","pace":1,"transition":"morph","scenes":[{"title":"Happiness is a place you build","body":"","motif":"city","visual":"motif","textFx":"reveal","dur":4.5,"layout":"center","transition":"morph","accent":"#ff4d6d","enter":"zoom","ease":"back","cam":"in","style":"pixel"},{"title":"Start with one honest morning","body":"","motif":"sun","visual":"motif","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#2b6cb0","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Let the light in early","body":"","motif":"sun","visual":"bars","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#a78bfa","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Move your body before the day begins","body":"","motif":"spiral","visual":"flow","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#7a8450","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Notice what is already working","body":"","motif":"city","visual":"motif","textFx":"wave","dur":5.5,"layout":"split","transition":"morph","accent":"#8b5cf6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"Say thank you out loud","body":"","motif":"spiral","visual":"rings","textFx":"split","dur":5.5,"layout":"split","transition":"morph","accent":"#00e5ff","enter":"rise","ease":"back","cam":"pan","style":"vhs"},{"title":"Read something that stretches you","body":"","motif":"book","visual":"timeline","textFx":"glitch","dur":5.5,"layout":"split","transition":"morph","accent":"#9ef0c8","enter":"rise","ease":"back","cam":"in","style":"blueprint"},{"title":"Take the walk you almost skipped","body":"","motif":"wave","visual":"orbit","textFx":"kinetic","dur":5.5,"layout":"split","transition":"morph","accent":"#2f8f6f","enter":"rise","ease":"back","cam":"in","style":"riso"},{"title":"Call the friend you keep meaning to","body":"","motif":"heart","visual":"steps","textFx":"shutter","dur":5.5,"layout":"split","transition":"morph","accent":"#f6e58d","enter":"rise","ease":"back","cam":"pan","style":"chalk"},{"title":"Make something with your hands","body":"","motif":"book","visual":"grid","textFx":"reveal","dur":5.5,"layout":"split","transition":"morph","accent":"#111111","enter":"rise","ease":"back","cam":"in","style":"swiss"},{"title":"Give an hour away","body":"","motif":"arrow","visual":"motif","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#3ddc97","enter":"rise","ease":"back","cam":"in","style":"pixel"},{"title":"And when night comes","body":"","motif":"moon","visual":"motif","textFx":"typewriter","dur":5.5,"layout":"center","transition":"morph","accent":"#2f8f6f","enter":"rise","ease":"back","cam":"pan","style":"stick"}]};window.__PLAY__=1;</script>
 
 <script>
 /* ============================================================
@@ -703,9 +711,34 @@ html.mode-wizard #playlayer { display: none; }
       res: [960, 540], smooth: true, glow: 12,
       pal: { bg: '#12002e', bg2: '#480c53', ink: '#fff3d6', dim: '#63206b', a: ['#ff2e88', '#00e5ff', '#ffb300', '#7cff5a'] },
       font: { d: 'Impact,"Arial Black",sans-serif', b: '"Courier New",monospace', dw: '400', bw: '700', sp: 1 }
+    },
+    blueprint: {
+      id: 'blueprint', name: 'Blueprint', blurb: 'technical drawing, cyan grid',
+      res: [1920, 1080], smooth: true, glow: 0,
+      pal: { bg: '#0b2545', bg2: '#12335e', ink: '#e6f1ff', dim: '#1d3f6b', a: ['#7fb3ff', '#ffd166', '#9ef0c8', '#ff9fb2'] },
+      font: { d: '"Courier New",monospace', b: '"Courier New",monospace', dw: '700', bw: '400', sp: 2 }
+    },
+    riso: {
+      id: 'riso', name: 'Riso Print', blurb: 'two-ink overprint, paper grain',
+      res: [1920, 1080], smooth: true, glow: 0,
+      pal: { bg: '#f5efe3', bg2: '#ecdfcc', ink: '#26221d', dim: '#d8c9b0', a: ['#ff4f4f', '#2f6fdb', '#f5b93f', '#2f8f6f'] },
+      font: { d: '"Arial Black",system-ui,sans-serif', b: 'Georgia,serif', dw: '400', bw: '400', sp: 0 }
+    },
+    chalk: {
+      id: 'chalk', name: 'Chalkboard', blurb: 'chalk on a dark board',
+      res: [1920, 1080], smooth: true, glow: 0,
+      pal: { bg: '#22301f', bg2: '#1b2620', ink: '#f4f1e8', dim: '#3a4a38', a: ['#f6e58d', '#ff9f9f', '#a8e6cf', '#d5c6e0'] },
+      font: { d: '"Segoe Print","Bradley Hand",cursive', b: '"Segoe Print","Bradley Hand",cursive', dw: '700', bw: '400', sp: 0 }
+    },
+    swiss: {
+      id: 'swiss', name: 'Swiss Grid', blurb: 'white space, hard rules, one red',
+      res: [1920, 1080], smooth: true, glow: 0,
+      pal: { bg: '#f7f7f5', bg2: '#ececeb', ink: '#111111', dim: '#d6d6d4', a: ['#e8342a', '#111111', '#3a6ff8', '#f2b705'] },
+      font: { d: '"Helvetica Neue",Arial,system-ui,sans-serif', b: '"Helvetica Neue",Arial,system-ui,sans-serif', dw: '700', bw: '400', sp: -1 }
     }
   };
-  var STYLE_LIST = ['pixel', 'stick', 'neon', 'paper', 'cosmic', 'vhs'].map(function (k) { return STYLES[k]; });
+  var STYLE_LIST = ['pixel', 'stick', 'neon', 'paper', 'cosmic', 'vhs', 'blueprint', 'riso', 'chalk', 'swiss']
+    .map(function (k) { return STYLES[k]; });
 
   /* ------------------------------------------------------------
      MOTIFS — every visual is a closed polygon so it can morph
@@ -808,6 +841,35 @@ html.mode-wizard #playlayer { display: none; }
     heart: { label: 'Heart', pts: heartPts },
     book: { label: 'Book', pts: function () { return polyPts([[-1, 0.62], [-1, -0.5], [-0.12, -0.3], [0, -0.26], [0.12, -0.3], [1, -0.5], [1, 0.62], [0.12, 0.4], [0, 0.44], [-0.12, 0.4]]); } },
     planet: { label: 'Planet', pts: function () { return circlePts(64, 0.86); } },
+    eye: {
+      label: 'Eye', pts: function () {
+        var o = [], n = 26, i, x;
+        for (i = 0; i <= n; i++) { x = -1 + (i / n) * 2; o.push({ x: x, y: -(1 - x * x) * 0.62 }); }
+        for (i = n; i >= 0; i--) { x = -1 + (i / n) * 2; o.push({ x: x, y: (1 - x * x) * 0.62 }); }
+        return o;
+      }
+    },
+    arrow: {
+      label: 'Arrow', pts: function () {
+        return polyPts([[-1, -0.26], [-0.12, -0.26], [-0.12, -0.62], [1, 0], [-0.12, 0.62], [-0.12, 0.26], [-1, 0.26]]);
+      }
+    },
+    bolt: {
+      label: 'Bolt', pts: function () {
+        return polyPts([[-0.18, -1], [0.55, -0.12], [0.08, -0.12], [0.34, 1], [-0.55, 0.08], [-0.06, 0.08]]);
+      }
+    },
+    flower: {
+      label: 'Flower', pts: function () {
+        var o = [], i, n = 72;
+        for (i = 0; i < n; i++) {
+          var a = (i / n) * TAU - Math.PI / 2;
+          var r = 0.72 + 0.3 * Math.cos(6 * a);
+          o.push({ x: Math.cos(a) * r, y: Math.sin(a) * r });
+        }
+        return o;
+      }
+    },
     spiral: {
       label: 'Spiral', pts: function () {
         var o = [], i, n = 80;
@@ -945,6 +1007,45 @@ html.mode-wizard #playlayer { display: none; }
         g.globalAlpha = 1;
         break;
       }
+      case 'blueprint': {
+        g.fillStyle = p.bg; g.fillRect(0, 0, W, H);
+        g.strokeStyle = 'rgba(127,179,255,.18)'; g.lineWidth = 2;
+        for (i = 0; i <= 24; i++) { g.beginPath(); g.moveTo(i * 80, 0); g.lineTo(i * 80, H); g.stroke(); }
+        for (i = 0; i <= 14; i++) { g.beginPath(); g.moveTo(0, i * 80); g.lineTo(W, i * 80); g.stroke(); }
+        g.strokeStyle = 'rgba(230,241,255,.5)'; g.lineWidth = 4;
+        g.strokeRect(60, 60, W - 120, H - 120);
+        g.strokeStyle = 'rgba(230,241,255,.28)'; g.lineWidth = 2;
+        g.strokeRect(84, 84, W - 168, H - 168);
+        break;
+      }
+      case 'riso': {
+        g.fillStyle = p.bg; g.fillRect(0, 0, W, H);
+        g.fillStyle = p.a[0]; g.globalAlpha = 0.20;
+        g.beginPath(); g.arc(W * 0.78, H * 0.24, 380, 0, TAU); g.fill();
+        g.fillStyle = p.a[1]; g.globalAlpha = 0.18;
+        g.beginPath(); g.arc(W * 0.72, H * 0.3, 380, 0, TAU); g.fill();
+        g.globalAlpha = 1;
+        var rr2 = seeded(31);
+        g.fillStyle = 'rgba(60,40,20,.05)';
+        for (i = 0; i < 420; i++) g.fillRect(rr2() * W, rr2() * H, 2, 2);
+        break;
+      }
+      case 'chalk': {
+        g.fillStyle = p.bg; g.fillRect(0, 0, W, H);
+        var rc = seeded(17);
+        g.fillStyle = 'rgba(255,255,255,.035)';
+        for (i = 0; i < 500; i++) g.fillRect(rc() * W, rc() * H, 3, 3);
+        g.strokeStyle = 'rgba(244,241,232,.10)'; g.lineWidth = 3;
+        g.strokeRect(48, 48, W - 96, H - 96);
+        break;
+      }
+      case 'swiss': {
+        g.fillStyle = p.bg; g.fillRect(0, 0, W, H);
+        g.fillStyle = p.dim; g.fillRect(0, H * 0.86, W, 3);
+        g.fillStyle = p.ink; g.fillRect(130, H * 0.86 - 14, 220, 14);
+        g.fillStyle = p.a[0]; g.fillRect(W - 330, 90, 200, 10);
+        break;
+      }
       case 'vhs': {
         var vg = g.createLinearGradient(0, 0, 0, H * 0.75);
         vg.addColorStop(0, '#1a0140'); vg.addColorStop(0.55, '#7a1266'); vg.addColorStop(1, '#ff7a3d');
@@ -1033,6 +1134,37 @@ html.mode-wizard #playlayer { display: none; }
         g.fillStyle = accent; g.fill(path);
         break;
       }
+      case 'blueprint': {
+        g.strokeStyle = accent; g.lineWidth = 5; g.setLineDash([18, 12]);
+        g.stroke(path); g.setLineDash([]);
+        g.fillStyle = 'rgba(127,179,255,.10)'; g.fill(path);
+        g.strokeStyle = p.ink; g.lineWidth = 1.5; g.globalAlpha = 0.5;
+        g.beginPath(); g.moveTo(cx - r, cy); g.lineTo(cx + r, cy); g.stroke();
+        g.beginPath(); g.moveTo(cx, cy - r); g.lineTo(cx, cy + r); g.stroke();
+        break;
+      }
+      case 'riso': {
+        g.fillStyle = p.a[1]; g.globalAlpha = 0.55;
+        g.fill(pathFrom(pts, cx + 10, cy - 8, r, rot));
+        g.globalAlpha = 1;
+        g.fillStyle = accent; g.globalAlpha = 0.92; g.fill(path);
+        break;
+      }
+      case 'chalk': {
+        var wob2 = pts.map(function (q) {
+          return { x: q.x + Math.sin(q.y * 9 + (opts.phase || 0)) * 0.02, y: q.y + Math.cos(q.x * 9 + (opts.phase || 0)) * 0.02 };
+        });
+        g.strokeStyle = accent; g.lineWidth = 9; g.lineCap = 'round'; g.lineJoin = 'round';
+        g.globalAlpha = 0.55; g.stroke(pathFrom(wob2, cx, cy, r, rot));
+        g.globalAlpha = 1; g.lineWidth = 5; g.stroke(pathFrom(wob2, cx, cy, r, rot));
+        break;
+      }
+      case 'swiss': {
+        g.fillStyle = accent; g.fill(path);
+        g.fillStyle = 'rgba(255,255,255,.14)';
+        g.fill(pathFrom(pts, cx, cy, r * 0.9, rot));
+        break;
+      }
     }
     g.restore();
   }
@@ -1088,7 +1220,7 @@ html.mode-wizard #playlayer { display: none; }
      in Pixel Arcade is not the same object as one in Paper Cut.
      ------------------------------------------------------------ */
   var VISUALS = ['motif', 'rings', 'bars', 'flow', 'orbit', 'steps', 'grid', 'timeline'];
-  var TEXT_FX = ['reveal', 'typewriter', 'pop', 'wave', 'glitch', 'highlight', 'split'];
+  var TEXT_FX = ['reveal', 'typewriter', 'pop', 'wave', 'glitch', 'highlight', 'split', 'kinetic', 'shutter'];
 
   function inkFor(st) { return st.pal.ink; }
   function strokeStyleFor(g, st, accent, alpha, width) {
@@ -1539,6 +1671,53 @@ html.mode-wizard #playlayer { display: none; }
       return;
     }
 
+    if (fx === 'kinetic') {
+      var kn = 0;
+      for (li = 0; li < blines.length; li++) {
+        var kwords = layoutLine(g, blines[li], o.tx, by + li * blh, o.center ? 'center' : 'left');
+        for (i = 0; i < kwords.length; i++) {
+          var kp = clamp((o.t - start - kn * 0.05) / 0.5, 0, 1);
+          kn++;
+          if (kp <= 0) continue;
+          var ke = EASES.back(kp);
+          g.save();
+          g.globalAlpha = o.alpha * clamp(kp * 2, 0, 1);
+          g.translate(kwords[i].x + kwords[i].width / 2, kwords[i].y);
+          g.rotate((1 - ke) * 0.5 * (i % 2 ? -1 : 1));
+          g.scale(0.4 + 0.6 * ke, 0.4 + 0.6 * ke);
+          g.translate(-(kwords[i].x + kwords[i].width / 2), -kwords[i].y);
+          g.fillText(kwords[i].w, kwords[i].x, kwords[i].y);
+          g.restore();
+        }
+      }
+      g.restore();
+      return;
+    }
+
+    if (fx === 'shutter') {
+      for (li = 0; li < blines.length; li++) {
+        var sp = clamp((o.t - start - li * 0.1) / 0.6, 0, 1);
+        if (sp <= 0) continue;
+        var sw2 = g.measureText(blines[li]).width;
+        var sx0 = o.center ? o.tx - sw2 / 2 : o.tx;
+        g.save();
+        g.beginPath();
+        g.rect(sx0 - 6, by + li * blh - bsize * 1.1, (sw2 + 12) * sp, bsize * 1.5);
+        g.clip();
+        g.globalAlpha = o.alpha;
+        g.fillStyle = colour;
+        g.fillText(blines[li], o.tx, by + li * blh);
+        g.restore();
+        g.save();
+        g.globalAlpha = o.alpha * (1 - sp) * 0.9;
+        g.fillStyle = o.accent;
+        g.fillRect(sx0 + sw2 * sp, by + li * blh - bsize * 0.95, 4, bsize * 1.25);
+        g.restore();
+      }
+      g.restore();
+      return;
+    }
+
     if (fx === 'split') {
       for (li = 0; li < blines.length; li++) {
         var dir = li % 2 === 0 ? 1 : -1;
@@ -1691,7 +1870,24 @@ html.mode-wizard #playlayer { display: none; }
       vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
       g.fillStyle = vg; g.fillRect(0, 0, W, H);
     }
-    if (st.id === 'paper' || st.id === 'stick') {
+    if (st.id === 'riso') {
+      var rg2 = seeded(51);
+      g.save(); g.globalAlpha = 0.05; g.fillStyle = '#000';
+      for (i = 0; i < 900; i++) g.fillRect(rg2() * W, rg2() * H, 2, 2);
+      g.restore();
+    }
+    if (st.id === 'chalk') {
+      var cg2 = seeded(83);
+      g.save(); g.globalAlpha = 0.05; g.fillStyle = '#fff';
+      for (i = 0; i < 700; i++) g.fillRect(cg2() * W, cg2() * H, 2, 2);
+      g.restore();
+    }
+    if (st.id === 'blueprint') {
+      var bg2 = g.createRadialGradient(W / 2, H / 2, H * 0.4, W / 2, H / 2, H);
+      bg2.addColorStop(0, 'rgba(0,0,0,0)'); bg2.addColorStop(1, 'rgba(3,12,28,.45)');
+      g.fillStyle = bg2; g.fillRect(0, 0, W, H);
+    }
+    if (st.id === 'paper' || st.id === 'stick' || st.id === 'swiss') {
       var vg2 = g.createRadialGradient(W / 2, H / 2, H * 0.4, W / 2, H / 2, H);
       vg2.addColorStop(0, 'rgba(0,0,0,0)'); vg2.addColorStop(1, 'rgba(60,40,20,.16)');
       g.fillStyle = vg2; g.fillRect(0, 0, W, H);
@@ -1837,6 +2033,28 @@ html.mode-wizard #playlayer { display: none; }
       g.clip();
       g.drawImage(bB, 0, 0, vis.width, vis.height);
       g.restore();
+    } else if (mode === 'zoom') {
+      g.drawImage(bA, 0, 0, vis.width, vis.height);
+      g.save();
+      g.globalAlpha = e;
+      var zs = 0.82 + 0.18 * e;
+      g.translate(vis.width / 2, vis.height / 2);
+      g.scale(zs, zs);
+      g.translate(-vis.width / 2, -vis.height / 2);
+      g.drawImage(bB, 0, 0, vis.width, vis.height);
+      g.restore();
+    } else if (mode === 'blinds') {
+      g.drawImage(bA, 0, 0, vis.width, vis.height);
+      var bands = 9;
+      var bh = vis.height / bands;
+      for (i = 0; i < bands; i++) {
+        var bandP = clamp((e - i * 0.06) / 0.5, 0, 1);
+        if (bandP <= 0) continue;
+        g.drawImage(
+          bB, 0, i * (bB.height / bands), bB.width, bB.height / bands,
+          0, i * bh, vis.width * bandP, bh + 1
+        );
+      }
     } else if (mode === 'glitch') {
       var sliceH = vis.height / 14;
       for (i = 0; i < 14; i++) {
@@ -1912,9 +2130,24 @@ html.mode-wizard #playlayer { display: none; }
       progs: [[0, 2, 4], [3, 5, 0], [5, 0, 2], [3, 5, 0], [1, 4, 6], [4, 6, 1], [2, 4, 0]],
       drums: ['soft', 'soft', 'sparse']
     },
+    cinematic: {
+      label: 'Cinematic', bpm: 68, root: 48, scale: [0, 2, 3, 5, 7, 8, 10], pad: 0.85, arp: 0.5, swing: 0,
+      progs: [[0, 2, 4], [5, 0, 2], [3, 5, 0], [4, 6, 1], [2, 4, 6], [0, 3, 5]],
+      drums: ['big', 'sparse']
+    },
+    dreamy: {
+      label: 'Dreamy', bpm: 88, root: 58, scale: [0, 2, 4, 5, 7, 9, 11], pad: 0.9, arp: 0.6, swing: 0.08,
+      progs: [[0, 2, 4], [3, 5, 0], [1, 4, 6], [5, 0, 2], [2, 4, 6], [4, 6, 1]],
+      drums: ['soft', 'none']
+    },
+    groove: {
+      label: 'Groove', bpm: 108, root: 52, scale: [0, 2, 3, 5, 7, 9, 10], pad: 0.45, arp: 1.1, swing: 0.2,
+      progs: [[0, 2, 4], [4, 6, 1], [3, 5, 0], [1, 3, 5], [5, 0, 2], [2, 4, 6], [0, 3, 5]],
+      drums: ['four', 'soft', 'big']
+    },
     none: { label: 'Silent', bpm: 0, root: 57, scale: [0, 2, 4, 7, 9], pad: 0, arp: 0, swing: 0, progs: [[0, 2, 4]], drums: ['none'] }
   };
-  var MOOD_LIST = ['uplifting', 'calm', 'epic', 'playful', 'tense', 'lofi', 'none'];
+  var MOOD_LIST = ['uplifting', 'calm', 'epic', 'playful', 'tense', 'lofi', 'cinematic', 'dreamy', 'groove', 'none'];
 
   var A = {
     ctx: null, master: null, rev: null, revGain: null, ana: null, noise: null,
@@ -2494,8 +2727,8 @@ html.mode-wizard #playlayer { display: none; }
           .trim();
         bdy = rest.length > 24 ? rest.charAt(0).toUpperCase() + rest.slice(1) : '';
       }
-      var visualCycle = ['motif', 'motif', 'bars', 'flow', 'motif', 'rings', 'timeline', 'orbit', 'steps', 'grid'];
-      var fxCycle = ['reveal', 'pop', 'typewriter', 'highlight', 'wave', 'split', 'glitch'];
+      var visualCycle = ['motif', 'motif', 'bars', 'flow', 'motif', 'rings', 'timeline', 'orbit', 'steps', 'grid', 'motif', 'motif'];
+      var fxCycle = ['reveal', 'pop', 'typewriter', 'highlight', 'wave', 'split', 'glitch', 'kinetic', 'shutter', 'reveal', 'pop', 'typewriter'];
       var scene = {
         title: ttl,
         body: bdy,
@@ -2728,7 +2961,7 @@ html.mode-wizard #playlayer { display: none; }
         b.className = 'pick on';
         b.dataset.style = st.id;
         b.innerHTML = '<i style="background:' + st.pal.a[0] + '"></i>' + st.name.split(' ')[0];
-        b.onclick = function () { b.classList.toggle('on'); };
+        b.onclick = function () { b.classList.toggle('on'); updateWizOrder(); };
         picks.appendChild(b);
       });
     }
@@ -2757,19 +2990,35 @@ html.mode-wizard #playlayer { display: none; }
     ms.value = 'uplifting';
   }
 
+  function pickedStyles(hostId) {
+    var host = $(hostId), out = [];
+    if (!host) return out;
+    Array.prototype.forEach.call(host.children, function (b) {
+      if (b.classList.contains('on')) out.push(b.dataset.style);
+    });
+    return out;
+  }
+
+  function updateWizOrder() {
+    var el = $('wizOrder');
+    if (!el) return;
+    var picks = pickedStyles('wizStyles');
+    if (!picks.length) { el.innerHTML = 'Pick at least one style.'; return; }
+    if (picks.length === 1) {
+      el.innerHTML = 'Every scene uses <b>' + STYLES[picks[0]].name + '</b>.';
+      return;
+    }
+    var names = picks.map(function (id) { return STYLES[id].name; });
+    el.innerHTML = 'Scenes cycle: <b>' + names.join(' → ') + ' → …</b> (' + picks.length + ' styles)';
+  }
+
   function startFromWizard() {
     var text = $('storyInput').value.trim();
     if (!text) text = DEMOS[0].text;
     var mood = $('wizMood').value;
     var pace = parseFloat($('wizPace').value) || 1;
     var trans = $('wizTrans').value;
-    var picks = [];
-    var host = $('wizStyles');
-    if (host) {
-      Array.prototype.forEach.call(host.children, function (b) {
-        if (b.classList.contains('on')) picks.push(b.dataset.style);
-      });
-    }
+    var picks = pickedStyles('wizStyles');
     if (!picks.length) picks = [wizardStyle];
     P = generateProject(text, { style: picks[0], styles: picks, mood: mood, pace: pace, transition: trans });
     enterStudio(true);
@@ -2839,7 +3088,7 @@ html.mode-wizard #playlayer { display: none; }
       });
 
       var ts = $('fTrans');
-      ['morph', 'fade', 'slide', 'wipe', 'iris', 'glitch', 'none'].forEach(function (t) {
+      ['morph', 'fade', 'slide', 'wipe', 'iris', 'zoom', 'blinds', 'glitch', 'none'].forEach(function (t) {
         var o = document.createElement('option'); o.value = t; o.textContent = t; ts.appendChild(o);
       });
 
@@ -2879,6 +3128,20 @@ html.mode-wizard #playlayer { display: none; }
         var o = document.createElement('option'); o.value = v; o.textContent = v; fc.appendChild(o);
       });
     }
+    var mixHost = $('mixStyles');
+    if (mixHost && !mixHost.dataset.built) {
+      mixHost.dataset.built = '1';
+      MS.STYLE_LIST.forEach(function (st) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'pick';
+        b.dataset.style = st.id;
+        b.innerHTML = '<i style="background:' + st.pal.a[0] + '"></i>' + st.name.split(' ')[0];
+        b.onclick = function () { b.classList.toggle('on'); };
+        mixHost.appendChild(b);
+      });
+    }
+
     $('stagewrap').style.display = '';
     stage = $('stage');
   }
@@ -2892,12 +3155,24 @@ html.mode-wizard #playlayer { display: none; }
     el.textContent = names[((plan.root % 12) + 12) % 12] + ' · ' + plan.bpm + ' BPM · seed ' + (plan.seed % 9973);
   }
 
+  function syncMixPicker() {
+    var host = $('mixStyles');
+    if (!host) return;
+    var used = {};
+    P.scenes.forEach(function (sc) { if (sc.style) used[sc.style] = true; });
+    var any = Object.keys(used).length > 0;
+    Array.prototype.forEach.call(host.children, function (b) {
+      b.classList.toggle('on', any ? !!used[b.dataset.style] : b.dataset.style === P.style);
+    });
+  }
+
   function syncControls() {
     $('projTitle').value = P.title || 'My show';
     $('moodSel').value = P.mood || 'uplifting';
     Array.prototype.forEach.call($('styleRow').children, function (b) {
       b.classList.toggle('on', b.dataset.style === P.style);
     });
+    syncMixPicker();
   }
 
   function renderSceneList() {
@@ -3068,6 +3343,20 @@ html.mode-wizard #playlayer { display: none; }
         visual: 'motif', textFx: 'reveal', enter: 'rise', ease: 'back', cam: 'in'
       });
       select(i); renderTimeline(); save();
+    };
+    $('btnMix').onclick = function () {
+      var picks = pickedStyles('mixStyles');
+      if (!picks.length) { alert('Pick at least one style to mix.'); return; }
+      P.scenes.forEach(function (sc, i) {
+        var id = picks[i % picks.length];
+        sc.style = id;
+        sc.accent = accentFor(i, id);
+      });
+      if (picks.length === 1) P.style = picks[0];
+      renderSceneList();
+      fillInspector();
+      dirty = true;
+      save();
     };
     $('btnExport').onclick = exportHTML;
     $('btnSaveJson').onclick = saveJSON;

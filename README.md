@@ -51,8 +51,8 @@ Then edit anything you like, and press **Export HTML show** to get a standalone 
 | **Styles per scene** | A show can inherit one style, or cycle through whichever styles you pick — with a wipe at the seam instead of a double-exposed dissolve. |
 | **Seven diagrams** | Bars, flow, rings, orbit, steps, grid and timeline, drawn from the style's palette. Not everything is a shape. |
 | **Beat-reactive artwork** | The score and the picture share a clock: motifs and diagrams scale on each beat, and neon blooms on the accent. Off by default? No — on by default, with a toggle. |
-| **Seven text effects** | Reveal, typewriter, pop, wave, glitch, highlight and split — independent of the entrance preset that moves the block. |
-| **Six art styles** | Pixel Arcade, Stick Figure, Neon Night, Paper Cut, Cosmic Dream, VHS Retro. Each style carries its own palette, typography, background art, shape painting and post-processing. |
+| **Nine text effects** | Reveal, typewriter, pop, wave, glitch, highlight, split, kinetic and shutter — independent of the entrance preset that moves the block. |
+| **Ten art styles** | Pixel Arcade, Stick Figure, Neon Night, Paper Cut, Cosmic Dream, VHS Retro, Blueprint, Riso Print, Chalkboard, Swiss Grid. Each style carries its own palette, typography, background art, shape painting and post-processing. |
 | **Real morphing** | Every motif is a closed polygon resampled to a common point count, so transitions interpolate actual geometry — a wave flows into a cloud into a rocket. |
 | **Procedural score, seeded per show** | Seven moods. Each show carries a `musicSeed` that decides the key, tempo, chord progression, bass shape, arpeggio pattern, drum style and a generated melody line — so two shows never share a soundtrack, and the same show always sounds the same. **New music** re-rolls it. |
 | **Styles you choose** | Pick any two to six styles before generating; scenes cycle through them. Every scene also has its own style override. |

@@ -144,8 +144,8 @@
           .trim();
         bdy = rest.length > 24 ? rest.charAt(0).toUpperCase() + rest.slice(1) : '';
       }
-      var visualCycle = ['motif', 'motif', 'bars', 'flow', 'motif', 'rings', 'timeline', 'orbit', 'steps', 'grid'];
-      var fxCycle = ['reveal', 'pop', 'typewriter', 'highlight', 'wave', 'split', 'glitch'];
+      var visualCycle = ['motif', 'motif', 'bars', 'flow', 'motif', 'rings', 'timeline', 'orbit', 'steps', 'grid', 'motif', 'motif'];
+      var fxCycle = ['reveal', 'pop', 'typewriter', 'highlight', 'wave', 'split', 'glitch', 'kinetic', 'shutter', 'reveal', 'pop', 'typewriter'];
       var scene = {
         title: ttl,
         body: bdy,
@@ -378,7 +378,7 @@
         b.className = 'pick on';
         b.dataset.style = st.id;
         b.innerHTML = '<i style="background:' + st.pal.a[0] + '"></i>' + st.name.split(' ')[0];
-        b.onclick = function () { b.classList.toggle('on'); };
+        b.onclick = function () { b.classList.toggle('on'); updateWizOrder(); };
         picks.appendChild(b);
       });
     }
@@ -407,19 +407,35 @@
     ms.value = 'uplifting';
   }
 
+  function pickedStyles(hostId) {
+    var host = $(hostId), out = [];
+    if (!host) return out;
+    Array.prototype.forEach.call(host.children, function (b) {
+      if (b.classList.contains('on')) out.push(b.dataset.style);
+    });
+    return out;
+  }
+
+  function updateWizOrder() {
+    var el = $('wizOrder');
+    if (!el) return;
+    var picks = pickedStyles('wizStyles');
+    if (!picks.length) { el.innerHTML = 'Pick at least one style.'; return; }
+    if (picks.length === 1) {
+      el.innerHTML = 'Every scene uses <b>' + STYLES[picks[0]].name + '</b>.';
+      return;
+    }
+    var names = picks.map(function (id) { return STYLES[id].name; });
+    el.innerHTML = 'Scenes cycle: <b>' + names.join(' → ') + ' → …</b> (' + picks.length + ' styles)';
+  }
+
   function startFromWizard() {
     var text = $('storyInput').value.trim();
     if (!text) text = DEMOS[0].text;
     var mood = $('wizMood').value;
     var pace = parseFloat($('wizPace').value) || 1;
     var trans = $('wizTrans').value;
-    var picks = [];
-    var host = $('wizStyles');
-    if (host) {
-      Array.prototype.forEach.call(host.children, function (b) {
-        if (b.classList.contains('on')) picks.push(b.dataset.style);
-      });
-    }
+    var picks = pickedStyles('wizStyles');
     if (!picks.length) picks = [wizardStyle];
     P = generateProject(text, { style: picks[0], styles: picks, mood: mood, pace: pace, transition: trans });
     enterStudio(true);
@@ -489,7 +505,7 @@
       });
 
       var ts = $('fTrans');
-      ['morph', 'fade', 'slide', 'wipe', 'iris', 'glitch', 'none'].forEach(function (t) {
+      ['morph', 'fade', 'slide', 'wipe', 'iris', 'zoom', 'blinds', 'glitch', 'none'].forEach(function (t) {
         var o = document.createElement('option'); o.value = t; o.textContent = t; ts.appendChild(o);
       });
 
@@ -529,6 +545,20 @@
         var o = document.createElement('option'); o.value = v; o.textContent = v; fc.appendChild(o);
       });
     }
+    var mixHost = $('mixStyles');
+    if (mixHost && !mixHost.dataset.built) {
+      mixHost.dataset.built = '1';
+      MS.STYLE_LIST.forEach(function (st) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'pick';
+        b.dataset.style = st.id;
+        b.innerHTML = '<i style="background:' + st.pal.a[0] + '"></i>' + st.name.split(' ')[0];
+        b.onclick = function () { b.classList.toggle('on'); };
+        mixHost.appendChild(b);
+      });
+    }
+
     $('stagewrap').style.display = '';
     stage = $('stage');
   }
@@ -542,12 +572,24 @@
     el.textContent = names[((plan.root % 12) + 12) % 12] + ' · ' + plan.bpm + ' BPM · seed ' + (plan.seed % 9973);
   }
 
+  function syncMixPicker() {
+    var host = $('mixStyles');
+    if (!host) return;
+    var used = {};
+    P.scenes.forEach(function (sc) { if (sc.style) used[sc.style] = true; });
+    var any = Object.keys(used).length > 0;
+    Array.prototype.forEach.call(host.children, function (b) {
+      b.classList.toggle('on', any ? !!used[b.dataset.style] : b.dataset.style === P.style);
+    });
+  }
+
   function syncControls() {
     $('projTitle').value = P.title || 'My show';
     $('moodSel').value = P.mood || 'uplifting';
     Array.prototype.forEach.call($('styleRow').children, function (b) {
       b.classList.toggle('on', b.dataset.style === P.style);
     });
+    syncMixPicker();
   }
 
   function renderSceneList() {
@@ -718,6 +760,20 @@
         visual: 'motif', textFx: 'reveal', enter: 'rise', ease: 'back', cam: 'in'
       });
       select(i); renderTimeline(); save();
+    };
+    $('btnMix').onclick = function () {
+      var picks = pickedStyles('mixStyles');
+      if (!picks.length) { alert('Pick at least one style to mix.'); return; }
+      P.scenes.forEach(function (sc, i) {
+        var id = picks[i % picks.length];
+        sc.style = id;
+        sc.accent = accentFor(i, id);
+      });
+      if (picks.length === 1) P.style = picks[0];
+      renderSceneList();
+      fillInspector();
+      dirty = true;
+      save();
     };
     $('btnExport').onclick = exportHTML;
     $('btnSaveJson').onclick = saveJSON;

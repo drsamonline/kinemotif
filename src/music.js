@@ -42,9 +42,24 @@
       progs: [[0, 2, 4], [3, 5, 0], [5, 0, 2], [3, 5, 0], [1, 4, 6], [4, 6, 1], [2, 4, 0]],
       drums: ['soft', 'soft', 'sparse']
     },
+    cinematic: {
+      label: 'Cinematic', bpm: 68, root: 48, scale: [0, 2, 3, 5, 7, 8, 10], pad: 0.85, arp: 0.5, swing: 0,
+      progs: [[0, 2, 4], [5, 0, 2], [3, 5, 0], [4, 6, 1], [2, 4, 6], [0, 3, 5]],
+      drums: ['big', 'sparse']
+    },
+    dreamy: {
+      label: 'Dreamy', bpm: 88, root: 58, scale: [0, 2, 4, 5, 7, 9, 11], pad: 0.9, arp: 0.6, swing: 0.08,
+      progs: [[0, 2, 4], [3, 5, 0], [1, 4, 6], [5, 0, 2], [2, 4, 6], [4, 6, 1]],
+      drums: ['soft', 'none']
+    },
+    groove: {
+      label: 'Groove', bpm: 108, root: 52, scale: [0, 2, 3, 5, 7, 9, 10], pad: 0.45, arp: 1.1, swing: 0.2,
+      progs: [[0, 2, 4], [4, 6, 1], [3, 5, 0], [1, 3, 5], [5, 0, 2], [2, 4, 6], [0, 3, 5]],
+      drums: ['four', 'soft', 'big']
+    },
     none: { label: 'Silent', bpm: 0, root: 57, scale: [0, 2, 4, 7, 9], pad: 0, arp: 0, swing: 0, progs: [[0, 2, 4]], drums: ['none'] }
   };
-  var MOOD_LIST = ['uplifting', 'calm', 'epic', 'playful', 'tense', 'lofi', 'none'];
+  var MOOD_LIST = ['uplifting', 'calm', 'epic', 'playful', 'tense', 'lofi', 'cinematic', 'dreamy', 'groove', 'none'];
 
   var A = {
     ctx: null, master: null, rev: null, revGain: null, ana: null, noise: null,

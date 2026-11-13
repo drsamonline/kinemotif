@@ -175,9 +175,34 @@
       res: [960, 540], smooth: true, glow: 12,
       pal: { bg: '#12002e', bg2: '#480c53', ink: '#fff3d6', dim: '#63206b', a: ['#ff2e88', '#00e5ff', '#ffb300', '#7cff5a'] },
       font: { d: 'Impact,"Arial Black",sans-serif', b: '"Courier New",monospace', dw: '400', bw: '700', sp: 1 }
+    },
+    blueprint: {
+      id: 'blueprint', name: 'Blueprint', blurb: 'technical drawing, cyan grid',
+      res: [1920, 1080], smooth: true, glow: 0,
+      pal: { bg: '#0b2545', bg2: '#12335e', ink: '#e6f1ff', dim: '#1d3f6b', a: ['#7fb3ff', '#ffd166', '#9ef0c8', '#ff9fb2'] },
+      font: { d: '"Courier New",monospace', b: '"Courier New",monospace', dw: '700', bw: '400', sp: 2 }
+    },
+    riso: {
+      id: 'riso', name: 'Riso Print', blurb: 'two-ink overprint, paper grain',
+      res: [1920, 1080], smooth: true, glow: 0,
+      pal: { bg: '#f5efe3', bg2: '#ecdfcc', ink: '#26221d', dim: '#d8c9b0', a: ['#ff4f4f', '#2f6fdb', '#f5b93f', '#2f8f6f'] },
+      font: { d: '"Arial Black",system-ui,sans-serif', b: 'Georgia,serif', dw: '400', bw: '400', sp: 0 }
+    },
+    chalk: {
+      id: 'chalk', name: 'Chalkboard', blurb: 'chalk on a dark board',
+      res: [1920, 1080], smooth: true, glow: 0,
+      pal: { bg: '#22301f', bg2: '#1b2620', ink: '#f4f1e8', dim: '#3a4a38', a: ['#f6e58d', '#ff9f9f', '#a8e6cf', '#d5c6e0'] },
+      font: { d: '"Segoe Print","Bradley Hand",cursive', b: '"Segoe Print","Bradley Hand",cursive', dw: '700', bw: '400', sp: 0 }
+    },
+    swiss: {
+      id: 'swiss', name: 'Swiss Grid', blurb: 'white space, hard rules, one red',
+      res: [1920, 1080], smooth: true, glow: 0,
+      pal: { bg: '#f7f7f5', bg2: '#ececeb', ink: '#111111', dim: '#d6d6d4', a: ['#e8342a', '#111111', '#3a6ff8', '#f2b705'] },
+      font: { d: '"Helvetica Neue",Arial,system-ui,sans-serif', b: '"Helvetica Neue",Arial,system-ui,sans-serif', dw: '700', bw: '400', sp: -1 }
     }
   };
-  var STYLE_LIST = ['pixel', 'stick', 'neon', 'paper', 'cosmic', 'vhs'].map(function (k) { return STYLES[k]; });
+  var STYLE_LIST = ['pixel', 'stick', 'neon', 'paper', 'cosmic', 'vhs', 'blueprint', 'riso', 'chalk', 'swiss']
+    .map(function (k) { return STYLES[k]; });
 
   /* ------------------------------------------------------------
      MOTIFS — every visual is a closed polygon so it can morph
@@ -280,6 +305,35 @@
     heart: { label: 'Heart', pts: heartPts },
     book: { label: 'Book', pts: function () { return polyPts([[-1, 0.62], [-1, -0.5], [-0.12, -0.3], [0, -0.26], [0.12, -0.3], [1, -0.5], [1, 0.62], [0.12, 0.4], [0, 0.44], [-0.12, 0.4]]); } },
     planet: { label: 'Planet', pts: function () { return circlePts(64, 0.86); } },
+    eye: {
+      label: 'Eye', pts: function () {
+        var o = [], n = 26, i, x;
+        for (i = 0; i <= n; i++) { x = -1 + (i / n) * 2; o.push({ x: x, y: -(1 - x * x) * 0.62 }); }
+        for (i = n; i >= 0; i--) { x = -1 + (i / n) * 2; o.push({ x: x, y: (1 - x * x) * 0.62 }); }
+        return o;
+      }
+    },
+    arrow: {
+      label: 'Arrow', pts: function () {
+        return polyPts([[-1, -0.26], [-0.12, -0.26], [-0.12, -0.62], [1, 0], [-0.12, 0.62], [-0.12, 0.26], [-1, 0.26]]);
+      }
+    },
+    bolt: {
+      label: 'Bolt', pts: function () {
+        return polyPts([[-0.18, -1], [0.55, -0.12], [0.08, -0.12], [0.34, 1], [-0.55, 0.08], [-0.06, 0.08]]);
+      }
+    },
+    flower: {
+      label: 'Flower', pts: function () {
+        var o = [], i, n = 72;
+        for (i = 0; i < n; i++) {
+          var a = (i / n) * TAU - Math.PI / 2;
+          var r = 0.72 + 0.3 * Math.cos(6 * a);
+          o.push({ x: Math.cos(a) * r, y: Math.sin(a) * r });
+        }
+        return o;
+      }
+    },
     spiral: {
       label: 'Spiral', pts: function () {
         var o = [], i, n = 80;
@@ -417,6 +471,45 @@
         g.globalAlpha = 1;
         break;
       }
+      case 'blueprint': {
+        g.fillStyle = p.bg; g.fillRect(0, 0, W, H);
+        g.strokeStyle = 'rgba(127,179,255,.18)'; g.lineWidth = 2;
+        for (i = 0; i <= 24; i++) { g.beginPath(); g.moveTo(i * 80, 0); g.lineTo(i * 80, H); g.stroke(); }
+        for (i = 0; i <= 14; i++) { g.beginPath(); g.moveTo(0, i * 80); g.lineTo(W, i * 80); g.stroke(); }
+        g.strokeStyle = 'rgba(230,241,255,.5)'; g.lineWidth = 4;
+        g.strokeRect(60, 60, W - 120, H - 120);
+        g.strokeStyle = 'rgba(230,241,255,.28)'; g.lineWidth = 2;
+        g.strokeRect(84, 84, W - 168, H - 168);
+        break;
+      }
+      case 'riso': {
+        g.fillStyle = p.bg; g.fillRect(0, 0, W, H);
+        g.fillStyle = p.a[0]; g.globalAlpha = 0.20;
+        g.beginPath(); g.arc(W * 0.78, H * 0.24, 380, 0, TAU); g.fill();
+        g.fillStyle = p.a[1]; g.globalAlpha = 0.18;
+        g.beginPath(); g.arc(W * 0.72, H * 0.3, 380, 0, TAU); g.fill();
+        g.globalAlpha = 1;
+        var rr2 = seeded(31);
+        g.fillStyle = 'rgba(60,40,20,.05)';
+        for (i = 0; i < 420; i++) g.fillRect(rr2() * W, rr2() * H, 2, 2);
+        break;
+      }
+      case 'chalk': {
+        g.fillStyle = p.bg; g.fillRect(0, 0, W, H);
+        var rc = seeded(17);
+        g.fillStyle = 'rgba(255,255,255,.035)';
+        for (i = 0; i < 500; i++) g.fillRect(rc() * W, rc() * H, 3, 3);
+        g.strokeStyle = 'rgba(244,241,232,.10)'; g.lineWidth = 3;
+        g.strokeRect(48, 48, W - 96, H - 96);
+        break;
+      }
+      case 'swiss': {
+        g.fillStyle = p.bg; g.fillRect(0, 0, W, H);
+        g.fillStyle = p.dim; g.fillRect(0, H * 0.86, W, 3);
+        g.fillStyle = p.ink; g.fillRect(130, H * 0.86 - 14, 220, 14);
+        g.fillStyle = p.a[0]; g.fillRect(W - 330, 90, 200, 10);
+        break;
+      }
       case 'vhs': {
         var vg = g.createLinearGradient(0, 0, 0, H * 0.75);
         vg.addColorStop(0, '#1a0140'); vg.addColorStop(0.55, '#7a1266'); vg.addColorStop(1, '#ff7a3d');
@@ -505,6 +598,37 @@
         g.fillStyle = accent; g.fill(path);
         break;
       }
+      case 'blueprint': {
+        g.strokeStyle = accent; g.lineWidth = 5; g.setLineDash([18, 12]);
+        g.stroke(path); g.setLineDash([]);
+        g.fillStyle = 'rgba(127,179,255,.10)'; g.fill(path);
+        g.strokeStyle = p.ink; g.lineWidth = 1.5; g.globalAlpha = 0.5;
+        g.beginPath(); g.moveTo(cx - r, cy); g.lineTo(cx + r, cy); g.stroke();
+        g.beginPath(); g.moveTo(cx, cy - r); g.lineTo(cx, cy + r); g.stroke();
+        break;
+      }
+      case 'riso': {
+        g.fillStyle = p.a[1]; g.globalAlpha = 0.55;
+        g.fill(pathFrom(pts, cx + 10, cy - 8, r, rot));
+        g.globalAlpha = 1;
+        g.fillStyle = accent; g.globalAlpha = 0.92; g.fill(path);
+        break;
+      }
+      case 'chalk': {
+        var wob2 = pts.map(function (q) {
+          return { x: q.x + Math.sin(q.y * 9 + (opts.phase || 0)) * 0.02, y: q.y + Math.cos(q.x * 9 + (opts.phase || 0)) * 0.02 };
+        });
+        g.strokeStyle = accent; g.lineWidth = 9; g.lineCap = 'round'; g.lineJoin = 'round';
+        g.globalAlpha = 0.55; g.stroke(pathFrom(wob2, cx, cy, r, rot));
+        g.globalAlpha = 1; g.lineWidth = 5; g.stroke(pathFrom(wob2, cx, cy, r, rot));
+        break;
+      }
+      case 'swiss': {
+        g.fillStyle = accent; g.fill(path);
+        g.fillStyle = 'rgba(255,255,255,.14)';
+        g.fill(pathFrom(pts, cx, cy, r * 0.9, rot));
+        break;
+      }
     }
     g.restore();
   }
@@ -560,7 +684,7 @@
      in Pixel Arcade is not the same object as one in Paper Cut.
      ------------------------------------------------------------ */
   var VISUALS = ['motif', 'rings', 'bars', 'flow', 'orbit', 'steps', 'grid', 'timeline'];
-  var TEXT_FX = ['reveal', 'typewriter', 'pop', 'wave', 'glitch', 'highlight', 'split'];
+  var TEXT_FX = ['reveal', 'typewriter', 'pop', 'wave', 'glitch', 'highlight', 'split', 'kinetic', 'shutter'];
 
   function inkFor(st) { return st.pal.ink; }
   function strokeStyleFor(g, st, accent, alpha, width) {
@@ -1011,6 +1135,53 @@
       return;
     }
 
+    if (fx === 'kinetic') {
+      var kn = 0;
+      for (li = 0; li < blines.length; li++) {
+        var kwords = layoutLine(g, blines[li], o.tx, by + li * blh, o.center ? 'center' : 'left');
+        for (i = 0; i < kwords.length; i++) {
+          var kp = clamp((o.t - start - kn * 0.05) / 0.5, 0, 1);
+          kn++;
+          if (kp <= 0) continue;
+          var ke = EASES.back(kp);
+          g.save();
+          g.globalAlpha = o.alpha * clamp(kp * 2, 0, 1);
+          g.translate(kwords[i].x + kwords[i].width / 2, kwords[i].y);
+          g.rotate((1 - ke) * 0.5 * (i % 2 ? -1 : 1));
+          g.scale(0.4 + 0.6 * ke, 0.4 + 0.6 * ke);
+          g.translate(-(kwords[i].x + kwords[i].width / 2), -kwords[i].y);
+          g.fillText(kwords[i].w, kwords[i].x, kwords[i].y);
+          g.restore();
+        }
+      }
+      g.restore();
+      return;
+    }
+
+    if (fx === 'shutter') {
+      for (li = 0; li < blines.length; li++) {
+        var sp = clamp((o.t - start - li * 0.1) / 0.6, 0, 1);
+        if (sp <= 0) continue;
+        var sw2 = g.measureText(blines[li]).width;
+        var sx0 = o.center ? o.tx - sw2 / 2 : o.tx;
+        g.save();
+        g.beginPath();
+        g.rect(sx0 - 6, by + li * blh - bsize * 1.1, (sw2 + 12) * sp, bsize * 1.5);
+        g.clip();
+        g.globalAlpha = o.alpha;
+        g.fillStyle = colour;
+        g.fillText(blines[li], o.tx, by + li * blh);
+        g.restore();
+        g.save();
+        g.globalAlpha = o.alpha * (1 - sp) * 0.9;
+        g.fillStyle = o.accent;
+        g.fillRect(sx0 + sw2 * sp, by + li * blh - bsize * 0.95, 4, bsize * 1.25);
+        g.restore();
+      }
+      g.restore();
+      return;
+    }
+
     if (fx === 'split') {
       for (li = 0; li < blines.length; li++) {
         var dir = li % 2 === 0 ? 1 : -1;
@@ -1163,7 +1334,24 @@
       vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
       g.fillStyle = vg; g.fillRect(0, 0, W, H);
     }
-    if (st.id === 'paper' || st.id === 'stick') {
+    if (st.id === 'riso') {
+      var rg2 = seeded(51);
+      g.save(); g.globalAlpha = 0.05; g.fillStyle = '#000';
+      for (i = 0; i < 900; i++) g.fillRect(rg2() * W, rg2() * H, 2, 2);
+      g.restore();
+    }
+    if (st.id === 'chalk') {
+      var cg2 = seeded(83);
+      g.save(); g.globalAlpha = 0.05; g.fillStyle = '#fff';
+      for (i = 0; i < 700; i++) g.fillRect(cg2() * W, cg2() * H, 2, 2);
+      g.restore();
+    }
+    if (st.id === 'blueprint') {
+      var bg2 = g.createRadialGradient(W / 2, H / 2, H * 0.4, W / 2, H / 2, H);
+      bg2.addColorStop(0, 'rgba(0,0,0,0)'); bg2.addColorStop(1, 'rgba(3,12,28,.45)');
+      g.fillStyle = bg2; g.fillRect(0, 0, W, H);
+    }
+    if (st.id === 'paper' || st.id === 'stick' || st.id === 'swiss') {
       var vg2 = g.createRadialGradient(W / 2, H / 2, H * 0.4, W / 2, H / 2, H);
       vg2.addColorStop(0, 'rgba(0,0,0,0)'); vg2.addColorStop(1, 'rgba(60,40,20,.16)');
       g.fillStyle = vg2; g.fillRect(0, 0, W, H);
@@ -1309,6 +1497,28 @@
       g.clip();
       g.drawImage(bB, 0, 0, vis.width, vis.height);
       g.restore();
+    } else if (mode === 'zoom') {
+      g.drawImage(bA, 0, 0, vis.width, vis.height);
+      g.save();
+      g.globalAlpha = e;
+      var zs = 0.82 + 0.18 * e;
+      g.translate(vis.width / 2, vis.height / 2);
+      g.scale(zs, zs);
+      g.translate(-vis.width / 2, -vis.height / 2);
+      g.drawImage(bB, 0, 0, vis.width, vis.height);
+      g.restore();
+    } else if (mode === 'blinds') {
+      g.drawImage(bA, 0, 0, vis.width, vis.height);
+      var bands = 9;
+      var bh = vis.height / bands;
+      for (i = 0; i < bands; i++) {
+        var bandP = clamp((e - i * 0.06) / 0.5, 0, 1);
+        if (bandP <= 0) continue;
+        g.drawImage(
+          bB, 0, i * (bB.height / bands), bB.width, bB.height / bands,
+          0, i * bh, vis.width * bandP, bh + 1
+        );
+      }
     } else if (mode === 'glitch') {
       var sliceH = vis.height / 14;
       for (i = 0; i < 14; i++) {

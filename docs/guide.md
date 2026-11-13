@@ -90,8 +90,16 @@ exported show always sounds the same.
 
 ### Look and sound (left, below scenes)
 
-Six style swatches — clicking one restyles the entire show and reassigns accent colours from
-the new palette. Below them, the soundtrack mood and a mute toggle.
+Ten style swatches — clicking one restyles the entire show and reassigns accent colours from the
+new palette.
+
+**Mix styles** is the interesting one: tick any combination of styles, press **Apply mix to
+scenes**, and every scene takes the next style in your list. Tick two and the show alternates;
+tick all ten and it walks the whole range. The per-scene Style field in the inspector still
+overrides the mix for that one scene.
+
+Below that, the soundtrack mood, **New music**, a mute toggle, and the live key/tempo/seed
+readout.
 
 ### Top bar
 

@@ -3,6 +3,26 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.5.0] — 2026-11-13
+
+### Added
+- **Four more styles** — Blueprint (technical drawing on a navy grid), Riso Print (two-ink
+  overprint with a ghost offset), Chalkboard (chalk on a green board) and Swiss Grid (white space,
+  hard rules, one red). Ten in total.
+- **Four more motifs** — eye, arrow, bolt, flower. Eighteen in total.
+- **Two more text effects** — kinetic (words fly in scaled and rotated) and shutter (a band sweeps
+  across each line). Nine in total.
+- **Two more transitions** — zoom and blinds. Nine in total.
+- **Three more moods** — Cinematic (68 BPM, minor, long pads), Dreamy (88 BPM, lydian, no drums)
+  and Groove (108 BPM, dorian, syncopated bass). Ten in total.
+- **Mix styles in the studio.** A style picker beside the Look panel: tick any combination, press
+  *Apply mix to scenes*, and the show cycles through exactly those. The wizard picker now shows
+  the resulting order as you tick.
+
+### Changed
+- `examples/six-styles.html` became `examples/all-styles.html` — twelve scenes walking through all
+  ten styles.
+
 ## [1.4.1] — 2026-11-13
 
 ### Fixed

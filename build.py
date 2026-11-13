@@ -47,6 +47,7 @@ __CSS__
       <h2><i>1</i> Pick a look</h2>
       <div id="styleCards" class="style-cards"></div>
       <div class="pick-row"><span>Styles to mix</span><div id="wizStyles" class="style-picks"></div></div>
+      <div id="wizOrder" class="mix-order"></div>
     </section>
 
     <section>
@@ -109,6 +110,9 @@ __CSS__
     <div id="sceneList" class="scene-list"></div>
     <div class="pane-head">Look</div>
     <div id="styleRow" class="style-row"></div>
+    <div class="pane-head">Mix styles</div>
+    <div id="mixStyles" class="style-picks"></div>
+    <button id="btnMix" class="ghost full">Apply mix to scenes</button>
     <div class="pane-head">Sound</div>
     <select id="moodSel"></select>
     <div class="fldrow">

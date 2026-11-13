@@ -15,6 +15,10 @@ Switching style re-renders the whole show and reassigns accent colours from the 
 | `neon` | Neon Night | 1280 × 720 | `#ff2d95` `#22d3ee` `#a78bfa` `#facc15` | Glowing strokes, perspective grid floor, scanlines |
 | `paper` | Paper Cut | 1920 × 1080 | `#cf5c39` `#3f6f7a` `#c9a227` `#7a8450` | Layered cut-outs with drop shadows, warm serif, paper grain |
 | `cosmic` | Cosmic Dream | 1280 × 720 | `#8b5cf6` `#38bdf8` `#f472b6` `#fbbf24` | Radial space gradient, twinkling stars, thin letter-spaced type |
+| `blueprint` | Blueprint | 1920 × 1080 | `#7fb3ff` `#ffd166` `#9ef0c8` `#ff9fb2` | Technical drawing: navy field, cyan grid, dashed outlines, mono type |
+| `riso` | Riso Print | 1920 × 1080 | `#ff4f4f` `#2f6fdb` `#f5b93f` `#2f8f6f` | Two-ink overprint with a ghost offset, cream paper, heavy grain |
+| `chalk` | Chalkboard | 1920 × 1080 | `#f6e58d` `#ff9f9f` `#a8e6cf` `#d5c6e0` | Green board, wobbly chalk strokes, dust |
+| `swiss` | Swiss Grid | 1920 × 1080 | `#e8342a` `#111111` `#3a6ff8` `#f2b705` | White space, hard rules, one red, tight sans |
 | `vhs` | VHS Retro | 960 × 540 | `#ff2e88` `#00e5ff` `#ffb300` `#7cff5a` | 80s sunset, chromatic split on text, rolling scanlines |
 
 ---
@@ -39,6 +43,10 @@ Fourteen closed polygons. Any motif can morph into any other.
 | `book` | Book | An open book |
 | `planet` | Planet | A disc with a ring |
 | `spiral` | Spiral | A two-armed coil |
+| `eye` | Eye | An almond outline |
+| `arrow` | Arrow | A chevron arrow |
+| `bolt` | Bolt | A lightning bolt |
+| `flower` | Flower | A six-petal rosette |
 
 ---
 
@@ -73,6 +81,8 @@ How the body copy arrives. Independent of the entrance preset, which moves the w
 | `glitch` | Chromatic split with a jitter on the title |
 | `highlight` | A coloured bar sweeps behind each line as it appears |
 | `split` | Lines slide in from alternating sides |
+| `kinetic` | Each word flies in, scaled and rotated on its own axis |
+| `shutter` | A band sweeps across each line, revealing it like a blind |
 
 ---
 
@@ -88,6 +98,8 @@ Set per scene; it plays in the last part of that scene, handing over to the next
 | `wipe` | A left-to-right reveal. |
 | `iris` | A circular reveal from the centre. |
 | `glitch` | Horizontal slices tear between the two scenes. |
+| `zoom` | The next scene scales up from 82% as it fades in |
+| `blinds` | Nine horizontal bands reveal the next scene in sequence |
 | `none` | Hard cut. |
 
 A transition between two scenes that use **different styles** wipes rather than dissolves: a
@@ -158,6 +170,9 @@ line walked through the scale. Change the seed and the same mood sounds like a d
 | `playful` | Playful | 132 BPM | Fast, swung, busy arpeggio |
 | `tense` | Tense | 104 BPM | Minor second in the scale, sparse drums |
 | `lofi` | Lo-fi | 84 BPM | Dorian, soft drums, swung 16ths |
+| `cinematic` | Cinematic | 68 BPM | Natural minor, long pads, sparse big drums |
+| `dreamy` | Dreamy | 88 BPM | Lydian colour, no drums or soft only, wide pads |
+| `groove` | Groove | 108 BPM | Dorian, syncopated bass, swung 16ths |
 | `none` | Silent | — | No music at all |
 
 ### What the seed decides
