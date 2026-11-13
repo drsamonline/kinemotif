@@ -95,8 +95,8 @@ __CSS__
   <header id="topbar">
     <div class="logo small">Kine<span>motif</span></div>
     <input id="projTitle" class="title-input" value="My show" aria-label="Project title">
-    <button id="btnUndo" class="iconbtn" title="Undo (Ctrl+Z)">&#8630;</button>
-    <button id="btnRedo" class="iconbtn" title="Redo (Ctrl+Shift+Z)">&#8631;</button>
+    <button id="btnUndo" class="iconbtn" title="Undo (Ctrl+Z)" aria-label="Undo">&#8630;</button>
+    <button id="btnRedo" class="iconbtn" title="Redo (Ctrl+Shift+Z)" aria-label="Redo">&#8631;</button>
     <div class="spacer"></div>
     <button id="btnOpenJson" class="ghost" title="Open a .kinemotif.json project or an exported show">Open</button>
     <button id="btnSaveJson" class="ghost" title="Save the project as JSON">Save .json</button>
