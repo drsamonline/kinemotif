@@ -3,6 +3,20 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.4.1] — 2026-11-13
+
+### Fixed
+- **Two scores playing at once.** Changing the mood or the seed while a show was playing left the
+  previous run's oscillators scheduled on the audio graph, so the old score rang on underneath the
+  new one for several seconds — the "double music" that made shows feel wrong. Every run now gets
+  its own gain bus (`Music.start()` creates one, `Music.stop()` fades it out in 60 ms and detaches
+  it), so a restart is silent at the seam.
+- Pausing now silences immediately instead of letting pads decay for up to eight beats.
+
+### Changed
+- Voices route through the run bus into a single reverb send; the per-voice send levels are gone.
+- `Music.debug()` reports `runs`, `playing` and the current bus gain, for exactly this kind of check.
+
 ## [1.4.0] — 2026-11-13
 
 ### Added

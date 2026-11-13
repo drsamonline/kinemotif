@@ -19,7 +19,7 @@
       "class": "hand"
     },
     "CHANGELOG.md": {
-      "sha256": "bea3c0a42249aff36c665e2e03317d3e9526b232153a14f4ba4d81a0980eb6a8",
+      "sha256": "9522858959723e250d07c10a4f3e6435c1de91d64167b2e01f14e582e73ff6ec",
       "class": "hand"
     },
     "CONTRIBUTING.md": {
@@ -103,7 +103,7 @@
       "class": "generated"
     },
     "examples/six-styles.html": {
-      "sha256": "881cec9d9a013fe7a3ff6bba3602a2b9163831fb73085f3082ae0969c59a949b",
+      "sha256": "6d575626a6362601932cc8bea297de804c7a6d5277cd560392e1fb0380ccc9f5",
       "class": "generated"
     },
     "examples/water-cycle.html": {
@@ -135,7 +135,7 @@
       "class": "source"
     },
     "src/music.js": {
-      "sha256": "3f33d229367788c1d184d183a0fe29a91332f4b1bd99736665252da841cd3563",
+      "sha256": "6071bca08f3bccd487c2fe0115d9c8a816f4395f03cfcd7324063a1b8d7b3d84",
       "class": "source"
     },
     "src/style.css": {
@@ -147,7 +147,7 @@
       "class": "source"
     },
     "studio/kinemotif.html": {
-      "sha256": "200ff0922bb175b560ce50f6a43a69904487c732bd95f99b54983a4ac491af46",
+      "sha256": "ecca271457dfe5a2a3419db196559a3084caa431ede97db5390d6ecc82849352",
       "class": "generated"
     },
     "tools/check-links.mjs": {

@@ -364,6 +364,9 @@ html.mode-wizard #playlayer { display: none; }
 .pick.on { opacity: 1; color: var(--ink); border-color: var(--accent); }
 .music-info { font-size: 11px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
 
+.toggle { display: flex; align-items: center; gap: 7px; margin-top: 8px; font-size: 11.5px; color: var(--muted); cursor: pointer; }
+.toggle input { accent-color: #7c5cff; }
+
 </style>
 </head>
 <body>
@@ -449,7 +452,8 @@ html.mode-wizard #playlayer { display: none; }
       <button id="btnMusic" class="ghost" title="Compose a different soundtrack for this show">New music</button>
       <button id="btnMute" class="ghost">Music: on</button>
     </div>
-    <div id="musicInfo" class="music-info">F# · 111 BPM · seed 7258</div>
+    <div id="musicInfo" class="music-info">D · 112 BPM · seed 594</div>
+    <label class="toggle"><input type="checkbox" id="reactBeat" checked=""> Artwork pulses with the beat</label>
   </aside>
 
   <main id="center">
@@ -519,7 +523,7 @@ html.mode-wizard #playlayer { display: none; }
   </div>
 </div>
 
-<script>window.__SHOW__={"title":"Live Life Happy — six styles","style":"pixel","musicSeed":3122214476,"mood":"uplifting","pace":1,"transition":"morph","scenes":[{"title":"Happiness is a place you build","body":"","motif":"city","visual":"motif","textFx":"reveal","dur":4.5,"layout":"center","transition":"morph","accent":"#ff4d6d","enter":"zoom","ease":"back","cam":"in","style":"pixel"},{"title":"Start with one honest morning","body":"","motif":"sun","visual":"motif","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#2b6cb0","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Let the light in early","body":"","motif":"sun","visual":"bars","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#a78bfa","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Move your body before the day begins","body":"","motif":"spiral","visual":"flow","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#7a8450","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Notice what is already working","body":"","motif":"city","visual":"motif","textFx":"wave","dur":5.5,"layout":"split","transition":"morph","accent":"#8b5cf6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"Say thank you out loud","body":"","motif":"tree","visual":"rings","textFx":"split","dur":5.5,"layout":"split","transition":"morph","accent":"#00e5ff","enter":"rise","ease":"back","cam":"pan","style":"vhs"},{"title":"Read something that stretches you","body":"","motif":"book","visual":"timeline","textFx":"glitch","dur":5.5,"layout":"split","transition":"morph","accent":"#3ddc97","enter":"rise","ease":"back","cam":"in","style":"pixel"},{"title":"Take the walk you almost skipped","body":"","motif":"bulb","visual":"orbit","textFx":"reveal","dur":5.5,"layout":"split","transition":"morph","accent":"#2f8f6f","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Call the friend you keep meaning to","body":"","motif":"heart","visual":"steps","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#ff2d95","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Make something with your hands","body":"","motif":"moon","visual":"grid","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#3f6f7a","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Give an hour away","body":"","motif":"city","visual":"motif","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#f472b6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"And when night comes","body":"","motif":"moon","visual":"motif","textFx":"wave","dur":5.5,"layout":"center","transition":"morph","accent":"#7cff5a","enter":"rise","ease":"back","cam":"pan","style":"vhs"}]};window.__PLAY__=1;</script>
+<script>window.__SHOW__={"title":"Live Life Happy — six styles","style":"pixel","musicSeed":3951263302,"mood":"uplifting","pace":1,"transition":"morph","scenes":[{"title":"Happiness is a place you build","body":"","motif":"city","visual":"motif","textFx":"reveal","dur":4.5,"layout":"center","transition":"morph","accent":"#ff4d6d","enter":"zoom","ease":"back","cam":"in","style":"pixel"},{"title":"Start with one honest morning","body":"","motif":"sun","visual":"motif","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#2b6cb0","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Let the light in early","body":"","motif":"sun","visual":"bars","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#a78bfa","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Move your body before the day begins","body":"","motif":"spiral","visual":"flow","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#7a8450","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Notice what is already working","body":"","motif":"city","visual":"motif","textFx":"wave","dur":5.5,"layout":"split","transition":"morph","accent":"#8b5cf6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"Say thank you out loud","body":"","motif":"tree","visual":"rings","textFx":"split","dur":5.5,"layout":"split","transition":"morph","accent":"#00e5ff","enter":"rise","ease":"back","cam":"pan","style":"vhs"},{"title":"Read something that stretches you","body":"","motif":"book","visual":"timeline","textFx":"glitch","dur":5.5,"layout":"split","transition":"morph","accent":"#3ddc97","enter":"rise","ease":"back","cam":"in","style":"pixel"},{"title":"Take the walk you almost skipped","body":"","motif":"bulb","visual":"orbit","textFx":"reveal","dur":5.5,"layout":"split","transition":"morph","accent":"#2f8f6f","enter":"rise","ease":"back","cam":"in","style":"stick"},{"title":"Call the friend you keep meaning to","body":"","motif":"heart","visual":"steps","textFx":"pop","dur":5.5,"layout":"split","transition":"morph","accent":"#ff2d95","enter":"rise","ease":"back","cam":"pan","style":"neon"},{"title":"Make something with your hands","body":"","motif":"moon","visual":"grid","textFx":"typewriter","dur":5.5,"layout":"split","transition":"morph","accent":"#3f6f7a","enter":"rise","ease":"back","cam":"in","style":"paper"},{"title":"Give an hour away","body":"","motif":"city","visual":"motif","textFx":"highlight","dur":5.5,"layout":"split","transition":"morph","accent":"#f472b6","enter":"rise","ease":"back","cam":"in","style":"cosmic"},{"title":"And when night comes","body":"","motif":"moon","visual":"motif","textFx":"wave","dur":5.5,"layout":"center","transition":"morph","accent":"#7cff5a","enter":"rise","ease":"back","cam":"pan","style":"vhs"}]};window.__PLAY__=1;</script>
 
 <script>
 /* ============================================================
@@ -1302,6 +1306,25 @@ html.mode-wizard #playlayer { display: none; }
     return !sc.visual || sc.visual === 'motif';
   }
 
+
+  /* ------------------------------------------------------------
+     BEAT — the score drives the picture, not just the ear.
+     Music.beatPhase() is 0..1 through the current beat (the idea
+     comes from dance-fight's rhythm grid). A decaying spike at each
+     beat makes the artwork breathe in time.
+     ------------------------------------------------------------ */
+  function beatPulse() {
+    var on = window.MS_BEAT_ON !== false;
+    if (!on || !window.Music || !window.Music.beatPhase) return 0;
+    var phase = window.Music.beatPhase();
+    if (!phase) return 0;
+    return Math.pow(1 - phase, 4);
+  }
+  function beatLevel() {
+    if (window.MS_BEAT_ON === false || !window.Music || !window.Music.level) return 0;
+    return window.Music.level() || 0;
+  }
+
   function drawWorld(g, sc, t, st, accent) {
     var p = st.pal, i;
     var center = sc.layout === 'center';
@@ -1310,7 +1333,8 @@ html.mode-wizard #playlayer { display: none; }
     var baseR = center ? 400 : 300;
 
     var ent = enterEase(sc, t);
-    var r = baseR * (0.55 + 0.45 * ent);
+    var pulse = sc.react === false ? 0 : beatPulse();
+    var r = baseR * (0.55 + 0.45 * ent) * (1 + 0.045 * pulse);
     var bob = Math.sin(t * 1.1) * (center ? 10 : 14);
     var rot = Math.sin(t * 0.35) * 0.06 + (sc.spin ? t * 0.25 : 0);
 
@@ -1336,7 +1360,14 @@ html.mode-wizard #playlayer { display: none; }
     }
 
     if (visualIsMotif(sc)) {
-      paintMotif(g, motifPoints(sc.motif), cx, cy + bob, r, rot, st, accent, { alpha: center ? 0.22 : 1, phase: t });
+      if (pulse > 0.35 && st.id === 'neon') {
+      g.save();
+      g.globalAlpha = 0.12 * pulse * (center ? 0.4 : 1);
+      g.fillStyle = accent;
+      g.beginPath(); g.arc(cx, cy + bob, r * 1.5, 0, TAU); g.fill();
+      g.restore();
+    }
+    paintMotif(g, motifPoints(sc.motif), cx, cy + bob, r, rot, st, accent, { alpha: center ? 0.22 : 1, phase: t });
       if (!center) motifDetail(g, sc.motif, cx, cy + bob, r, st, accent, t);
     } else {
       drawDiagram(g, sc.visual, sc, st, accent, t, cx, cy + bob, r, center ? 0.45 : 1);
@@ -1887,6 +1918,9 @@ html.mode-wizard #playlayer { display: none; }
 
   var A = {
     ctx: null, master: null, rev: null, revGain: null, ana: null, noise: null,
+    /* every run gets its own bus, so restarting silences the previous score
+       instantly instead of leaving its notes ringing underneath the new one */
+    bus: null, wet: null, runs: 0,
     mood: 'uplifting', muted: false, volume: 0.55,
     playing: false, step: 0, nextTime: 0, timer: null,
     seed: 1, plan: null, startedAt: 0
@@ -2028,11 +2062,35 @@ html.mode-wizard #playlayer { display: none; }
     return true;
   }
 
-  function send(node, amt) {
-    if (!amt) return;
-    var g = A.ctx.createGain();
-    g.gain.value = amt;
-    node.connect(g); g.connect(A.rev);
+  function newBus() {
+    var bus = A.ctx.createGain();
+    bus.gain.value = 1;
+    bus.connect(A.master);
+    A.wet = A.ctx.createGain();
+    A.wet.gain.value = 0.3;
+    bus.connect(A.wet);
+    A.wet.connect(A.rev);
+    A.runs++;
+    return bus;
+  }
+
+  /* fade the old run out in 60ms and detach it, so nothing survives a restart */
+  function killBus(bus) {
+    if (!bus || !A.ctx) return;
+    try {
+      var now = A.ctx.currentTime;
+      bus.gain.cancelScheduledValues(now);
+      bus.gain.setValueAtTime(bus.gain.value, now);
+      bus.gain.linearRampToValueAtTime(0, now + 0.06);
+      setTimeout(function () {
+        try { bus.disconnect(); } catch (e) { }
+      }, 500);
+    } catch (e) { }
+  }
+
+  function out() {
+    if (!A.bus) A.bus = newBus();
+    return A.bus;
   }
 
   function pad(t, freqs, dur, level) {
@@ -2049,8 +2107,7 @@ html.mode-wizard #playlayer { display: none; }
         g.gain.setValueAtTime(0.0001, t);
         g.gain.exponentialRampToValueAtTime(peak, t + 0.9);
         g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        o.connect(f1); f1.connect(g); g.connect(A.master);
-        send(g, 0.6);
+        o.connect(f1); f1.connect(g); g.connect(out());
         o.start(t); o.stop(t + dur + 0.1);
       });
     });
@@ -2066,8 +2123,7 @@ html.mode-wizard #playlayer { display: none; }
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(gain || 0.07, t + 0.008);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(f1); f1.connect(g); g.connect(A.master);
-    send(g, 0.5);
+    o.connect(f1); f1.connect(g); g.connect(out());
     o.start(t); o.stop(t + dur + 0.05);
   }
 
@@ -2084,8 +2140,7 @@ html.mode-wizard #playlayer { display: none; }
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(gain, t + 0.06);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g); g.connect(A.master);
-    send(g, 0.7);
+    o.connect(g); g.connect(out());
     o.start(t); o.stop(t + dur + 0.05);
     vib.start(t); vib.stop(t + dur + 0.05);
   }
@@ -2100,7 +2155,7 @@ html.mode-wizard #playlayer { display: none; }
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(0.16, t + 0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(f1); f1.connect(g); g.connect(A.master);
+    o.connect(f1); f1.connect(g); g.connect(out());
     o.start(t); o.stop(t + dur + 0.05);
   }
 
@@ -2111,7 +2166,7 @@ html.mode-wizard #playlayer { display: none; }
     o.frequency.exponentialRampToValueAtTime(44, t + 0.13);
     g.gain.setValueAtTime(0.42, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
-    o.connect(g); g.connect(A.master);
+    o.connect(g); g.connect(out());
     o.start(t); o.stop(t + 0.25);
   }
 
@@ -2123,7 +2178,7 @@ html.mode-wizard #playlayer { display: none; }
     var g = A.ctx.createGain();
     g.gain.setValueAtTime(lvl, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
-    s.connect(f); f.connect(g); g.connect(A.master);
+    s.connect(f); f.connect(g); g.connect(out());
     s.start(t); s.stop(t + 0.08);
   }
 
@@ -2135,8 +2190,7 @@ html.mode-wizard #playlayer { display: none; }
     var g = A.ctx.createGain();
     g.gain.setValueAtTime(lvl || 0.10, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
-    s.connect(f); f.connect(g); g.connect(A.master);
-    send(g, 0.4);
+    s.connect(f); f.connect(g); g.connect(out());
     s.start(t); s.stop(t + 0.2);
   }
 
@@ -2217,6 +2271,9 @@ html.mode-wizard #playlayer { display: none; }
     if (A.mood === 'none' || A.muted) return;
     if (A.playing) return;
     if (!A.plan) A.plan = buildPlan(A.seed, A.mood);
+    /* a fresh bus per run: any notes still scheduled from before are orphaned */
+    if (A.bus) { killBus(A.bus); A.bus = null; }
+    A.bus = newBus();
     A.playing = true;
     A.step = 0;
     A.startedAt = A.ctx.currentTime;
@@ -2229,6 +2286,7 @@ html.mode-wizard #playlayer { display: none; }
   function stop() {
     A.playing = false;
     if (A.timer) { clearInterval(A.timer); A.timer = null; }
+    if (A.bus) { killBus(A.bus); A.bus = null; }
   }
 
   function restart() { stop(); start(); }
@@ -2276,6 +2334,14 @@ html.mode-wizard #playlayer { display: none; }
     restart: restart, setMood: setMood, setMuted: setMuted, level: level,
     setSeed: setSeed, newSeed: newSeed, beatPhase: beatPhase,
     plan: function () { return A.plan; },
+    debug: function () {
+      return {
+        runs: A.runs,
+        playing: A.playing,
+        busGain: A.bus ? Math.round(A.bus.gain.value * 1000) / 1000 : null,
+        voices: A.ctx ? 'ctx' : 'none'
+      };
+    },
     state: A
   };
 })();
@@ -2727,6 +2793,9 @@ html.mode-wizard #playlayer { display: none; }
     if (P.musicSeed == null) P.musicSeed = Math.floor(Math.random() * 0xFFFFFFFF);
     window.Music.setSeed(P.musicSeed);
     window.Music.setMood(P.mood || 'uplifting');
+    window.MS_BEAT_ON = P.reactToMusic !== false;
+    var rb = $('reactBeat');
+    if (rb) rb.checked = P.reactToMusic !== false;
     updateMusicLabel();
     sel = 0;
     time = 0; lastTs = 0;
@@ -3026,6 +3095,12 @@ html.mode-wizard #playlayer { display: none; }
       window.Music.setMood(P.mood);
       updateMusicLabel();
       if (playing) window.Music.start();
+      save();
+    };
+    $('reactBeat').onchange = function () {
+      P.reactToMusic = $('reactBeat').checked;
+      window.MS_BEAT_ON = P.reactToMusic;
+      dirty = true;
       save();
     };
     $('btnMusic').onclick = function () {

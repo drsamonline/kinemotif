@@ -48,6 +48,9 @@
 
   var A = {
     ctx: null, master: null, rev: null, revGain: null, ana: null, noise: null,
+    /* every run gets its own bus, so restarting silences the previous score
+       instantly instead of leaving its notes ringing underneath the new one */
+    bus: null, wet: null, runs: 0,
     mood: 'uplifting', muted: false, volume: 0.55,
     playing: false, step: 0, nextTime: 0, timer: null,
     seed: 1, plan: null, startedAt: 0
@@ -189,11 +192,35 @@
     return true;
   }
 
-  function send(node, amt) {
-    if (!amt) return;
-    var g = A.ctx.createGain();
-    g.gain.value = amt;
-    node.connect(g); g.connect(A.rev);
+  function newBus() {
+    var bus = A.ctx.createGain();
+    bus.gain.value = 1;
+    bus.connect(A.master);
+    A.wet = A.ctx.createGain();
+    A.wet.gain.value = 0.3;
+    bus.connect(A.wet);
+    A.wet.connect(A.rev);
+    A.runs++;
+    return bus;
+  }
+
+  /* fade the old run out in 60ms and detach it, so nothing survives a restart */
+  function killBus(bus) {
+    if (!bus || !A.ctx) return;
+    try {
+      var now = A.ctx.currentTime;
+      bus.gain.cancelScheduledValues(now);
+      bus.gain.setValueAtTime(bus.gain.value, now);
+      bus.gain.linearRampToValueAtTime(0, now + 0.06);
+      setTimeout(function () {
+        try { bus.disconnect(); } catch (e) { }
+      }, 500);
+    } catch (e) { }
+  }
+
+  function out() {
+    if (!A.bus) A.bus = newBus();
+    return A.bus;
   }
 
   function pad(t, freqs, dur, level) {
@@ -210,8 +237,7 @@
         g.gain.setValueAtTime(0.0001, t);
         g.gain.exponentialRampToValueAtTime(peak, t + 0.9);
         g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        o.connect(f1); f1.connect(g); g.connect(A.master);
-        send(g, 0.6);
+        o.connect(f1); f1.connect(g); g.connect(out());
         o.start(t); o.stop(t + dur + 0.1);
       });
     });
@@ -227,8 +253,7 @@
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(gain || 0.07, t + 0.008);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(f1); f1.connect(g); g.connect(A.master);
-    send(g, 0.5);
+    o.connect(f1); f1.connect(g); g.connect(out());
     o.start(t); o.stop(t + dur + 0.05);
   }
 
@@ -245,8 +270,7 @@
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(gain, t + 0.06);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g); g.connect(A.master);
-    send(g, 0.7);
+    o.connect(g); g.connect(out());
     o.start(t); o.stop(t + dur + 0.05);
     vib.start(t); vib.stop(t + dur + 0.05);
   }
@@ -261,7 +285,7 @@
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(0.16, t + 0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(f1); f1.connect(g); g.connect(A.master);
+    o.connect(f1); f1.connect(g); g.connect(out());
     o.start(t); o.stop(t + dur + 0.05);
   }
 
@@ -272,7 +296,7 @@
     o.frequency.exponentialRampToValueAtTime(44, t + 0.13);
     g.gain.setValueAtTime(0.42, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
-    o.connect(g); g.connect(A.master);
+    o.connect(g); g.connect(out());
     o.start(t); o.stop(t + 0.25);
   }
 
@@ -284,7 +308,7 @@
     var g = A.ctx.createGain();
     g.gain.setValueAtTime(lvl, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
-    s.connect(f); f.connect(g); g.connect(A.master);
+    s.connect(f); f.connect(g); g.connect(out());
     s.start(t); s.stop(t + 0.08);
   }
 
@@ -296,8 +320,7 @@
     var g = A.ctx.createGain();
     g.gain.setValueAtTime(lvl || 0.10, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
-    s.connect(f); f.connect(g); g.connect(A.master);
-    send(g, 0.4);
+    s.connect(f); f.connect(g); g.connect(out());
     s.start(t); s.stop(t + 0.2);
   }
 
@@ -378,6 +401,9 @@
     if (A.mood === 'none' || A.muted) return;
     if (A.playing) return;
     if (!A.plan) A.plan = buildPlan(A.seed, A.mood);
+    /* a fresh bus per run: any notes still scheduled from before are orphaned */
+    if (A.bus) { killBus(A.bus); A.bus = null; }
+    A.bus = newBus();
     A.playing = true;
     A.step = 0;
     A.startedAt = A.ctx.currentTime;
@@ -390,6 +416,7 @@
   function stop() {
     A.playing = false;
     if (A.timer) { clearInterval(A.timer); A.timer = null; }
+    if (A.bus) { killBus(A.bus); A.bus = null; }
   }
 
   function restart() { stop(); start(); }
@@ -437,6 +464,14 @@
     restart: restart, setMood: setMood, setMuted: setMuted, level: level,
     setSeed: setSeed, newSeed: newSeed, beatPhase: beatPhase,
     plan: function () { return A.plan; },
+    debug: function () {
+      return {
+        runs: A.runs,
+        playing: A.playing,
+        busGain: A.bus ? Math.round(A.bus.gain.value * 1000) / 1000 : null,
+        voices: A.ctx ? 'ctx' : 'none'
+      };
+    },
     state: A
   };
 })();
