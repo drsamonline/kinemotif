@@ -26,6 +26,7 @@ HTML = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="version" content="__VERSION__">
 <title>Kinemotif — the HTML animation studio</title>
 <meta name="description" content="Turn a paragraph into a moving, scored presentation. One HTML file. No video, no images, no internet.">
 <style>
@@ -208,11 +209,19 @@ __UI__
 </html>
 """
 
+# The version lives in CHANGELOG.md; the build copies it so the shipped file can
+# be checked against the release notes instead of guessed at.
+import re
+with open(os.path.join(ROOT, "CHANGELOG.md"), "r", encoding="utf-8") as f:
+    m = re.search(r"^## \[([0-9]+\.[0-9]+\.[0-9]+)\]", f.read(), re.M)
+VERSION = m.group(1) if m else "0.0.0"
+
 html = (HTML
         .replace("__CSS__", css)
         .replace("__CORE__", core)
         .replace("__MUSIC__", music)
-        .replace("__UI__", ui))
+        .replace("__UI__", ui)
+        .replace("__VERSION__", VERSION))
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 with open(OUT, "w", encoding="utf-8") as f:

@@ -27,7 +27,7 @@
       "class": "hand"
     },
     "CONTRIBUTING.md": {
-      "sha256": "781cbd349cf10efb82a885703d554d2cfe6a0c3087719c4daf6d30551f87c317",
+      "sha256": "47aafa1ebd5ee7c51b091dc1a1ff059732eeedff3cf838e25df74b4787572f35",
       "class": "hand"
     },
     "LICENSE": {
@@ -83,7 +83,7 @@
       "class": "asset"
     },
     "build.py": {
-      "sha256": "3e010e5d58c501c1fa4f86b6714493de52363f0f8f3eac61fa82823d0816a97b",
+      "sha256": "1fa7fad7060058aed61c181407f086f1c124f578606d18ea86fd5010f62f6c08",
       "class": "source"
     },
     "docs/guide.md": {
@@ -163,7 +163,7 @@
       "class": "source"
     },
     "studio/kinemotif.html": {
-      "sha256": "167c7fe7db9e93d3fbc38e234bf6651d3209575accabc22981359bbe2b00779e",
+      "sha256": "f0fca62195476dce219014cae0549813a2a0be9b57b8c6d394c68a756092b20d",
       "class": "generated"
     },
     "tools/check-links.mjs": {
@@ -174,12 +174,20 @@
       "sha256": "6362abe249242ccc60f6f0070f1e0c3cdb5dab04e1a3a009633bc8bc08d6c226",
       "class": "tooling"
     },
+    "tools/check-version.mjs": {
+      "sha256": "9dc54836aa46e08102c4c867aa8575267fad9b98b17dd695b80532f771c5b522",
+      "class": "tooling"
+    },
     "tools/manifest.mjs": {
       "sha256": "f732a81b0886a373c6a8996f631d591fdff4eb8e34211d9a1336ef0f360d8259",
       "class": "tooling"
     },
     "tools/release-notes.mjs": {
       "sha256": "1fe0b67a3c23d7b7faa2804b7227f7e9306293329d31c8281fb30890b872c4ca",
+      "class": "tooling"
+    },
+    "tools/render-check.mjs": {
+      "sha256": "5c1aa4d8d384c6147bf2dd957eb31661942f42ed2f8f45bb8c4fb4bb2af56d15",
       "class": "tooling"
     }
   }

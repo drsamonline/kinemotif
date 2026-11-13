@@ -85,6 +85,18 @@ test can tell you whether a frame looks right.
 Conventional Commits: `feat:`, `fix:`, `docs:`, `perf:`, `refactor:`, `chore:`. One logical
 change per commit.
 
+## Guards against the bugs we actually had
+
+| Check | Catches |
+|---|---|
+| `node tools/check-version.mjs` (in CI) | The built studio, the changelog and the newest tag disagreeing |
+| `node tools/render-check.mjs` | An exception inside the draw loop, which leaves a silent blank canvas — it renders all nine text effects and asserts the frame has ink and the clock advanced |
+| `node tools/release-notes.mjs <v>` | Tagging a release the changelog never recorded |
+
+`render-check.mjs` needs a browser, so it is not in CI. Run it before shipping a change to
+`src/core.js`. It was written after a typo in the typewriter branch threw inside the draw loop and
+produced a blank frame with no visible error.
+
 ## Releasing
 
 A release is a changelog entry, a tag, and nothing else.
