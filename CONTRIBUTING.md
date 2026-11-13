@@ -84,3 +84,23 @@ test can tell you whether a frame looks right.
 
 Conventional Commits: `feat:`, `fix:`, `docs:`, `perf:`, `refactor:`, `chore:`. One logical
 change per commit.
+
+## Releasing
+
+A release is a changelog entry, a tag, and nothing else.
+
+1. Add the version's section to `CHANGELOG.md` — user-facing, in the past tense, no invented
+   entries. If it is not in the changelog, it did not ship.
+2. `node tools/release-notes.mjs 1.6.0` prints that section. It exits non-zero if the section is
+   missing, which is the point: you cannot tag a version the changelog never recorded.
+3. Tag and push:
+
+   ```bash
+   git tag -a v1.6.0 -m "v1.6.0"
+   git push origin v1.6.0
+   ```
+
+4. The `Release` workflow publishes a GitHub release whose body is that changelog section. Nothing
+   is written by hand at publish time.
+
+Current version: **1.6.0**.

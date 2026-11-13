@@ -6,6 +6,10 @@
       "sha256": "2a0fb55193034d68b607a17d70d198272d207ec17701dfbd20f0a33eb8a0c327",
       "class": "tooling"
     },
+    ".github/workflows/release.yml": {
+      "sha256": "ac1ba1653ac46e71f6dde1bf9f958dea6afe693643c675090a78831c41ca27cc",
+      "class": "tooling"
+    },
     ".gitignore": {
       "sha256": "4e737478ce477e618a5d94b7604b3840c07bddce871e8a850db09fa39523b678",
       "class": "hand"
@@ -23,7 +27,7 @@
       "class": "hand"
     },
     "CONTRIBUTING.md": {
-      "sha256": "e4674c3b2e77d916d3b682c0aea936ae05318052da075380f0962e19f7c27433",
+      "sha256": "0b84ad1b3b4ae8ae009000fba55d017b2fbe212fb1cf2688a199b2d715342e8e",
       "class": "hand"
     },
     "LICENSE": {
@@ -172,6 +176,10 @@
     },
     "tools/manifest.mjs": {
       "sha256": "f732a81b0886a373c6a8996f631d591fdff4eb8e34211d9a1336ef0f360d8259",
+      "class": "tooling"
+    },
+    "tools/release-notes.mjs": {
+      "sha256": "1fe0b67a3c23d7b7faa2804b7227f7e9306293329d31c8281fb30890b872c4ca",
       "class": "tooling"
     }
   }
