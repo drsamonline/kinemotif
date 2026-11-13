@@ -3,6 +3,20 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.5.1] — 2026-11-13
+
+### Fixed
+- **Every exported show played the same music.** `setupPlayOnly()` never applied the project's
+  `musicSeed`, so the engine fell back to its default seed of 1 — the notes varied inside the
+  studio but every export sounded identical. Exports now seed themselves before the first frame.
+- Shows generated before this version have no usable seed and will get a fresh one on load.
+
+### Added
+- **Timbre layer.** The seed now picks one of six bands — Glass, Warm, Grit, Chiptune, Deep,
+  Bright — each with its own pad/arp/lead/bass waveforms, filter cutoffs, drum tuning, reverb size
+  and note density. Changing the seed changes the band, not just the key.
+- The studio readout shows it: `B · 118 BPM · Glass · seed 8317`.
+
 ## [1.5.0] — 2026-11-13
 
 ### Added

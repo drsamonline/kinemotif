@@ -71,6 +71,69 @@
     seed: 1, plan: null, startedAt: 0
   };
 
+
+  /* A seed changes the notes; a timbre changes the band. Six palettes of
+     waveform, filter, drum voicing and reverb, chosen by the same seed. */
+  var TIMBRES = [
+    {
+      id: 'glass', label: 'Glass',
+      padWave: 'sine', padDetune: 4, cutoff: 2600, padGain: 0.030,
+      arpWave: 'sine', arpCutoff: 6200, arpDecay: 0.7,
+      leadWave: 'sine', leadVib: 5.5,
+      bassWave: 'triangle', bassCutoff: 220,
+      kickHz: 130, kickDecay: 0.2, hatHz: 9000, snareHz: 2400,
+      reverb: { decay: 3.4, wet: 0.45 }, density: 0.8
+    },
+    {
+      id: 'warm', label: 'Warm',
+      padWave: 'triangle', padDetune: 7, cutoff: 1100, padGain: 0.036,
+      arpWave: 'triangle', arpCutoff: 3600, arpDecay: 1.0,
+      leadWave: 'triangle', leadVib: 4.2,
+      bassWave: 'sawtooth', bassCutoff: 300,
+      kickHz: 140, kickDecay: 0.22, hatHz: 8200, snareHz: 1900,
+      reverb: { decay: 2.4, wet: 0.32 }, density: 1
+    },
+    {
+      id: 'grit', label: 'Grit',
+      padWave: 'sawtooth', padDetune: 12, cutoff: 800, padGain: 0.026,
+      arpWave: 'square', arpCutoff: 2600, arpDecay: 0.6,
+      leadWave: 'sawtooth', leadVib: 6.5,
+      bassWave: 'sawtooth', bassCutoff: 240,
+      kickHz: 150, kickDecay: 0.16, hatHz: 7000, snareHz: 1500,
+      reverb: { decay: 1.4, wet: 0.18 }, density: 1.2
+    },
+    {
+      id: 'chip', label: 'Chiptune',
+      padWave: 'square', padDetune: 2, cutoff: 3200, padGain: 0.020,
+      arpWave: 'square', arpCutoff: 7000, arpDecay: 0.4,
+      leadWave: 'square', leadVib: 0,
+      bassWave: 'triangle', bassCutoff: 400,
+      kickHz: 170, kickDecay: 0.12, hatHz: 10000, snareHz: 3000,
+      reverb: { decay: 0.9, wet: 0.10 }, density: 1.3
+    },
+    {
+      id: 'deep', label: 'Deep',
+      padWave: 'sawtooth', padDetune: 9, cutoff: 520, padGain: 0.040,
+      arpWave: 'triangle', arpCutoff: 1800, arpDecay: 1.6,
+      leadWave: 'sine', leadVib: 3.2,
+      bassWave: 'sine', bassCutoff: 160,
+      kickHz: 110, kickDecay: 0.34, hatHz: 6000, snareHz: 1200,
+      reverb: { decay: 4.2, wet: 0.5 }, density: 0.6
+    },
+    {
+      id: 'bright', label: 'Bright',
+      padWave: 'triangle', padDetune: 6, cutoff: 4200, padGain: 0.028,
+      arpWave: 'sawtooth', arpCutoff: 8000, arpDecay: 0.5,
+      leadWave: 'triangle', leadVib: 7,
+      bassWave: 'square', bassCutoff: 380,
+      kickHz: 160, kickDecay: 0.14, hatHz: 9500, snareHz: 2600,
+      reverb: { decay: 1.8, wet: 0.26 }, density: 1.15
+    }
+  ];
+  var DEFAULT_TIMBRE = TIMBRES[1];
+
+  function timbre() { return (A.plan && A.plan.timbre) || DEFAULT_TIMBRE; }
+
   /* ---- deterministic RNG ---------------------------------------------- */
   function mulberry(seed) {
     var a = (seed >>> 0) || 1;
@@ -131,9 +194,12 @@
       }
     }
 
+    var tb = pick(rng, TIMBRES);
+
     return {
       mood: moodId,
       seed: seed,
+      timbre: tb,
       root: mood.root + pick(rng, [0, 0, 0, 2, -3, 5]),
       bpm: Math.round(mood.bpm * (0.94 + rng() * 0.12)),
       swing: mood.swing * (0.6 + rng() * 0.8),
@@ -239,16 +305,17 @@
   }
 
   function pad(t, freqs, dur, level) {
+    var tb = timbre();
     freqs.forEach(function (f, idx) {
       [0, 1].forEach(function (k) {
         var o = A.ctx.createOscillator();
-        o.type = k ? 'sawtooth' : 'triangle';
+        o.type = k ? tb.padWave : (tb.padWave === 'square' ? 'triangle' : tb.padWave);
         o.frequency.value = midi(f);
-        o.detune.value = (k ? 7 : -6) + idx * 2;
+        o.detune.value = (k ? tb.padDetune : -tb.padDetune) + idx * 2;
         var f1 = A.ctx.createBiquadFilter();
-        f1.type = 'lowpass'; f1.frequency.value = 900 + idx * 120; f1.Q.value = 0.7;
+        f1.type = 'lowpass'; f1.frequency.value = tb.cutoff + idx * 120; f1.Q.value = 0.7;
         var g = A.ctx.createGain();
-        var peak = 0.034 * (level || 0.5);
+        var peak = tb.padGain * (level || 0.5);
         g.gain.setValueAtTime(0.0001, t);
         g.gain.exponentialRampToValueAtTime(peak, t + 0.9);
         g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
@@ -259,27 +326,30 @@
   }
 
   function pluck(t, freq, dur, gain) {
+    var tb = timbre();
     var o = A.ctx.createOscillator();
-    o.type = 'triangle';
+    o.type = tb.arpWave;
     o.frequency.value = midi(freq);
     var f1 = A.ctx.createBiquadFilter();
-    f1.type = 'lowpass'; f1.frequency.value = 4200;
+    f1.type = 'lowpass'; f1.frequency.value = tb.arpCutoff;
     var g = A.ctx.createGain();
+    var d = dur * tb.arpDecay;
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(gain || 0.07, t + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + d);
     o.connect(f1); f1.connect(g); g.connect(out());
     o.start(t); o.stop(t + dur + 0.05);
   }
 
   function lead(t, freq, dur, gain) {
+    var tb = timbre();
     var o = A.ctx.createOscillator();
-    o.type = 'sine';
+    o.type = tb.leadWave;
     o.frequency.value = midi(freq);
     var vib = A.ctx.createOscillator();
-    vib.frequency.value = 5.2;
+    vib.frequency.value = tb.leadVib || 5;
     var vibGain = A.ctx.createGain();
-    vibGain.gain.value = 3.5;
+    vibGain.gain.value = tb.leadVib ? 3.5 : 0;
     vib.connect(vibGain); vibGain.connect(o.frequency);
     var g = A.ctx.createGain();
     g.gain.setValueAtTime(0.0001, t);
@@ -291,11 +361,12 @@
   }
 
   function bass(t, freq, dur) {
+    var tb = timbre();
     var o = A.ctx.createOscillator();
-    o.type = 'sawtooth';
+    o.type = tb.bassWave;
     o.frequency.value = midi(freq - 12);
     var f1 = A.ctx.createBiquadFilter();
-    f1.type = 'lowpass'; f1.frequency.value = 320;
+    f1.type = 'lowpass'; f1.frequency.value = tb.bassCutoff;
     var g = A.ctx.createGain();
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(0.16, t + 0.02);
@@ -306,11 +377,12 @@
 
   function kick(t) {
     var o = A.ctx.createOscillator(), g = A.ctx.createGain();
+    var tb = timbre();
     o.type = 'sine';
-    o.frequency.setValueAtTime(140, t);
-    o.frequency.exponentialRampToValueAtTime(44, t + 0.13);
+    o.frequency.setValueAtTime(tb.kickHz, t);
+    o.frequency.exponentialRampToValueAtTime(tb.kickHz * 0.31, t + 0.13);
     g.gain.setValueAtTime(0.42, t);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + tb.kickDecay);
     o.connect(g); g.connect(out());
     o.start(t); o.stop(t + 0.25);
   }
@@ -319,7 +391,7 @@
     var s = A.ctx.createBufferSource();
     s.buffer = A.noise;
     var f = A.ctx.createBiquadFilter();
-    f.type = 'highpass'; f.frequency.value = 8200;
+    f.type = 'highpass'; f.frequency.value = timbre().hatHz;
     var g = A.ctx.createGain();
     g.gain.setValueAtTime(lvl, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
@@ -331,7 +403,7 @@
     var s = A.ctx.createBufferSource();
     s.buffer = A.noise;
     var f = A.ctx.createBiquadFilter();
-    f.type = 'bandpass'; f.frequency.value = 1900; f.Q.value = 0.8;
+    f.type = 'bandpass'; f.frequency.value = timbre().snareHz; f.Q.value = 0.8;
     var g = A.ctx.createGain();
     g.gain.setValueAtTime(lvl || 0.10, t);
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
@@ -362,7 +434,8 @@
       }
     }
 
-    if (plan.voices.arp && s % 2 === 0) {
+    var density = plan.timbre ? plan.timbre.density : 1;
+    if (plan.voices.arp && s % 2 === 0 && (density >= 1 || (step * 7) % 10 < density * 10)) {
       var idx = shape[(step / 2) % shape.length];
       pluck(when, chord[idx % chord.length] + 12, beat * 0.9, 0.045 * plan.arpLevel);
     }
@@ -410,6 +483,14 @@
     }
   }
 
+  function applyReverb(tb) {
+    if (!tb || !tb.reverb || !A.ctx) return;
+    try {
+      A.rev.buffer = makeImpulse(tb.reverb.decay, 2.6);
+      A.revGain.gain.value = tb.reverb.wet;
+    } catch (e) { }
+  }
+
   function start() {
     if (!init()) return;
     if (A.ctx.state === 'suspended') A.ctx.resume();
@@ -418,6 +499,7 @@
     if (!A.plan) A.plan = buildPlan(A.seed, A.mood);
     /* a fresh bus per run: any notes still scheduled from before are orphaned */
     if (A.bus) { killBus(A.bus); A.bus = null; }
+    applyReverb(A.plan && A.plan.timbre);
     A.bus = newBus();
     A.playing = true;
     A.step = 0;

@@ -175,6 +175,19 @@ line walked through the scale. Change the seed and the same mood sounds like a d
 | `groove` | Groove | 108 BPM | Dorian, syncopated bass, swung 16ths |
 | `none` | Silent | — | No music at all |
 
+### Bands (timbres)
+
+The seed also picks the band — the instruments, not just the notes.
+
+| id | Character |
+|---|---|
+| `glass` | Sine pads, airy plucks, long reverb |
+| `warm` | Triangle pads, saw bass, medium room |
+| `grit` | Saw pads, square arp, short bright reverb, busier |
+| `chip` | Square everything, no reverb, tight and fast |
+| `deep` | Low sine bass, slow saw pads, long dark reverb, sparse |
+| `bright` | High cutoffs, saw arp, plucky lead |
+
 ### What the seed decides
 
 | Parameter | Range |
@@ -187,6 +200,7 @@ line walked through the scale. Change the seed and the same mood sounds like a d
 | Drums | One of the mood's three styles |
 | Melody | 2–4 notes per bar over 8 bars, degree walk biased to small steps |
 | Swing | Mood swing × 0.6–1.4 |
+| Band | One of six timbres above — waveforms, filters, drum tuning, reverb, density |
 
 Two sections alternate every 8 bars, so a long show changes rather than looping.
 

@@ -569,7 +569,8 @@
     var plan = window.Music.plan();
     if (!plan) { el.textContent = ''; return; }
     var names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    el.textContent = names[((plan.root % 12) + 12) % 12] + ' · ' + plan.bpm + ' BPM · seed ' + (plan.seed % 9973);
+    var band = plan.timbre ? plan.timbre.label : '';
+    el.textContent = names[((plan.root % 12) + 12) % 12] + ' · ' + plan.bpm + ' BPM · ' + band + ' · seed ' + (plan.seed % 9973);
   }
 
   function syncMixPicker() {
@@ -855,6 +856,12 @@
     loopShow = true;
     document.documentElement.className = 'mode-play';
     document.title = (P.title || 'Show');
+    /* the exported show must use its own soundtrack, not the engine default —
+       without this every export played seed 1 and sounded identical */
+    if (P.musicSeed == null) P.musicSeed = Math.floor(Math.random() * 0xFFFFFFFF);
+    window.Music.setSeed(P.musicSeed);
+    window.Music.setMood(P.mood || 'uplifting');
+    window.MS_BEAT_ON = P.reactToMusic !== false;
     document.body.appendChild($('stagewrap'));
     stage = $('stage');
     var layer = $('playlayer');
