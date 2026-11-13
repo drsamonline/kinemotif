@@ -2,6 +2,8 @@
 
 **Turn a paragraph into a moving, scored presentation — in one HTML file.**
 
+**[▶ Try it live](https://drsamonline.github.io/kinemotif/)** · **[Open the studio](https://drsamonline.github.io/kinemotif/studio/kinemotif.html)**
+
 Kinemotif is a self-contained HTML animation studio. You paste a story, choose an art style,
 and it builds a multi-scene presentation that draws its own artwork, morphs between scenes,
 and synthesises an original soundtrack while it plays. The finished show exports as a single
