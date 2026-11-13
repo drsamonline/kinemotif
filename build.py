@@ -129,14 +129,14 @@ __CSS__
   <main id="center">
     <div id="stagewrap"><canvas id="stage" width="1920" height="1080"></canvas></div>
     <div id="transport">
-      <button id="btnPrev" class="tbtn" title="Previous scene">&#9198;</button>
-      <button id="btnPlay" class="tbtn play" title="Play / pause">&#9654;</button>
-      <button id="btnNext" class="tbtn" title="Next scene">&#9197;</button>
+      <button id="btnPrev" class="tbtn" title="Previous scene" aria-label="Previous scene">&#9198;</button>
+      <button id="btnPlay" class="tbtn play" title="Play / pause" aria-label="Play or pause">&#9654;</button>
+      <button id="btnNext" class="tbtn" title="Next scene" aria-label="Next scene">&#9197;</button>
       <span id="timeLbl">0:00 / 0:00</span>
       <div class="spacer"></div>
       <label class="mini">Speed<input id="speed" type="range" min="0.5" max="2" step="0.1" value="1"></label>
-      <button id="btnLoop" class="tbtn" title="Loop the show">&#8635;</button>
-      <button id="btnFull" class="tbtn" title="Fullscreen">&#9974;</button>
+      <button id="btnLoop" class="tbtn" title="Loop the show" aria-label="Loop the show">&#8635;</button>
+      <button id="btnFull" class="tbtn" title="Fullscreen" aria-label="Fullscreen">&#9974;</button>
     </div>
     <div id="timeline"><div id="track"></div><div id="head"></div></div>
   </main>

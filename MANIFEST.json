@@ -79,7 +79,7 @@
       "class": "asset"
     },
     "build.py": {
-      "sha256": "c7d72b77ca8cd2ce29a65fced2079909281402ccb30b67d12dc466c9233b8db0",
+      "sha256": "3e010e5d58c501c1fa4f86b6714493de52363f0f8f3eac61fa82823d0816a97b",
       "class": "source"
     },
     "docs/guide.md": {
@@ -155,7 +155,7 @@
       "class": "source"
     },
     "studio/kinemotif.html": {
-      "sha256": "6d8ba7273e3aa687b91b72092f35390434a566e5c20514ee001bd25276be8fc0",
+      "sha256": "dd6a74a1ca57e1b497e3578054bf3a77a85b38e18ac7ab603cc11e51d4fe571b",
       "class": "generated"
     },
     "tools/check-links.mjs": {
