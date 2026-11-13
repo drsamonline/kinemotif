@@ -7,6 +7,21 @@
 
   var W = 1920, H = 1080, TAU = Math.PI * 2;
 
+  /* The design space follows the output format. Portrait is not a crop of
+     landscape — the layout below reflows for it. */
+  var ASPECTS = {
+    '16:9': { w: 1920, h: 1080, label: 'Landscape 16:9' },
+    '9:16': { w: 1080, h: 1920, label: 'Portrait 9:16 (mobile)' },
+    '1:1': { w: 1080, h: 1080, label: 'Square 1:1' },
+    '4:5': { w: 1080, h: 1350, label: 'Portrait 4:5 (feed)' }
+  };
+  function setStage(aspect) {
+    var a = ASPECTS[aspect] || ASPECTS['16:9'];
+    W = a.w; H = a.h;
+    return a;
+  }
+  function isPortrait() { return H > W * 1.02; }
+
   function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function easeOut(t) { t = clamp(t, 0, 1); return 1 - Math.pow(1 - t, 3); }
@@ -923,10 +938,11 @@
 
   function drawWorld(g, sc, t, st, accent) {
     var p = st.pal, i;
-    var center = sc.layout === 'center';
-    var cx = center ? W / 2 : 1390;
-    var cy = center ? 520 : 560;
-    var baseR = center ? 400 : 300;
+    var portrait = isPortrait();
+    var center = sc.layout === 'center' || portrait;
+    var cx = center ? W / 2 : W * 0.72;
+    var cy = center ? (portrait ? H * 0.70 : 520) : H * 0.52;
+    var baseR = center ? (portrait ? Math.min(W, H) * 0.30 : 400) : Math.min(W, H) * 0.28;
 
     var ent = enterEase(sc, t);
     var pulse = sc.react === false ? 0 : beatPulse();
@@ -1029,17 +1045,29 @@
   }
 
   function bodyColour(st) {
-    if (st.id === 'neon' || st.id === 'cosmic' || st.id === 'vhs') return 'rgba(240,244,255,.86)';
+    /* decided by the background, not by a list of style names — new dark
+       styles were getting dark body copy on dark paper */
     if (st.id === 'pixel') return st.pal.ink;
-    return 'rgba(30,30,40,.86)';
+    var dark = relLum(hexToRgb(st.pal.bg)) < 0.34;
+    return dark ? 'rgba(240,244,255,.88)' : 'rgba(30,30,40,.86)';
   }
 
   function drawBodyText(g, sc, st, body, o) {
-    var bsize = o.center ? 40 : 38;
+    var bsize = o.center ? (isPortrait() ? Math.round(W * 0.036) : 40) : 38;
     setFont(g, st, 'b', bsize);
-    var blines = wrapText(g, body, o.center ? 1180 : 780);
-    if (blines.length > 5) blines = blines.slice(0, 5);
-    var by = (o.center ? o.ty + (o.lines.length - 1) * o.lh + 128 : o.ty + (o.lines.length - 1) * o.lh + 142);
+    var bodyW = o.center ? (isPortrait() ? W * 0.78 : 1180) : W * 0.41;
+    var blines = wrapText(g, body, bodyW);
+    /* long copy (a quotation, say) shrinks to fit rather than being cut off */
+    var maxLines = o.center ? 7 : 6;
+    var shrink = 0;
+    while (blines.length > maxLines && bsize > 20 && shrink < 14) {
+      bsize -= 3; shrink++;
+      setFont(g, st, 'b', bsize);
+      blines = wrapText(g, body, bodyW);
+    }
+    if (blines.length > maxLines) blines = blines.slice(0, maxLines);
+    var by = (o.center ? o.ty + (o.lines.length - 1) * o.lh + (isPortrait() ? Math.round(H * 0.055) : 128)
+      : o.ty + (o.lines.length - 1) * o.lh + 142);
     var blh = bsize * 1.55;
     var fx = sc.textFx || 'reveal';
     var start = o.center ? 0.55 : 0.62;
@@ -1047,12 +1075,14 @@
     var i, li;
 
     g.save();
-    g.textAlign = 'left';
+    /* a centred layout must centre the body too — this used to draw from the
+       centre line left-aligned, which clipped long quotations off the edge */
+    g.textAlign = o.center ? 'center' : 'left';
     g.fillStyle = colour;
 
     if (fx === 'typewriter') {
       var all = blines.join(' ');
-      var shown = Math.floor(clamp((t0(t, start)) / 0.035, 0, all.length));
+      var shown = Math.floor(clamp(t0(o.t, start) / 0.035, 0, all.length));
       var idx = 0;
       for (li = 0; li < blines.length; li++) {
         var take = Math.max(0, Math.min(blines[li].length, shown - idx));
@@ -1061,7 +1091,9 @@
       }
       if (shown < all.length) {
         var lastLine = Math.min(blines.length - 1, Math.floor(shown / 60));
-        var caretX = o.tx + (shown > 0 ? g.measureText(blines[lastLine].slice(0, shown)).width : 0) + 6;
+        var lineW = g.measureText(blines[lastLine]).width;
+        var typedW = shown > 0 ? g.measureText(blines[lastLine].slice(0, shown)).width : 0;
+        var caretX = o.center ? o.tx - lineW / 2 + typedW + 6 : o.tx + typedW + 6;
         g.globalAlpha = o.alpha * (0.4 + 0.6 * Math.abs(Math.sin(o.t * 6)));
         g.fillStyle = o.accent;
         g.fillRect(caretX, by + lastLine * blh - bsize * 0.8, bsize * 0.5, bsize);
@@ -1071,6 +1103,7 @@
     }
 
     if (fx === 'pop' || fx === 'wave') {
+      g.textAlign = 'left';
       var counter = 0;
       for (li = 0; li < blines.length; li++) {
         var words = layoutLine(g, blines[li], o.tx, by + li * blh, o.center ? 'center' : 'left');
@@ -1136,6 +1169,7 @@
     }
 
     if (fx === 'kinetic') {
+      g.textAlign = 'left';
       var kn = 0;
       for (li = 0; li < blines.length; li++) {
         var kwords = layoutLine(g, blines[li], o.tx, by + li * blh, o.center ? 'center' : 'left');
@@ -1218,9 +1252,10 @@
 
   function drawSceneText(g, sc, t, st, accent, alpha) {
     var p = st.pal, i;
-    var center = sc.layout === 'center';
-    var left = center ? 0 : 130;
-    var maxW = center ? 1360 : 820;
+    var portrait = isPortrait();
+    var center = sc.layout === 'center' || portrait;
+    var left = center ? 0 : Math.round(W * 0.068);
+    var maxW = center ? (portrait ? W * 0.86 : W * 0.71) : W * 0.43;
     var align = center ? 'center' : 'left';
     var tx = center ? W / 2 : left;
 
@@ -1254,7 +1289,7 @@
     g.textBaseline = 'alphabetic';
 
     // ---- title: shrink to fit 2 lines
-    var size = center ? 118 : 96, lines = [];
+    var size = center ? (portrait ? Math.round(W * 0.085) : 118) : 96, lines = [];
     for (var guard = 0; guard < 14; guard++) {
       setFont(g, st, 'd', size);
       lines = wrapText(g, title, maxW);
@@ -1262,7 +1297,7 @@
       size -= 6;
     }
     var lh = size * 1.08;
-    var ty = center ? 470 : 330;
+    var ty = center ? (portrait ? H * 0.30 : 470) : H * 0.30;
     if (center) ty -= (lines.length - 1) * lh / 2;
 
     var titleFx = sc.textFx === 'glitch' ? 'glitch' : (sc.textFx === 'pop' ? 'pop' : 'plain');
@@ -1382,10 +1417,12 @@
     var accentA = sa.accent || st.pal.a[0];
     var accentB = sb.accent || st.pal.a[0];
     drawBG(g, sb, 0, st);
-    var ca = sa.layout === 'center', cb = sb.layout === 'center';
-    var ax = ca ? W / 2 : 1390, bx = cb ? W / 2 : 1390;
-    var ay = ca ? 520 : 560, by = cb ? 520 : 560;
-    var ar = ca ? 400 : 300, br = cb ? 400 : 300;
+    var portrait = isPortrait();
+    var ca = sa.layout === 'center' || portrait, cb = sb.layout === 'center' || portrait;
+    var ax = ca ? W / 2 : W * 0.72, bx = cb ? W / 2 : W * 0.72;
+    var ay = ca ? (portrait ? H * 0.7 : 520) : H * 0.52, by = cb ? (portrait ? H * 0.7 : 520) : H * 0.52;
+    var ar = ca ? Math.min(W, H) * (portrait ? 0.3 : 0.37) : Math.min(W, H) * 0.28;
+    var br = cb ? Math.min(W, H) * (portrait ? 0.3 : 0.37) : Math.min(W, H) * 0.28;
     var pts = morphPoints(sa.motif, sb.motif, e);
     var cx = lerp(ax, bx, e), cy = lerp(ay, by, e), r = lerp(ar, br, e);
     var accent = e < 0.5 ? accentA : accentB;
@@ -1397,13 +1434,12 @@
 
   var BUF = {};
   function getBuf(st, slot) {
-    var key = st.id + '|' + slot;
-    if (!BUF[key]) {
-      var c = document.createElement('canvas');
-      c.width = st.res[0]; c.height = st.res[1];
-      BUF[key] = c;
-    }
-    return BUF[key];
+    var key = st.id + slot;
+    var b = BUF[key];
+    if (!b) { b = document.createElement('canvas'); BUF[key] = b; }
+    var w = st.res[0], h = Math.round(st.res[0] * H / W);
+    if (b.width !== w || b.height !== h) { b.width = w; b.height = h; }
+    return b;
   }
   function renderInto(buf, sc, t, st) {
     var g = buf.getContext('2d');
@@ -1541,7 +1577,7 @@
     motifPoints: motifPoints, morphPoints: morphPoints,
     renderScene: renderScene, renderInto: renderInto, drawFrame: drawFrame,
     EASES: EASES, ENTERS: ENTERS, CAMS: CAMS, VISUALS: VISUALS, TEXT_FX: TEXT_FX,
-    styleOf: styleOf,
+    styleOf: styleOf, ASPECTS: ASPECTS, setStage: setStage, isPortrait: isPortrait,
     contrastRatio: contrastRatio, ensureContrast: ensureContrast, rgbToHsl: rgbToHsl, hslToRgb: hslToRgb,
     getBuf: getBuf, clamp: clamp, lerp: lerp, easeOut: easeOut, easeInOut: easeInOut,
     hashStr: hashStr, seeded: seeded, wrapText: wrapText, setFont: setFont

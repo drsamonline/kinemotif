@@ -65,6 +65,7 @@ __CSS__
           <option value="1" selected>Normal</option>
           <option value="1.3">Slow</option>
         </select></label>
+        <label>Format<select id="wizAspect"></select></label>
         <label>Scene transition<select id="wizTrans">
           <option value="morph" selected>Morph</option>
           <option value="fade">Fade</option>
@@ -108,6 +109,8 @@ __CSS__
   <aside id="left">
     <div class="pane-head">Scenes <button id="btnAdd" title="Add a scene">+</button></div>
     <div id="sceneList" class="scene-list"></div>
+    <div class="pane-head">Format</div>
+    <select id="aspectSel" class="full"></select>
     <div class="pane-head">Look</div>
     <div id="styleRow" class="style-row"></div>
     <div class="pane-head">Mix styles</div>

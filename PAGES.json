@@ -42,6 +42,11 @@
       "path": "/404.html",
       "file": "404.html",
       "title": "Kinemotif — not found"
+    },
+    {
+      "path": "/examples/alan-watts.html",
+      "file": "examples/alan-watts.html",
+      "title": "Alan Watts — in his words (portrait)"
     }
   ],
   "assets": [

@@ -19,7 +19,7 @@
       "class": "hand"
     },
     "CHANGELOG.md": {
-      "sha256": "e36b99f413df3b3bd76ee8a73268342fc2d1e49efa0c223d1d52f3a8643c707b",
+      "sha256": "56f71785b72443bfb290ab17ff71800fb9cdafce5edc47e0a2fbb992efdb24d7",
       "class": "hand"
     },
     "CONTRIBUTING.md": {
@@ -31,7 +31,7 @@
       "class": "hand"
     },
     "PAGES.json": {
-      "sha256": "dff3450e125a392e22af73ae8e0443597f46840eb054542b9d0fa544894c40e5",
+      "sha256": "d5a2b92a63dd044923387077aec0be77f8eeb72d5533957be9384c733405209c",
       "class": "hand"
     },
     "PRIVACY.md": {
@@ -39,12 +39,16 @@
       "class": "hand"
     },
     "README.md": {
-      "sha256": "53011e2af770f981c1e141a6a5277a8da0157ba561383bf5795ca31fa6d42ed5",
+      "sha256": "754a5c32b5245035bb75042f3835e0d06287d93cb740ef27b55e78f9f858ca0d",
       "class": "hand"
     },
     "SECURITY.md": {
       "sha256": "5777308720c246cc59082a64268c5000598832b82c77a044d0d9e61f0b7288ce",
       "class": "hand"
+    },
+    "assets/alan-watts.png": {
+      "sha256": "d8595ef2ed401799e99f6ad428e3835ce1206210cf2a1f23e2528ae34af91a2a",
+      "class": "asset"
     },
     "assets/night-city.png": {
       "sha256": "96b586fbf1b2ff99eae414e434718f560ea20c76e0bec46afaf90fd4f7444750",
@@ -75,7 +79,7 @@
       "class": "asset"
     },
     "build.py": {
-      "sha256": "f43f464bdc376af419c5c7c4d0f0da9acbe45b4b929aa107c37c89bdff0f0090",
+      "sha256": "a620cc14df8713baad2ebd283de4c488498fc04cc09727e1618512613d2d261e",
       "class": "source"
     },
     "docs/guide.md": {
@@ -87,8 +91,12 @@
       "class": "hand"
     },
     "docs/reference.md": {
-      "sha256": "274f2cbeca9cf7b96b9dd98b0f39e6c75a0a32eba9c1472f6fee9aa96c34d2c0",
+      "sha256": "b305637d93a080ea8283b293efde1b0fd737d101e8f2f6f44476d6f9ff0e6a01",
       "class": "hand"
+    },
+    "examples/alan-watts.html": {
+      "sha256": "48e5d236e800b31bdc485e733ce21a3f21281f694d6d0784c7eb9c144b7925ed",
+      "class": "generated"
     },
     "examples/all-styles.html": {
       "sha256": "e9b03c9a3df576f8fc7b4f5c663c96720da74e85e56d7c4a216a0af697cd31d2",
@@ -115,7 +123,7 @@
       "class": "asset"
     },
     "index.html": {
-      "sha256": "f6bb3868d282a579e2fefac4585e71f8042f87d2965dd56c9e2f090314c40115",
+      "sha256": "842a9095d328596cf37a3c377b7e83c1c0c686adfd58a5acb7677f07d09e7bbc",
       "class": "hand"
     },
     "manifest.webmanifest": {
@@ -131,7 +139,7 @@
       "class": "hand"
     },
     "src/core.js": {
-      "sha256": "f5a478de3883c6139fee9ed04fd7129109ed22c268cfac29777ae3370755bb3c",
+      "sha256": "bf55127c14505131620c7e314ef7a6f49475eac3ea1e7907bcd256c650e1cb14",
       "class": "source"
     },
     "src/music.js": {
@@ -143,11 +151,11 @@
       "class": "source"
     },
     "src/ui.js": {
-      "sha256": "e0854dd9a0cc6103730142b6db41930e77d00e2d4610fe31a7db29dbc47cbf2e",
+      "sha256": "d2c582ed311f0abc0811f58ee9a3bf613eb3422a4aead39ebe7061d73c857a38",
       "class": "source"
     },
     "studio/kinemotif.html": {
-      "sha256": "be0ffed635aace8df7f6b49c70ad0fb5ca4819d85bebcec60d83c2b387f54996",
+      "sha256": "b78a92caa89bd20f7bbf68d7d5fa09e34443c3add0cf634195cd46ce31566fcb",
       "class": "generated"
     },
     "tools/check-links.mjs": {

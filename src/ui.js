@@ -369,6 +369,20 @@
       };
     });
 
+    var aspectKeys = Object.keys(MS.ASPECTS);
+    [['wizAspect', '16:9'], ['aspectSel', '16:9']].forEach(function (pair) {
+      var el = $(pair[0]);
+      if (!el || el.dataset.built) return;
+      el.dataset.built = '1';
+      aspectKeys.forEach(function (k) {
+        var o = document.createElement('option');
+        o.value = k;
+        o.textContent = MS.ASPECTS[k].label;
+        el.appendChild(o);
+      });
+      el.value = P && P.aspect ? P.aspect : pair[1];
+    });
+
     var picks = $('wizStyles');
     if (picks) {
       picks.innerHTML = '';
@@ -438,6 +452,7 @@
     var picks = pickedStyles('wizStyles');
     if (!picks.length) picks = [wizardStyle];
     P = generateProject(text, { style: picks[0], styles: picks, mood: mood, pace: pace, transition: trans });
+    P.aspect = ($('wizAspect') && $('wizAspect').value) || '16:9';
     enterStudio(true);
   }
 
@@ -454,11 +469,28 @@
     enterStudio(true);
   }
 
+  function applyAspect(aspect) {
+    var a = MS.setStage(aspect);
+    if (stage) {
+      stage.width = a.w;
+      stage.height = a.h;
+      stage.style.aspectRatio = a.w + ' / ' + a.h;
+    }
+    dirty = true;
+  }
+
   function enterStudio(fresh) {
     document.documentElement.className = 'mode-studio';
+    if (!P.aspect) P.aspect = '16:9';
+    if (!P.aspect) P.aspect = '16:9';
+    stage = $('stage');
+    applyAspect(P.aspect);
     if (P.musicSeed == null) P.musicSeed = Math.floor(Math.random() * 0xFFFFFFFF);
     window.Music.setSeed(P.musicSeed);
     window.Music.setMood(P.mood || 'uplifting');
+    applyAspect(P.aspect);
+    var asel = $('aspectSel');
+    if (asel) asel.value = P.aspect;
     window.MS_BEAT_ON = P.reactToMusic !== false;
     var rb = $('reactBeat');
     if (rb) rb.checked = P.reactToMusic !== false;
@@ -561,6 +593,7 @@
 
     $('stagewrap').style.display = '';
     stage = $('stage');
+    applyAspect(P.aspect || '16:9');
   }
 
   function updateMusicLabel() {
@@ -762,6 +795,12 @@
       });
       select(i); renderTimeline(); save();
     };
+    $('aspectSel').onchange = function () {
+      P.aspect = $('aspectSel').value;
+      applyAspect(P.aspect);
+      renderTimeline();
+      save();
+    };
     $('btnMix').onclick = function () {
       var picks = pickedStyles('mixStyles');
       if (!picks.length) { alert('Pick at least one style to mix.'); return; }
@@ -858,6 +897,9 @@
     document.title = (P.title || 'Show');
     /* the exported show must use its own soundtrack, not the engine default —
        without this every export played seed 1 and sounded identical */
+    if (!P.aspect) P.aspect = '16:9';
+    stage = $('stage');
+    applyAspect(P.aspect);
     if (P.musicSeed == null) P.musicSeed = Math.floor(Math.random() * 0xFFFFFFFF);
     window.Music.setSeed(P.musicSeed);
     window.Music.setMood(P.mood || 'uplifting');

@@ -4,6 +4,20 @@ Every option the studio exposes, in one place.
 
 ---
 
+## Formats
+
+The design space follows the output, and the layout reflows — portrait is not a crop of landscape.
+
+| id | Size | Use |
+|---|---|---|
+| `16:9` | 1920 × 1080 | Landscape, default — YouTube, decks, desktop |
+| `9:16` | 1080 × 1920 | Portrait, mobile — Reels, Shorts, Stories, TikTok |
+| `1:1` | 1080 × 1080 | Square — feed posts |
+| `4:5` | 1080 × 1350 | Tall feed — Instagram portrait |
+
+In portrait the title sits in the upper third, the copy beneath it, and the artwork in the lower
+half. Split layouts become centred, because there is no room for two columns.
+
 ## Styles
 
 Switching style re-renders the whole show and reassigns accent colours from the new palette.

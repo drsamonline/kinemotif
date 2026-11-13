@@ -3,6 +3,25 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.6.0] — 2026-11-13
+
+### Added
+- **Output formats.** 16:9 landscape, 9:16 portrait (mobile), 1:1 square and 4:5 feed. The design
+  space changes with the format and the layout reflows — portrait puts the title in the upper
+  third and the artwork in the lower half, and split layouts become centred. Chosen in the wizard,
+  changeable later under **Format**.
+- **`examples/alan-watts.html`** — eight scenes of verified Alan Watts quotations, in portrait,
+  using eight different styles and seven diagrams.
+
+### Fixed
+- **Centred body copy was drawn left-aligned from the centre line**, so long quotations ran off
+  the right edge. Affected every centred scene; obvious the moment portrait arrived.
+- **Typewriter text killed the whole frame.** The branch referenced an undefined `t` instead of
+  the scene clock, which threw inside the render and left a blank canvas.
+- **Body colour was picked from a list of style names**, so new dark styles (Blueprint,
+  Chalkboard) got dark copy on a dark background. It now follows the background's luminance.
+- Long copy shrinks to fit instead of being cut off at five lines.
+
 ## [1.5.1] — 2026-11-13
 
 ### Fixed
