@@ -3,6 +3,18 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.7.0] — 2026-11-14
+
+### Added
+- **Two spring easings** — `spring` and `springSoft` — alongside the seven fixed curves. A spring
+  overshoots and rings according to its damping ratio, where `back` overshoots by a fixed amount
+  and then stops dead.
+
+### Credit
+- The spring method is adapted from [motion-kit](https://github.com/drsamonline/motion-kit) (MIT),
+  which this fleet already ships: a damped harmonic oscillator whose frequency is derived from the
+  settle time, so "settles in 900 ms" is true rather than approximate.
+
 ## [1.6.0] — 2026-11-13
 
 ### Added

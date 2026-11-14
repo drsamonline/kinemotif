@@ -159,6 +159,9 @@ checks and the house rules live in [CONTRIBUTING.md](CONTRIBUTING.md#repository-
 
 ## Credits and prior art
 
+The spring easings are adapted from [motion-kit](https://github.com/drsamonline/motion-kit), the
+fleet's zero-dependency motion core. 
+
 Built from scratch, but the design leans on ideas well established in the web-animation world:
 the named-entrance catalogue popularised by Animate.css and Animista, the easing-curve
 toolbox and JSON state export of visual keyframe editors, the undo/redo and project-file

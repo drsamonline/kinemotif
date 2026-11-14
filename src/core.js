@@ -28,7 +28,36 @@
   function easeInOut(t) { t = clamp(t, 0, 1); return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
   function easeOutBack(t) { t = clamp(t, 0, 1); var c = 1.70158; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); }
 
+  /* Spring easing, adapted from motion-kit (MIT, github.com/drsamonline/motion-kit).
+     A damped harmonic oscillator pulled from 0 to 1: zeta is the damping ratio
+     (1 is critical, below 1 overshoots), settleMs is when it comes to rest.
+     A fixed curve cannot do this — it overshoots by a fixed amount, while a
+     spring's overshoot follows from its physics. */
+  function springEase(zeta, settleMs) {
+    /* omega is derived the way motion-kit derives it: find when the unit spring
+       comes to rest, then scale so the real one settles at settleMs. Without
+       this the settle time only stretches the curve instead of slowing it. */
+    var wd = zeta < 1 ? Math.sqrt(1 - zeta * zeta) : 0;
+    var unit = function (t) {
+      if (zeta >= 1) return 1 - Math.exp(-t) * (1 + t);
+      return 1 - Math.exp(-zeta * t) * (Math.cos(wd * t) + (zeta / wd) * Math.sin(wd * t));
+    };
+    var last = 0;
+    for (var t = 0; t < 40; t += 0.002) if (Math.abs(unit(t) - 1) > 0.001) last = t;
+    var omega = last / (settleMs / 1000);
+
+    return function (p) {
+      var tt = clamp(p, 0, 1) * (settleMs / 1000);
+      if (tt === 0) return 0;
+      if (zeta >= 1) return 1 - Math.exp(-omega * tt) * (1 + omega * tt);
+      var w = omega * wd;
+      return 1 - Math.exp(-zeta * omega * tt) * (Math.cos(w * tt) + ((zeta * omega) / w) * Math.sin(w * tt));
+    };
+  }
+
   var EASES = {
+    spring: springEase(0.62, 900),
+    springSoft: springEase(0.85, 1100),
     linear: function (t) { return t; },
     out: function (t) { return easeOut(t); },
     inOut: function (t) { return easeInOut(t); },
