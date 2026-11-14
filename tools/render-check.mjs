@@ -67,6 +67,46 @@ for (const fx of FX) {
   process.stdout.write(`  ${fx} … ${problems.some((p) => p.startsWith(fx + '/')) ? 'FAIL' : 'ok'}\n`);
 }
 
+/* ---- cross-style transition: both sides must draw in their own palette ---- */
+{
+  const before = errors.length;
+  await page.evaluate(() => {
+    const app = window.__MS_APP__;
+    const P = app.state().project;
+    P.style = 'neon';
+    P.scenes = [
+      { id: 'x1', title: 'Paper scene', body: 'Paper.', motif: 'sun', visual: 'motif', textFx: 'reveal',
+        dur: 5, layout: 'center', transition: 'wipe', accent: '#cf5c39', enter: 'fade', ease: 'linear',
+        cam: 'none', style: 'paper' },
+      { id: 'x2', title: 'Neon scene', body: 'Neon.', motif: 'sun', visual: 'motif', textFx: 'reveal',
+        dur: 5, layout: 'center', transition: 'wipe', accent: '#ff2d95', enter: 'fade', ease: 'linear',
+        cam: 'none', style: 'neon' }
+    ];
+    app.pause();
+    app.seek(4.55);   /* the wipe starts at local 4.1 */
+  });
+  await new Promise((r) => setTimeout(r, 500));
+
+  const halves = await page.evaluate(() => {
+    const c = document.getElementById('stage');
+    const g = c.getContext('2d');
+    const band = (x0, w) => {
+      const d = g.getImageData(x0, Math.round(c.height * 0.3), w, Math.round(c.height * 0.4)).data;
+      let sum = 0, n = 0;
+      for (let i = 0; i < d.length; i += 4 * 37) { sum += (d[i] + d[i + 1] + d[i + 2]) / 3; n++; }
+      return sum / n;
+    };
+    const third = Math.round(c.width / 3);
+    return { left: band(4, third - 8), right: band(c.width - third - 4, third - 8) };
+  });
+
+  const gap = Math.abs(halves.left - halves.right);
+  const ok = errors.length === before && gap > 25;
+  console.log(`  cross-style transition … ${ok ? 'ok' : 'FAIL'} (left ${halves.left.toFixed(0)}, right ${halves.right.toFixed(0)}, gap ${gap.toFixed(0)})`);
+  if (errors.length > before) problems.push(`transition threw — ${errors[errors.length - 1]}`);
+  if (gap <= 25) problems.push(`cross-style transition looks flat: halves differ by ${gap.toFixed(0)}, expected > 25`);
+}
+
 await browser.close();
 
 if (problems.length) {

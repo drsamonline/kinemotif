@@ -3,6 +3,21 @@
 All notable changes to Kinemotif. Format follows [Keep a Changelog](https://keepachangelog.com/),
 versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.8.0] — 2026-11-14
+
+### Added
+- **A guard for cross-style transitions.** Two scenes in different styles already render each side
+  in its own palette during a wipe, slide or dissolve — but nothing tested it, and the typewriter
+  bug showed what happens to an untested render path. `tools/render-check.mjs` now renders a wipe
+  between a Paper Cut scene and a Neon one and asserts the two halves of the frame differ in
+  brightness. Proven in both directions: 200 apart with the real code, 11 apart when both sides
+  are forced to one style.
+
+### Corrected
+- The parity table in the Kinemorph audit claimed this product had no per-scene styling across
+  transitions. It does, and has since the style-mixing release; the claim was wrong, and the
+  evidence is now a test rather than an assertion.
+
 ## [1.7.0] — 2026-11-14
 
 ### Added

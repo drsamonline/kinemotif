@@ -90,7 +90,7 @@ change per commit.
 | Check | Catches |
 |---|---|
 | `node tools/check-version.mjs` (in CI) | The built studio, the changelog and the newest tag disagreeing |
-| `node tools/render-check.mjs` | An exception inside the draw loop, which leaves a silent blank canvas — it renders all nine text effects and asserts the frame has ink and the clock advanced |
+| `node tools/render-check.mjs` | An exception inside the draw loop, which leaves a silent blank canvas — it renders all nine text effects and asserts the frame has ink and the clock advanced; it also asserts a cross-style transition draws both palettes |
 | `node tools/release-notes.mjs <v>` | Tagging a release the changelog never recorded |
 
 `render-check.mjs` needs a browser, so it is not in CI. Run it before shipping a change to
