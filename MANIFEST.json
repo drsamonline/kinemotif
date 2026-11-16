@@ -189,6 +189,12 @@
     "tools/render-check.mjs": {
       "sha256": "92172e8bd14b0d4f7ddffa654d49e2fa2b8e2eb524625ecfb457b0a1da716866",
       "class": "tooling"
+    },
+    "docs/index.html": {
+      "sha": "ed3beb88ba97c30e70c0cc68f403d2a7f89efa04",
+      "producer": "app-deliver@2026-11-04",
+      "class": "generated",
+      "at": "2026-11-16T13:29:00Z"
     }
   }
 }
