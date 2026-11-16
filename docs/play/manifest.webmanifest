@@ -1,0 +1,19 @@
+{
+  "name": "Kinemotif",
+  "short_name": "Kinemotif",
+  "description": "A single-file HTML animation studio: turn a paragraph into a moving, scored presentation.",
+  "id": "./",
+  "start_url": "./studio/kinemotif.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#08090f",
+  "theme_color": "#7c5cff",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["design", "productivity", "entertainment"],
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
