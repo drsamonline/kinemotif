@@ -213,6 +213,12 @@
       "producer": "app-deliver@2026-11-04",
       "class": "generated",
       "at": "2026-11-16T13:29:12Z"
+    },
+    "docs/play/manifest.webmanifest": {
+      "sha": "c4c154b92c69c32619f0c58a9178a9b21e5ce55d",
+      "producer": "app-deliver@2026-11-04",
+      "class": "generated",
+      "at": "2026-11-16T13:29:16Z"
     }
   }
 }
